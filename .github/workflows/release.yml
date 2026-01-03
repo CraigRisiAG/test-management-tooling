@@ -1,0 +1,80 @@
+name: Release Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v2.6.0)'
+        required: true
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Get version
+        id: get_version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Generate changelog
+        id: changelog
+        run: |
+          echo "# Changelog" > CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          echo "## ${{ steps.get_version.outputs.version }}" >> CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          git log --pretty=format:"- %s" $(git describe --tags --abbrev=0 HEAD^)..HEAD >> CHANGELOG.md || echo "- Initial release" >> CHANGELOG.md
+      
+      - name: Run tests
+        run: |
+          chmod +x tests/*.sh
+          cd tests
+          bash test_runner.sh
+      
+      - name: Create release archive
+        run: |
+          mkdir -p release
+          tar -czf release/zebrunner-${{ steps.get_version.outputs.version }}.tar.gz \
+            zebrunner.sh \
+            lib/ \
+            nginx/ \
+            backup/ \
+            README.md \
+            LICENSE \
+            docker-compose.yml
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.get_version.outputs.version }}
+          name: Zebrunner CE ${{ steps.get_version.outputs.version }}
+          body_path: CHANGELOG.md
+          files: |
+            release/zebrunner-${{ steps.get_version.outputs.version }}.tar.gz
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Release summary
+        run: |
+          echo "# 🎉 Release ${{ steps.get_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "- zebrunner-${{ steps.get_version.outputs.version }}.tar.gz" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Release created successfully!" >> $GITHUB_STEP_SUMMARY
