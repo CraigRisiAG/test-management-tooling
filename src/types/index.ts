@@ -168,11 +168,6 @@ export interface BackupData {
 }
 
 export interface SetupOptions {
-  enableReporting?: boolean;
-  enableSonarqube?: boolean;
-  enableJenkins?: boolean;
-  enableSelenoid?: boolean;
-  enableMcloud?: boolean;
   interactive?: boolean;
 }
 

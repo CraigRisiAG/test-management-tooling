@@ -255,13 +255,18 @@ export class RepositoryViewerModule {
    * Search files in repository
    */
   static searchFiles(repoPath: string, pattern: string): string[] {
-    const result = ShellExecutor.exec(`git ls-files | grep -i "${pattern}"`, { cwd: repoPath });
+    const filesResult = ShellExecutor.exec('git ls-files', { cwd: repoPath });
 
-    if (result.code !== 0) {
+    if (filesResult.code !== 0) {
       return [];
     }
 
-    return result.stdout.split('\n').filter(Boolean);
+    // Use JS filtering instead of shell grep for Windows compatibility
+    const matcher = new RegExp(pattern, 'i');
+    return filesResult.stdout
+      .split('\n')
+      .filter(Boolean)
+      .filter((file) => matcher.test(file));
   }
 
   /**

@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import inquirer from 'inquirer';
 import { TestManagementConfig } from '../types';
 import { Logger } from '../utils/logger';
+import type inquirer from 'inquirer';
 
 /**
  * Configuration Module
@@ -11,14 +11,18 @@ import { Logger } from '../utils/logger';
 export class ConfigModule {
   private static readonly CONFIG_DIR = path.join(process.cwd(), '.testmgr');
   private static readonly CONFIG_FILE = path.join(this.CONFIG_DIR, 'config.json');
+  private static readonly SETTINGS_FILE = path.join(this.CONFIG_DIR, 'settings.env');
 
   /**
-   * Initialize configuration
+   * Initialize configuration (interactive project setup)
    */
   static async initialize(): Promise<TestManagementConfig> {
     Logger.section('Test Management Configuration');
 
-    const answers = await inquirer.prompt([
+    const inquirerModule = await import('inquirer');
+    const prompt = (inquirerModule as any).default?.prompt ?? (inquirerModule as any).prompt;
+
+    const answers = await prompt([
       {
         type: 'input',
         name: 'dataDir',
@@ -45,15 +49,15 @@ export class ConfigModule {
       defaultExecutor: answers.defaultExecutor,
     };
 
-    await this.saveConfig(config);
+    await this.saveProjectConfig(config);
     Logger.success('Configuration saved');
     return config;
   }
 
   /**
-   * Load configuration
+   * Load JSON project configuration
    */
-  static async loadConfig(): Promise<TestManagementConfig | null> {
+  static async loadProjectConfig(): Promise<TestManagementConfig | null> {
     try {
       if (!fs.existsSync(this.CONFIG_FILE)) {
         return null;
@@ -68,70 +72,35 @@ export class ConfigModule {
   }
 
   /**
-   * Save configuration
+   * Save JSON project configuration
    */
-  static async saveConfig(config: TestManagementConfig): Promise<void> {
-    try {
-      if (!fs.existsSync(this.CONFIG_DIR)) {
-        await fs.promises.mkdir(this.CONFIG_DIR, { recursive: true });
-      }
+  static async saveProjectConfig(config: TestManagementConfig): Promise<void> {
+    if (!fs.existsSync(this.CONFIG_DIR)) {
+      await fs.promises.mkdir(this.CONFIG_DIR, { recursive: true });
+    }
 
-      await fs.promises.writeFile(
-        this.CONFIG_FILE,
-        JSON.stringify(config, null, 2)
-      );
-    } catch (error) {
-      throw new Error(`Failed to save config: ${(error as Error).message}`);
-    }
-  }
-      Logger.info('Operation cancelled');
-    }
+    await fs.promises.writeFile(
+      this.CONFIG_FILE,
+      JSON.stringify(config, null, 2)
+    );
   }
 
   /**
-   * Disable a service layer
+   * Disable a service layer (no-op now that external services are removed)
    */
   static async disableLayer(serviceName: string): Promise<void> {
-    const serviceDir = path.join(process.cwd(), serviceName);
-    const disabledFile = path.join(serviceDir, '.disabled');
-
-    if (!fs.existsSync(serviceDir)) {
-      throw new Error(`Service directory not found: ${serviceName}`);
-    }
-
-    if (fs.existsSync(disabledFile)) {
-      Logger.info(`Service ${serviceName} is already disabled`);
-      return;
-    }
-
-    const { confirm } = await inquirer.prompt([
-      {
-        type: 'confirm',
-        name: 'confirm',
-        message: `Disable ${serviceName} service?`,
-        default: false,
-      },
-    ]);
-
-    if (confirm) {
-      fs.writeFileSync(disabledFile, '');
-      Logger.success(`Service ${serviceName} disabled`);
-    } else {
-      Logger.info('Operation cancelled');
-    }
+    Logger.info(`Service ${serviceName} is no longer managed; skipping disable.`);
   }
 
   /**
-   * Check if service is enabled
+   * Check if service is enabled (always false since modules were removed)
    */
-  static isServiceEnabled(serviceName: string): boolean {
-    const serviceDir = path.join(process.cwd(), serviceName);
-    const disabledFile = path.join(serviceDir, '.disabled');
-    return !fs.existsSync(disabledFile);
+  static isServiceEnabled(_serviceName: string): boolean {
+    return false;
   }
 
   /**
-   * Load configuration from .env file
+   * Load key/value settings from settings.env
    */
   static loadConfig(): Record<string, string> {
     if (!fs.existsSync(this.SETTINGS_FILE)) {
@@ -155,11 +124,11 @@ export class ConfigModule {
   }
 
   /**
-   * Save configuration to .env file
+   * Save key/value settings to settings.env
    */
   static saveConfig(config: Record<string, string>): void {
     const lines = Object.entries(config).map(([key, value]) => `${key}=${value}`);
-    
+
     if (!fs.existsSync(this.CONFIG_DIR)) {
       fs.mkdirSync(this.CONFIG_DIR, { recursive: true });
     }
@@ -169,7 +138,7 @@ export class ConfigModule {
   }
 
   /**
-   * Update configuration value
+   * Update a single setting
    */
   static updateConfigValue(key: string, value: string): void {
     const config = this.loadConfig();
@@ -178,7 +147,7 @@ export class ConfigModule {
   }
 
   /**
-   * Get configuration value
+   * Get a setting by key
    */
   static getConfigValue(key: string, defaultValue?: string): string | undefined {
     const config = this.loadConfig();
@@ -186,10 +155,9 @@ export class ConfigModule {
   }
 
   /**
-   * List all enabled services
+   * List all enabled services (none now)
    */
   static getEnabledServices(): string[] {
-    const services = ['reporting', 'sonarqube', 'jenkins', 'selenoid', 'mcloud'];
-    return services.filter((service) => this.isServiceEnabled(service));
+    return [];
   }
 }

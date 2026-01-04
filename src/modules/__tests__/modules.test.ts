@@ -1,3 +1,30 @@
+jest.mock('figlet', () => ({
+  __esModule: true,
+  default: { textSync: jest.fn().mockReturnValue('BANNER') },
+}));
+
+jest.mock('boxen', () => ({
+  __esModule: true,
+  default: jest.fn().mockReturnValue('[BOX]'),
+}));
+
+jest.mock('chalk', () => {
+  const passthrough = (s: string) => s;
+  const boldFn = Object.assign(passthrough, { underline: passthrough });
+  return {
+    __esModule: true,
+    default: {
+      bold: boldFn,
+      cyan: passthrough,
+      gray: passthrough,
+      green: passthrough,
+      red: passthrough,
+      yellow: passthrough,
+      blue: passthrough,
+    },
+  };
+});
+
 import { ConfigModule } from '../config';
 import { UIModule } from '../ui';
 
@@ -12,15 +39,15 @@ describe('UIModule', () => {
   });
 
   describe('printBanner', () => {
-    it('should display banner without errors', () => {
-      expect(() => UIModule.printBanner()).not.toThrow();
+    it('should display banner without errors', async () => {
+      await UIModule.printBanner();
       expect(console.log).toHaveBeenCalled();
     });
   });
 
   describe('showHelp', () => {
-    it('should display help text', () => {
-      UIModule.showHelp();
+    it('should display help text', async () => {
+      await UIModule.showHelp();
       expect(console.log).toHaveBeenCalled();
       const output = (console.log as jest.Mock).mock.calls.join('\n');
       expect(output).toContain('USAGE');
@@ -43,13 +70,13 @@ describe('UIModule', () => {
   });
 
   describe('displayCredentials', () => {
-    it('should display formatted credentials', () => {
+    it('should display formatted credentials', async () => {
       const credentials = {
         username: 'admin',
         password: 'secret123',
       };
       
-      UIModule.displayCredentials('TestService', credentials);
+      await UIModule.displayCredentials('TestService', credentials);
       expect(console.log).toHaveBeenCalled();
     });
   });

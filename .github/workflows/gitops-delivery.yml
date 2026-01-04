@@ -15,9 +15,33 @@ env:
   TERRAFORM_VERSION: 1.6.6
 
 jobs:
+  preflight:
+    name: Preflight Checks
+    runs-on: ubuntu-latest
+    outputs:
+      ok: ${{ steps.check.outputs.ok }}
+    steps:
+      - name: Verify required secrets/vars
+        id: check
+        run: |
+          missing=()
+          [ -z "$AWS_ROLE_TO_ASSUME" ] && missing+=("AWS_ROLE_TO_ASSUME")
+          [ -z "$AWS_REGION" ] && missing+=("AWS_REGION")
+          # TF_BACKEND_CONFIG is optional; APP_URL_FALLBACK optional
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "Required secrets/vars missing: ${missing[*]}" >&2
+            echo "ok=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          echo "ok=true" >> $GITHUB_OUTPUT
+        env:
+          AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+
   lint-test-build:
     name: Lint, Test, Build
     runs-on: ubuntu-latest
+    needs: preflight
     outputs:
       duration_seconds: ${{ steps.duration.outputs.seconds }}
     steps:
@@ -189,6 +213,9 @@ jobs:
           if [ -z "$APP_URL" ] && [ -n "$APP_URL_FALLBACK" ]; then
             APP_URL="$APP_URL_FALLBACK"
           fi
+          if [ -z "$APP_URL" ]; then
+            APP_URL="unavailable"
+          fi
           echo "app_url=$APP_URL" >> $GITHUB_OUTPUT
         working-directory: terraform
 
@@ -268,6 +295,9 @@ jobs:
           if [ -z "$APP_URL" ] && [ -n "$APP_URL_FALLBACK" ]; then
             APP_URL="$APP_URL_FALLBACK"
           fi
+          if [ -z "$APP_URL" ]; then
+            APP_URL="unavailable"
+          fi
           echo "app_url=$APP_URL" >> $GITHUB_OUTPUT
         working-directory: terraform
 
@@ -281,8 +311,8 @@ jobs:
   deploy-prod:
     name: Promote to Prod
     runs-on: ubuntu-latest
-    needs: deploy
-    if: needs.deploy.result == 'success' && github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [deploy, prod-gate]
+    if: needs.deploy.result == 'success' && needs.prod-gate.result == 'success' && github.ref == 'refs/heads/main' && github.event_name == 'push'
     environment:
       name: production
       url: ${{ steps.outputs_step.outputs.app_url }}
@@ -345,6 +375,9 @@ jobs:
           if [ -z "$APP_URL" ] && [ -n "$APP_URL_FALLBACK" ]; then
             APP_URL="$APP_URL_FALLBACK"
           fi
+          if [ -z "$APP_URL" ]; then
+            APP_URL="unavailable"
+          fi
           echo "app_url=$APP_URL" >> $GITHUB_OUTPUT
         working-directory: terraform
 
@@ -355,10 +388,29 @@ jobs:
           end=$(date +%s)
           echo "seconds=$((end - JOB_START))" >> $GITHUB_OUTPUT
 
+  prod-gate:
+    name: Production Gate
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: needs.deploy.result == 'success' && github.ref == 'refs/heads/main' && github.event_name == 'push'
+    outputs:
+      approved: ${{ steps.gate.outputs.approved }}
+    steps:
+      - name: Require prod approval toggle
+        id: gate
+        run: |
+          if [ "${{ vars.PROD_PROMOTE_ENABLED }}" = "true" ]; then
+            echo "approved=true" >> $GITHUB_OUTPUT
+          else
+            echo "Production promotion is disabled. Set repository variable PROD_PROMOTE_ENABLED=true to allow." >&2
+            echo "approved=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
   summary:
     name: Delivery Summary
     runs-on: ubuntu-latest
-    needs: [lint-test-build, docs, terraform-validate, deploy, deploy-preview, deploy-prod]
+    needs: [preflight, lint-test-build, docs, terraform-validate, deploy, deploy-preview, prod-gate, deploy-prod]
     if: always()
     steps:
       - name: Write summary
@@ -366,11 +418,13 @@ jobs:
           echo "# Delivery Pipeline Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Status" >> $GITHUB_STEP_SUMMARY
+          echo "- Preflight: ${{ needs.preflight.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Lint/Test/Build: ${{ needs.lint-test-build.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Docs: ${{ needs.docs.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Terraform Validate: ${{ needs.terraform-validate.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Deploy (staging): ${{ needs.deploy.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Deploy Preview (PR): ${{ needs.deploy-preview.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Prod Gate: ${{ needs.prod-gate.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Deploy Prod: ${{ needs.deploy-prod.result }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Durations (s)" >> $GITHUB_STEP_SUMMARY
@@ -379,6 +433,7 @@ jobs:
           echo "- Terraform Validate: ${{ needs.terraform-validate.outputs.duration_seconds }}" >> $GITHUB_STEP_SUMMARY
           echo "- Deploy (staging): ${{ needs.deploy.outputs.duration_seconds }}" >> $GITHUB_STEP_SUMMARY
           echo "- Deploy Preview: ${{ needs.deploy-preview.outputs.duration_seconds }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Prod Gate: n/a" >> $GITHUB_STEP_SUMMARY
           echo "- Deploy Prod: ${{ needs.deploy-prod.outputs.duration_seconds }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Deployment" >> $GITHUB_STEP_SUMMARY
@@ -394,7 +449,7 @@ jobs:
           echo "- IaC sanity (terraform fmt/validate)" >> $GITHUB_STEP_SUMMARY
           echo "- Auto-deploy on main (terraform apply to staging)" >> $GITHUB_STEP_SUMMARY
           echo "- Preview environments for PRs" >> $GITHUB_STEP_SUMMARY
-          echo "- Production promotion after staging" >> $GITHUB_STEP_SUMMARY
+          echo "- Production promotion after staging (guarded by PROD_PROMOTE_ENABLED)" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Pipeline aligns with GitOps: everything (code, docs, IaC) validated per change, ready for promotion." >> $GITHUB_STEP_SUMMARY
 

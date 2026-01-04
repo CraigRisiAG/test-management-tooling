@@ -1,17 +1,39 @@
-import figlet from 'figlet';
-import boxen from 'boxen';
-import chalk from 'chalk';
 import { Logger } from '../utils/logger';
+import type figlet from 'figlet';
+import type boxen from 'boxen';
+import type chalk from 'chalk';
 
 /**
  * UI Module - Display functions
  * Converted from lib/ui.sh
  */
 export class UIModule {
+  private static depsPromise: Promise<{
+    figlet: typeof figlet;
+    boxen: typeof boxen;
+    chalk: typeof chalk;
+  }> | null = null;
+
+  private static async loadDeps() {
+    if (!this.depsPromise) {
+      this.depsPromise = Promise.all([
+        import('figlet'),
+        import('boxen'),
+        import('chalk'),
+      ]).then(([figletMod, boxenMod, chalkMod]) => ({
+        figlet: (figletMod as any).default ?? (figletMod as any),
+        boxen: (boxenMod as any).default ?? (boxenMod as any),
+        chalk: (chalkMod as any).default ?? (chalkMod as any),
+      }));
+    }
+    return this.depsPromise;
+  }
+
   /**
    * Display Test Management banner
    */
-  static printBanner(): void {
+  static async printBanner(): Promise<void> {
+    const { figlet, chalk } = await this.loadDeps();
     const banner = figlet.textSync('TEST MANAGER', {
       font: 'Standard',
       horizontalLayout: 'default',
@@ -24,7 +46,8 @@ export class UIModule {
   /**
    * Display help information
    */
-  static showHelp(): void {
+  static async showHelp(): Promise<void> {
+    const { chalk } = await this.loadDeps();
     const helpText = `
 ${chalk.bold('USAGE:')}
   testmgr [COMMAND]
@@ -64,7 +87,8 @@ ${chalk.bold('DOCUMENTATION:')}
   /**
    * Display notice/information box
    */
-  static showNotice(title: string, content: string): void {
+  static async showNotice(title: string, content: string): Promise<void> {
+    const { boxen } = await this.loadDeps();
     const box = boxen(content, {
       padding: 1,
       margin: 1,
@@ -108,11 +132,12 @@ ${chalk.bold('DOCUMENTATION:')}
   /**
    * Display service credentials
    */
-  static displayCredentials(service: string, credentials: Record<string, string>): void {
+  static async displayCredentials(service: string, credentials: Record<string, string>): Promise<void> {
+    const { chalk } = await this.loadDeps();
     const content = Object.entries(credentials)
-      .map(([key, value]) => `${chalk.bold(key)}: ${value}`)
+        .map(([key, value]) => `${chalk.bold(key)}: ${value}`)
       .join('\n');
     
-    this.showNotice(`${service} Credentials`, content);
+    await this.showNotice(`${service} Credentials`, content);
   }
 }

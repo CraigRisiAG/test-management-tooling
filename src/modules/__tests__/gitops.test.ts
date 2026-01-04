@@ -89,7 +89,7 @@ describe('RepositoryViewerModule', () => {
       
       expect(typeof content).toBe('string');
       expect(content.length).toBeGreaterThan(0);
-      expect(content).toContain('zebrunner');
+      expect(content).toContain('test-management-tooling');
     });
 
     it('should throw error for non-existent file', () => {

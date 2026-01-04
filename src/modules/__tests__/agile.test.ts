@@ -19,7 +19,7 @@ const mockFs = fs as jest.Mocked<typeof fs>;
 
 describe('AgileModule', () => {
   const testProjectPath = '/test/project';
-  const configPath = path.join(testProjectPath, '.zebrunner/agile.json');
+  const configPath = path.join(testProjectPath, '.testmgr/agile.json');
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -35,7 +35,7 @@ describe('AgileModule', () => {
       await AgileModule.init(testProjectPath);
 
       expect(mockFs.mkdir).toHaveBeenCalledWith(
-        path.join(testProjectPath, '.zebrunner'),
+        path.join(testProjectPath, '.testmgr'),
         { recursive: true }
       );
       expect(mockFs.writeFile).toHaveBeenCalled();

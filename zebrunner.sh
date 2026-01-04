@@ -10,7 +10,6 @@ cd "${BASEDIR}" || exit
 # Load utility functions
 # shellcheck disable=SC1091
 source patch/utility.sh
-source reporting/patch/settings.sh
 
 # Load modular functions
 source lib/ui.sh
