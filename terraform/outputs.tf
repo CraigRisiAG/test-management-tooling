@@ -17,7 +17,7 @@ output "load_balancer_dns" {
 
 output "api_gateway_url" {
   description = "URL of the API Gateway"
-  value       = module.api_gateway.api_url
+    value       = module.api_gateway.api_endpoint
 }
 
 output "dynamodb_table_name" {
@@ -50,8 +50,9 @@ output "deployment_info" {
   value = {
     environment     = var.environment
     region          = var.aws_region
-    api_endpoint    = module.api_gateway.api_url
+      api_endpoint    = module.api_gateway.api_endpoint
     lb_endpoint     = "http://${module.ecs.load_balancer_dns}"
+      ecs_cluster     = module.ecs.cluster_name
     data_stores = {
       dynamodb = module.dynamodb.table_name
       s3       = module.s3.bucket_name

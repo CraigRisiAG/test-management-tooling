@@ -57,9 +57,17 @@ module "ecs" {
   container_image    = var.container_image
   container_port     = var.container_port
   desired_count      = var.desired_count
+    min_capacity             = var.min_capacity
+    max_capacity             = var.max_capacity
+    enable_auto_scaling      = var.enable_auto_scaling
+    cpu_target_value         = var.cpu_target_value
+    memory_target_value      = var.memory_target_value
   
-  dynamodb_table_arn = module.dynamodb.table_arn
-  s3_bucket_arn      = module.s3.bucket_arn
+    task_execution_role_arn  = module.iam.task_execution_role_arn
+    task_role_arn            = module.iam.task_role_arn
+    dynamodb_table_name      = module.dynamodb.table_name
+    s3_bucket_name           = module.s3.bucket_name
+    log_group_name           = module.cloudwatch.log_group_name
 }
 
 # DynamoDB for structured data (users, sessions, metadata)
@@ -81,7 +89,10 @@ module "api_gateway" {
   source = "./modules/api_gateway"
   
   environment         = var.environment
-  vpc_link_target_arn = module.ecs.load_balancer_arn
+    load_balancer_listener_arn = module.ecs.load_balancer_arn
+    subnet_ids                 = module.vpc.private_subnet_ids
+    security_group_ids         = [module.ecs.security_group_id]
+    log_retention_days         = var.log_retention_days
 }
 
 # CloudWatch for logging and monitoring
