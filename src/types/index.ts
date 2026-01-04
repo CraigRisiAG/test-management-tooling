@@ -1,27 +1,74 @@
 /**
- * Type definitions for Zebrunner platform
+ * Type definitions for Custom Test Management Platform
  */
 
-export interface ZebrunnerConfig {
-  protocol: string;
-  hostname: string;
-  port: string;
-  reporting?: ServiceConfig;
-  sonarqube?: ServiceConfig;
-  jenkins?: ServiceConfig;
-  selenoid?: ServiceConfig;
-  mcloud?: ServiceConfig;
+// Custom Test Management Types
+export interface UserStory {
+  id: string;
+  title: string;
+  description: string;
+  acceptanceCriteria: string[];
+  status: 'draft' | 'ready' | 'in-progress' | 'testing' | 'done';
+  linkedTests: string[];
+  linkedCode: CodeReference[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export interface ServiceConfig {
-  enabled: boolean;
-  version?: string;
-  port?: number;
-  credentials?: {
-    username?: string;
-    password?: string;
-    token?: string;
-  };
+export interface CodeReference {
+  filePath: string;
+  lineStart: number;
+  lineEnd: number;
+  functionName?: string;
+  className?: string;
+  hash: string;
+}
+
+export interface TestCase {
+  id: string;
+  storyId: string;
+  name: string;
+  description: string;
+  type: 'manual' | 'automated';
+  status: 'pending' | 'passed' | 'failed' | 'blocked';
+  steps?: ManualTestStep[];
+  automatedScript?: string;
+  codeReferences: CodeReference[];
+  lastRun?: Date;
+  results: TestResult[];
+}
+
+export interface ManualTestStep {
+  stepNumber: number;
+  action: string;
+  expectedResult: string;
+  actualResult?: string;
+  status?: 'pending' | 'passed' | 'failed';
+}
+
+export interface TestResult {
+  id: string;
+  testId: string;
+  executedAt: Date;
+  executedBy: string;
+  status: 'passed' | 'failed' | 'blocked';
+  duration: number;
+  error?: string;
+  screenshots?: string[];
+  logs?: string[];
+}
+
+export interface TraceabilityMatrix {
+  storyId: string;
+  testCases: string[];
+  codeFiles: string[];
+  coveragePercentage: number;
+}
+
+export interface TestManagementConfig {
+  dataDir: string;
+  workspaceRoot: string;
+  defaultExecutor: string;
 }
 
 export interface BackupData {

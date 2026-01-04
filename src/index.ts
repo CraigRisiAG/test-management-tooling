@@ -1,13 +1,18 @@
 /**
- * Zebrunner Platform - TypeScript Entry Point
+ * Custom Test Management Platform - TypeScript Entry Point
  * 
  * This module exports all core functionality for programmatic usage
  */
 
-// Modules
+// Core Test Management Modules
+export { TestRegistry } from './modules/test-registry';
+export { TestExecutor } from './modules/test-executor';
+export { CodeTracer } from './modules/code-tracer';
+export { DashboardReporter } from './modules/dashboard-reporter';
+
+// Supporting Modules
 export { UIModule } from './modules/ui';
 export { ConfigModule } from './modules/config';
-export { LifecycleModule } from './modules/lifecycle';
 export { GitOpsModule } from './modules/gitops';
 export { RepositoryViewerModule } from './modules/repository-viewer';
 export { AgileModule } from './modules/agile';
@@ -20,4 +25,4 @@ export { ShellExecutor } from './utils/shell';
 export * from './types';
 
 // Version
-export const VERSION = '2.6.0';
+export const VERSION = '1.0.0';

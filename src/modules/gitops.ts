@@ -16,7 +16,7 @@ import {
  * GitOps Module - Git repository management and GitOps operations
  */
 export class GitOpsModule {
-  private static readonly CONFIG_FILE = '.zebrunner/gitops.json';
+  private static readonly CONFIG_FILE = '.testmgr/gitops.json';
 
   /**
    * Initialize a Git repository

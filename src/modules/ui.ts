@@ -9,16 +9,16 @@ import { Logger } from '../utils/logger';
  */
 export class UIModule {
   /**
-   * Display Zebrunner banner
+   * Display Test Management banner
    */
   static printBanner(): void {
-    const banner = figlet.textSync('ZEBRUNNER', {
+    const banner = figlet.textSync('TEST MANAGER', {
       font: 'Standard',
       horizontalLayout: 'default',
     });
     
     console.log(chalk.cyan(banner));
-    console.log(chalk.gray('Test Management Platform v2.6.0\n'));
+    console.log(chalk.gray('Custom Test Management with Story-Code Traceability v1.0.0\n'));
   }
 
   /**
@@ -27,37 +27,35 @@ export class UIModule {
   static showHelp(): void {
     const helpText = `
 ${chalk.bold('USAGE:')}
-  zebrunner [COMMAND]
+  testmgr [COMMAND]
 
 ${chalk.bold('COMMANDS:')}
-  ${chalk.cyan('setup')}        Setup Zebrunner platform and configure services
-  ${chalk.cyan('start')}        Start all Zebrunner services
-  ${chalk.cyan('stop')}         Stop all services (containers remain)
-  ${chalk.cyan('restart')}      Restart all services
-  ${chalk.cyan('down')}         Stop and remove all containers
-  ${chalk.cyan('shutdown')}     Shutdown platform and remove volumes
-  ${chalk.cyan('backup')}       Backup platform data and configuration
-  ${chalk.cyan('restore')}      Restore platform from backup
-  ${chalk.cyan('upgrade')}      Upgrade platform to latest version
-  ${chalk.cyan('version')}      Display service versions
-  ${chalk.cyan('enable')}       Enable a service layer
-  ${chalk.cyan('disable')}      Disable a service layer
-  ${chalk.cyan('help')}         Display this help message
+  ${chalk.cyan('init')}          Initialize test management system
+  ${chalk.cyan('story')}         Manage user stories (create, list)
+  ${chalk.cyan('test')}          Manage tests (link, run)
+  ${chalk.cyan('link-code')}     Link code to stories
+  ${chalk.cyan('dashboard')}     Generate dashboard with traceability matrix
+  ${chalk.cyan('matrix')}        Show traceability matrix
+  ${chalk.cyan('gitops')}        Git operations
+  ${chalk.cyan('agile')}         Agile board management
+  ${chalk.cyan('help')}          Display this help message
 
 ${chalk.bold('OPTIONS:')}
   -h, --help        Show help information
   -v, --version     Show version information
   --debug           Enable debug logging
+  --data-dir <dir>  Specify data directory
 
 ${chalk.bold('EXAMPLES:')}
-  zebrunner setup              # Interactive setup
-  zebrunner start              # Start all services
-  zebrunner backup             # Backup configuration and data
-  zebrunner enable reporting   # Enable reporting service
-  zebrunner disable mcloud     # Disable mcloud service
+  testmgr init                 # Initialize in current directory
+  testmgr story create         # Create a new user story
+  testmgr test link            # Link test to story
+  testmgr link-code            # Link code to story
+  testmgr dashboard            # Generate HTML dashboard
+  testmgr matrix               # Show traceability matrix
 
 ${chalk.bold('DOCUMENTATION:')}
-  Visit: https://zebrunner.com/documentation
+  Visit: https://github.com/your-repo/docs
 `;
 
     console.log(helpText);

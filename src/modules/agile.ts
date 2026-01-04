@@ -32,14 +32,14 @@ import type {
 } from '../types';
 
 export class AgileModule {
-  private static configPath = '.zebrunner/agile.json';
+  private static configPath = '.testmgr/agile.json';
   private static config: AgileBoardConfig | null = null;
 
   /**
    * Initialize agile board configuration
    */
   static async init(projectPath: string = process.cwd()): Promise<void> {
-    const configDir = path.join(projectPath, '.zebrunner');
+    const configDir = path.join(projectPath, '.testmgr');
     const configFile = path.join(projectPath, this.configPath);
 
     try {

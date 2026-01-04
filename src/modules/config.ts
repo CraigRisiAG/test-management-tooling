@@ -1,83 +1,89 @@
 import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
-import { ZebrunnerConfig } from '../types';
+import { TestManagementConfig } from '../types';
 import { Logger } from '../utils/logger';
 
 /**
  * Configuration Module
- * Converted from lib/config.sh
+ * Manages test management system configuration
  */
 export class ConfigModule {
-  private static readonly CONFIG_DIR = path.join(process.cwd(), 'reporting');
-  private static readonly SETTINGS_FILE = path.join(this.CONFIG_DIR, '.env');
+  private static readonly CONFIG_DIR = path.join(process.cwd(), '.testmgr');
+  private static readonly CONFIG_FILE = path.join(this.CONFIG_DIR, 'config.json');
 
   /**
-   * Set global settings interactively
+   * Initialize configuration
    */
-  static async setGlobalSettings(): Promise<ZebrunnerConfig> {
-    Logger.section('Global Configuration');
+  static async initialize(): Promise<TestManagementConfig> {
+    Logger.section('Test Management Configuration');
 
     const answers = await inquirer.prompt([
       {
-        type: 'list',
-        name: 'protocol',
-        message: 'Select protocol:',
-        choices: ['http', 'https'],
-        default: 'http',
+        type: 'input',
+        name: 'dataDir',
+        message: 'Data directory for storing tests and stories:',
+        default: './test-data',
       },
       {
         type: 'input',
-        name: 'hostname',
-        message: 'Enter hostname or IP:',
-        default: 'localhost',
-        validate: (input: string) => input.length > 0 || 'Hostname is required',
+        name: 'workspaceRoot',
+        message: 'Workspace root directory:',
+        default: process.cwd(),
       },
       {
         type: 'input',
-        name: 'port',
-        message: 'Enter port:',
-        default: '80',
-        validate: (input: string) => {
-          const port = parseInt(input);
-          return (port > 0 && port < 65536) || 'Port must be between 1 and 65535';
-        },
+        name: 'defaultExecutor',
+        message: 'Default test executor name:',
+        default: 'system',
       },
     ]);
 
-    Logger.success('Global settings configured');
-    return answers as ZebrunnerConfig;
+    const config: TestManagementConfig = {
+      dataDir: answers.dataDir,
+      workspaceRoot: answers.workspaceRoot,
+      defaultExecutor: answers.defaultExecutor,
+    };
+
+    await this.saveConfig(config);
+    Logger.success('Configuration saved');
+    return config;
   }
 
   /**
-   * Enable a service layer
+   * Load configuration
    */
-  static async enableLayer(serviceName: string): Promise<void> {
-    const serviceDir = path.join(process.cwd(), serviceName);
-    const disabledFile = path.join(serviceDir, '.disabled');
+  static async loadConfig(): Promise<TestManagementConfig | null> {
+    try {
+      if (!fs.existsSync(this.CONFIG_FILE)) {
+        return null;
+      }
 
-    if (!fs.existsSync(serviceDir)) {
-      throw new Error(`Service directory not found: ${serviceName}`);
+      const content = await fs.promises.readFile(this.CONFIG_FILE, 'utf-8');
+      return JSON.parse(content);
+    } catch (error) {
+      Logger.error(`Failed to load config: ${(error as Error).message}`);
+      return null;
     }
+  }
 
-    if (!fs.existsSync(disabledFile)) {
-      Logger.info(`Service ${serviceName} is already enabled`);
-      return;
+  /**
+   * Save configuration
+   */
+  static async saveConfig(config: TestManagementConfig): Promise<void> {
+    try {
+      if (!fs.existsSync(this.CONFIG_DIR)) {
+        await fs.promises.mkdir(this.CONFIG_DIR, { recursive: true });
+      }
+
+      await fs.promises.writeFile(
+        this.CONFIG_FILE,
+        JSON.stringify(config, null, 2)
+      );
+    } catch (error) {
+      throw new Error(`Failed to save config: ${(error as Error).message}`);
     }
-
-    const { confirm } = await inquirer.prompt([
-      {
-        type: 'confirm',
-        name: 'confirm',
-        message: `Enable ${serviceName} service?`,
-        default: true,
-      },
-    ]);
-
-    if (confirm) {
-      fs.unlinkSync(disabledFile);
-      Logger.success(`Service ${serviceName} enabled`);
-    } else {
+  }
       Logger.info('Operation cancelled');
     }
   }

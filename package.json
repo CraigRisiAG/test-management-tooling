@@ -1,10 +1,10 @@
 {
-  "name": "zebrunner-platform",
-  "version": "2.6.0",
-  "description": "Zebrunner test management platform - Docker orchestration and management tool",
+  "name": "test-management-tooling",
+  "version": "1.0.0",
+  "description": "Custom test management platform with story-code traceability, manual and automated test execution",
   "main": "dist/index.js",
   "bin": {
-    "zebrunner": "dist/cli.js"
+    "testmgr": "dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
@@ -22,15 +22,16 @@
     "prepublishOnly": "npm run build"
   },
   "keywords": [
-    "zebrunner",
     "test-management",
-    "docker",
+    "traceability",
     "automation",
     "testing",
-    "ci-cd"
+    "agile",
+    "user-stories",
+    "code-coverage"
   ],
-  "author": "Zebrunner",
-  "license": "Apache-2.0",
+  "author": "",
+  "license": "MIT",
   "engines": {
     "node": ">=18.0.0"
   },
