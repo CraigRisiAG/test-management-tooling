@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: testmgr-config
+  namespace: testmgr
+data:
+  aws_region: "us-east-1"
+  dynamodb_table: "testmgr-data-prod"
+  s3_bucket: "testmgr-storage-prod"
+  log_level: "info"
+  node_env: "production"

@@ -1,0 +1,58 @@
+# Multi-stage build for API server
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY tsconfig.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy source code
+COPY src/ ./src/
+
+# Build TypeScript
+RUN npm run build
+
+# Production stage
+FROM node:20-alpine
+
+RUN apk add --no-cache dumb-init
+
+# Create app user
+RUN addgroup -g 1001 -S appuser && \
+    adduser -u 1001 -S appuser -G appuser
+
+WORKDIR /app
+
+# Copy package files and install production dependencies
+COPY package*.json ./
+RUN npm ci --only=production && \
+    npm install express cors helmet && \
+    npm cache clean --force
+
+# Copy built application
+COPY --from=builder /app/dist ./dist
+
+# Copy API server code (we'll create this)
+COPY --chown=appuser:appuser src/api-server.ts ./src/
+COPY --chown=appuser:appuser . .
+
+# Create data directory
+RUN mkdir -p /app/data && chown -R appuser:appuser /app/data
+
+USER appuser
+
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV DATA_DIR=/app/data
+
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD wget --quiet --tries=1 --spider http://localhost:3000/health || exit 1
+
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["node", "dist/api-server.js"]

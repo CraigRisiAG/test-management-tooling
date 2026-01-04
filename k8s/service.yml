@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: testmgr-api
+  namespace: testmgr
+  labels:
+    app: testmgr-api
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+    name: http
+  selector:
+    app: testmgr-api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: testmgr-api-lb
+  namespace: testmgr
+  labels:
+    app: testmgr-api
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+    name: http
+  selector:
+    app: testmgr-api
