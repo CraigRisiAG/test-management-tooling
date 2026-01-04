@@ -7,10 +7,12 @@ import { TestRegistry } from './modules/test-registry';
 import { TestExecutor } from './modules/test-executor';
 import { CodeTracer } from './modules/code-tracer';
 import { DashboardReporter } from './modules/dashboard-reporter';
+import { IssueManager } from './modules/issue-manager';
+import { DefectManager } from './modules/defect-manager';
 import { GitOpsModule } from './modules/gitops';
 import { AgileModule } from './modules/agile';
 import { Logger } from './utils/logger';
-import type { UserStory, TestCase, CodeReference } from './types';
+import type { UserStory, TestCase, CodeReference, Issue, Defect } from './types';
 
 /**
  * Custom Test Management CLI - Main Entry Point
@@ -396,6 +398,363 @@ gitopsCmd
     }
   });
 
+// ========================================
+// Issue Management
+// ========================================
+
+const issueCmd = program
+  .command('issue')
+  .description('Issue and bug tracking');
+
+issueCmd
+  .command('create')
+  .description('Create a new issue')
+  .action(async () => {
+    const issueManager = new IssueManager();
+
+    const answers = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'title',
+        message: 'Issue title:',
+        validate: (v) => v.length > 0 || 'Title is required'
+      },
+      {
+        type: 'input',
+        name: 'description',
+        message: 'Issue description:'
+      },
+      {
+        type: 'list',
+        name: 'type',
+        message: 'Issue type:',
+        choices: ['bug', 'defect', 'enhancement', 'task']
+      },
+      {
+        type: 'list',
+        name: 'severity',
+        message: 'Severity level:',
+        choices: ['critical', 'major', 'minor', 'trivial']
+      },
+      {
+        type: 'list',
+        name: 'priority',
+        message: 'Priority:',
+        choices: ['P0', 'P1', 'P2', 'P3']
+      },
+      {
+        type: 'input',
+        name: 'assignee',
+        message: 'Assignee (optional):'
+      }
+    ]);
+
+    try {
+      const issue = await issueManager.createIssue({
+        title: answers.title,
+        description: answers.description,
+        type: answers.type,
+        severity: answers.severity,
+        priority: answers.priority,
+        assignee: answers.assignee || undefined,
+        status: 'open',
+        createdDate: new Date()
+      });
+
+      Logger.success(`✓ Issue created: ${issue.id} (${chalk.cyan(issue.title)})`);
+    } catch (error) {
+      Logger.error(`Failed to create issue: ${(error as Error).message}`);
+    }
+  });
+
+issueCmd
+  .command('list')
+  .option('--status <status>', 'Filter by status (open, in-progress, resolved, closed)')
+  .option('--severity <severity>', 'Filter by severity')
+  .option('--assigned-to <user>', 'Filter by assignee')
+  .description('List all issues with optional filters')
+  .action(async (options) => {
+    const issueManager = new IssueManager();
+
+    try {
+      const issues = issueManager.filterIssues({
+        status: options.status ? [options.status] : undefined,
+        severity: options.severity ? [options.severity] : undefined,
+        assignee: options.assignedTo
+      });
+
+      if (issues.length === 0) {
+        Logger.info('No issues found');
+        return;
+      }
+
+      console.log('');
+      console.log(chalk.bold('Issues:'));
+      console.log(chalk.dim('─'.repeat(120)));
+
+      issues.forEach((issue) => {
+        const statusColor = issue.status === 'open' ? 'red' : issue.status === 'in-progress' ? 'yellow' : 'green';
+        console.log(
+          `${chalk.cyan(issue.id)} | ${chalk.bold(issue.title)} | ${chalk[statusColor](issue.status)} | ${chalk.dim(issue.severity)}`
+        );
+        if (issue.assignee) {
+          console.log(`  Assigned to: ${issue.assignee}`);
+        }
+      });
+
+      console.log(chalk.dim('─'.repeat(120)));
+      Logger.info(`Total: ${issues.length} issues`);
+    } catch (error) {
+      Logger.error(`Failed to list issues: ${(error as Error).message}`);
+    }
+  });
+
+issueCmd
+  .command('assign <issue-id> <assignee>')
+  .description('Assign an issue to a developer')
+  .action(async (issueId: string, assignee: string) => {
+    const issueManager = new IssueManager();
+
+    try {
+      await issueManager.assign(issueId, assignee);
+      Logger.success(`✓ Issue ${issueId} assigned to ${assignee}`);
+    } catch (error) {
+      Logger.error(`Failed to assign issue: ${(error as Error).message}`);
+    }
+  });
+
+issueCmd
+  .command('comment <issue-id>')
+  .description('Add a comment to an issue')
+  .action(async (issueId: string) => {
+    const issueManager = new IssueManager();
+
+    const answers = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'text',
+        message: 'Your comment:',
+        validate: (v) => v.length > 0 || 'Comment cannot be empty'
+      }
+    ]);
+
+    try {
+      await issueManager.addComment(issueId, {
+        text: answers.text,
+        author: 'CLI User',
+        date: new Date()
+      });
+      Logger.success(`✓ Comment added to issue ${issueId}`);
+    } catch (error) {
+      Logger.error(`Failed to add comment: ${(error as Error).message}`);
+    }
+  });
+
+issueCmd
+  .command('status <issue-id> <new-status>')
+  .description('Update issue status (open, in-progress, resolved, closed)')
+  .action(async (issueId: string, newStatus: string) => {
+    const issueManager = new IssueManager();
+
+    try {
+      await issueManager.updateStatus(issueId, newStatus as Issue['status']);
+      Logger.success(`✓ Issue ${issueId} status updated to ${newStatus}`);
+    } catch (error) {
+      Logger.error(`Failed to update status: ${(error as Error).message}`);
+    }
+  });
+
+// ========================================
+// Defect Management
+// ========================================
+
+const defectCmd = program
+  .command('defect')
+  .description('Defect tracking and management');
+
+defectCmd
+  .command('create')
+  .description('Create a new defect')
+  .action(async () => {
+    const defectManager = new DefectManager();
+
+    const answers = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'title',
+        message: 'Defect title:',
+        validate: (v) => v.length > 0 || 'Title is required'
+      },
+      {
+        type: 'input',
+        name: 'description',
+        message: 'Defect description:'
+      },
+      {
+        type: 'list',
+        name: 'severity',
+        message: 'Severity:',
+        choices: ['critical', 'major', 'minor', 'trivial']
+      },
+      {
+        type: 'input',
+        name: 'rootCause',
+        message: 'Root cause (optional):'
+      },
+      {
+        type: 'input',
+        name: 'testId',
+        message: 'Link to test ID (optional):'
+      }
+    ]);
+
+    try {
+      const testId = answers.testId ? answers.testId : undefined;
+      const defect = await defectManager.createDefectFromTest(
+        testId || 'manual-defect',
+        answers.title,
+        answers.description,
+        answers.severity,
+        answers.rootCause || undefined
+      );
+
+      Logger.success(`✓ Defect created: ${defect.id} (${chalk.cyan(defect.title)})`);
+    } catch (error) {
+      Logger.error(`Failed to create defect: ${(error as Error).message}`);
+    }
+  });
+
+defectCmd
+  .command('list')
+  .option('--status <status>', 'Filter by status')
+  .description('List all defects')
+  .action(async (options) => {
+    const defectManager = new DefectManager();
+
+    try {
+      let defects: Defect[] = [];
+
+      if (options.status) {
+        defects = defectManager.getDefectsByStatus(options.status);
+      } else {
+        defects = defectManager.getAllDefects();
+      }
+
+      if (defects.length === 0) {
+        Logger.info('No defects found');
+        return;
+      }
+
+      console.log('');
+      console.log(chalk.bold('Defects:'));
+      console.log(chalk.dim('─'.repeat(120)));
+
+      defects.forEach((defect) => {
+        const statusColor = defect.status === 'open' ? 'red' : defect.status === 'in-progress' ? 'yellow' : 'green';
+        console.log(
+          `${chalk.cyan(defect.id)} | ${chalk.bold(defect.title)} | ${chalk[statusColor](defect.status)} | ${chalk.dim(defect.severity)}`
+        );
+      });
+
+      console.log(chalk.dim('─'.repeat(120)));
+      Logger.info(`Total: ${defects.length} defects`);
+    } catch (error) {
+      Logger.error(`Failed to list defects: ${(error as Error).message}`);
+    }
+  });
+
+defectCmd
+  .command('status <defect-id> <new-status>')
+  .description('Update defect status (open, in-progress, resolved, verified)')
+  .action(async (defectId: string, newStatus: string) => {
+    const defectManager = new DefectManager();
+
+    try {
+      await defectManager.updateStatus(defectId, newStatus as Defect['status']);
+      Logger.success(`✓ Defect ${defectId} status updated to ${newStatus}`);
+    } catch (error) {
+      Logger.error(`Failed to update defect status: ${(error as Error).message}`);
+    }
+  });
+
+defectCmd
+  .command('resolve <defect-id>')
+  .description('Mark defect as resolved with root cause')
+  .action(async (defectId: string) => {
+    const defectManager = new DefectManager();
+
+    const answers = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'rootCause',
+        message: 'Root cause:',
+        validate: (v) => v.length > 0 || 'Root cause is required'
+      },
+      {
+        type: 'input',
+        name: 'resolution',
+        message: 'Resolution:',
+        validate: (v) => v.length > 0 || 'Resolution is required'
+      },
+      {
+        type: 'input',
+        name: 'pullRequest',
+        message: 'Pull request URL (optional):'
+      }
+    ]);
+
+    try {
+      await defectManager.setResolution(
+        defectId,
+        answers.rootCause,
+        answers.resolution,
+        answers.pullRequest || undefined
+      );
+
+      if (answers.pullRequest) {
+        await defectManager.linkPullRequest(defectId, answers.pullRequest);
+      }
+
+      Logger.success(`✓ Defect ${defectId} resolved`);
+    } catch (error) {
+      Logger.error(`Failed to resolve defect: ${(error as Error).message}`);
+    }
+  });
+
+defectCmd
+  .command('health')
+  .description('Show system defect health score')
+  .action(async () => {
+    const defectManager = new DefectManager();
+
+    try {
+      const healthScore = defectManager.getHealthScore();
+      const critical = defectManager.getCriticalDefects();
+      const unverified = defectManager.getUnverifiedDefects();
+
+      console.log('');
+      console.log(chalk.bold('Defect Health Report'));
+      console.log(chalk.dim('─'.repeat(60)));
+
+      const healthColor = healthScore >= 80 ? 'green' : healthScore >= 60 ? 'yellow' : 'red';
+      console.log(`Health Score: ${chalk[healthColor](healthScore)}/100`);
+      console.log(`Critical Defects: ${chalk.red(critical.length)}`);
+      console.log(`Unverified Fixes: ${chalk.yellow(unverified.length)}`);
+
+      if (critical.length > 0) {
+        console.log('');
+        console.log(chalk.bold.red('Critical Defects:'));
+        critical.slice(0, 5).forEach((d) => {
+          console.log(`  • ${d.title} (${d.id})`);
+        });
+      }
+
+      console.log(chalk.dim('─'.repeat(60)));
+    } catch (error) {
+      Logger.error(`Failed to get health score: ${(error as Error).message}`);
+    }
+  });
+
 const agileCmd = program
   .command('agile')
   .description('Agile board management');
@@ -415,6 +774,10 @@ program.on('--help', () => {
   console.log('  $ testmgr story create');
   console.log('  $ testmgr test link');
   console.log('  $ testmgr link-code');
+  console.log('  $ testmgr issue create');
+  console.log('  $ testmgr issue list');
+  console.log('  $ testmgr defect list');
+  console.log('  $ testmgr defect health');
   console.log('  $ testmgr dashboard');
   console.log('  $ testmgr matrix');
   console.log('');

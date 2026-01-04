@@ -56,6 +56,7 @@ export interface TestResult {
   error?: string;
   screenshots?: string[];
   logs?: string[];
+  linkedIssues?: string[];
 }
 
 export interface TraceabilityMatrix {
@@ -69,6 +70,94 @@ export interface TestManagementConfig {
   dataDir: string;
   workspaceRoot: string;
   defaultExecutor: string;
+}
+
+// Defect and Issue Management Types
+export interface Issue {
+  id: string;
+  title: string;
+  description: string;
+  type: 'bug' | 'defect' | 'enhancement' | 'task';
+  severity: 'critical' | 'major' | 'minor' | 'trivial';
+  priority: 'highest' | 'high' | 'medium' | 'low' | 'lowest';
+  status: 'open' | 'in-progress' | 'resolved' | 'closed' | 'reopened' | 'wontfix';
+  assignee?: string;
+  reporter: string;
+  createdAt: Date;
+  updatedAt: Date;
+  resolvedAt?: Date;
+  linkedTests: string[];
+  linkedCode: CodeReference[];
+  linkedStories: string[];
+  comments: IssueComment[];
+  attachments?: string[];
+  tags?: string[];
+  reproductionSteps?: string[];
+  expectedBehavior?: string;
+  actualBehavior?: string;
+}
+
+export interface IssueComment {
+  id: string;
+  author: string;
+  content: string;
+  createdAt: Date;
+  updatedAt?: Date;
+}
+
+export interface Defect {
+  id: string;
+  issueId?: string;
+  title: string;
+  description: string;
+  severity: 'critical' | 'major' | 'minor' | 'trivial';
+  status: 'new' | 'assigned' | 'in-progress' | 'fixed' | 'verified' | 'closed';
+  detectedIn: string; // Test ID
+  detectedAt: Date;
+  detectedBy: string;
+  affectedCode: CodeReference[];
+  rootCause?: string;
+  resolution?: string;
+  resolvedAt?: Date;
+  resolvedBy?: string;
+  verifiedAt?: Date;
+  verifiedBy?: string;
+  linkedPullRequests?: string[];
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+}
+
+export interface IssueMetrics {
+  totalIssues: number;
+  openIssues: number;
+  closedIssues: number;
+  criticalCount: number;
+  majorCount: number;
+  minorCount: number;
+  averageResolutionTime?: number;
+  issuesByStatus: Record<string, number>;
+  issuesBySeverity: Record<string, number>;
+}
+
+export interface DefectMetrics {
+  totalDefects: number;
+  newDefects: number;
+  fixedDefects: number;
+  unverifiedDefects: number;
+  defectsByStatus: Record<string, number>;
+  defectsBySeverity: Record<string, number>;
+  criticalDefects: Defect[];
+}
+
+export interface IssueFilter {
+  type?: string;
+  severity?: string;
+  priority?: string;
+  status?: string;
+  assignee?: string;
+  createdAfter?: Date;
+  createdBefore?: Date;
+  linkedTest?: string;
+  linkedStory?: string;
 }
 
 export interface BackupData {

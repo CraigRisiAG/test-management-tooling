@@ -10,6 +10,10 @@ export { TestExecutor } from './modules/test-executor';
 export { CodeTracer } from './modules/code-tracer';
 export { DashboardReporter } from './modules/dashboard-reporter';
 
+// Issue and Defect Management
+export { IssueManager } from './modules/issue-manager';
+export { DefectManager } from './modules/defect-manager';
+
 // Supporting Modules
 export { UIModule } from './modules/ui';
 export { ConfigModule } from './modules/config';
