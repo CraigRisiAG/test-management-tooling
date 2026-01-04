@@ -1,4 +1,4 @@
-site_name: Zebrunner CE
+site_name: Test Management Toolkit Docs
 
 theme:
   name: material
@@ -9,6 +9,12 @@ theme:
 repo_url: https://github.com/zebrunner/community-edition
 repo_name: community-edition
 
+plugins:
+  - search
+  - mike
+  - git-revision-date-localized:
+      fallback_to_build_date: true
+
 markdown_extensions:
   - attr_list
   - md_in_html
@@ -17,6 +23,9 @@ copyright: 2022 Zebrunner, Inc. All Rights Reserved
 extra:
   homepage: https://zebrunner.com
   generator: false
+  version:
+    provider: mike
+    default: latest
   social:
     - icon: fontawesome/brands/twitter 
       link: https://twitter.com/zebrunner
@@ -40,3 +49,5 @@ nav:
       - Source Code Manager: integration/scm.md
       - SonarQube: integration/sonarqube.md
       - S3 Storage: integration/aws-s3.md
+    - Documentation Ops:
+      - Versioning & Publishing: versioning.md
