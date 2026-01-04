@@ -70,6 +70,36 @@ zebrunner enable reporting
 zebrunner disable mcloud
 ```
 
+### Git/GitOps Commands
+
+```bash
+# Initialize repository
+zebrunner repo init
+
+# Clone repository
+zebrunner repo clone <url>
+
+# Show status
+zebrunner repo status
+
+# Browse files
+zebrunner repo browse
+
+# View commit history
+zebrunner repo log
+
+# Show diff
+zebrunner repo diff
+
+# Sync repository
+zebrunner repo sync
+
+# Enable GitOps
+zebrunner gitops enable --url <repository-url>
+```
+
+See [GITOPS_GUIDE.md](./GITOPS_GUIDE.md) for comprehensive GitOps documentation.
+
 ### Development Mode
 
 ```bash
@@ -99,6 +129,8 @@ src/
 │   ├── ui.ts                 # UI/Display module
 │   ├── config.ts             # Configuration management
 │   ├── lifecycle.ts          # Service lifecycle
+│   ├── gitops.ts             # Git/GitOps operations
+│   ├── repository-viewer.ts  # Repository browser
 │   ├── setup.ts              # Setup orchestration
 │   ├── backup.ts             # Backup/restore
 │   ├── upgrade.ts            # Version upgrades

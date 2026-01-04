@@ -5,6 +5,8 @@ import chalk from 'chalk';
 import { UIModule } from './modules/ui';
 import { ConfigModule } from './modules/config';
 import { LifecycleModule } from './modules/lifecycle';
+import { GitOpsModule } from './modules/gitops';
+import { RepositoryViewerModule } from './modules/repository-viewer';
 import { Logger } from './utils/logger';
 
 /**
@@ -153,6 +155,260 @@ program
   .description('Display help information')
   .action(() => {
     UIModule.showHelp();
+  });
+
+// Repository commands
+const repo = program.command('repo').description('Git repository management');
+
+repo
+  .command('init [path]')
+  .description('Initialize a Git repository')
+  .option('-u, --url <url>', 'Remote repository URL')
+  .action(async (repoPath: string = process.cwd(), options: { url?: string }) => {
+    try {
+      const repository = await GitOpsModule.initRepository(repoPath, options.url);
+      Logger.success(`Repository initialized: ${repository.name}`);
+    } catch (error) {
+      Logger.error(`Init failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+repo
+  .command('clone <url> [path]')
+  .description('Clone a repository')
+  .option('-b, --branch <branch>', 'Branch to clone')
+  .action(async (url: string, targetPath: string = '.', options: { branch?: string }) => {
+    try {
+      const repository = await GitOpsModule.cloneRepository(url, targetPath, options.branch);
+      Logger.success(`Repository cloned: ${repository.name}`);
+    } catch (error) {
+      Logger.error(`Clone failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+repo
+  .command('status [path]')
+  .description('Show repository status')
+  .action((repoPath: string = process.cwd()) => {
+    try {
+      const status = GitOpsModule.getStatus(repoPath);
+      Logger.section('Repository Status');
+      Logger.info(`Branch: ${status.branch}`);
+      Logger.info(`Ahead: ${status.ahead} | Behind: ${status.behind}`);
+      Logger.info(`Modified: ${status.modified} | Added: ${status.added} | Deleted: ${status.deleted}`);
+      Logger.info(`Untracked: ${status.untracked}`);
+      Logger.info(`Clean: ${status.clean ? 'Yes' : 'No'}`);
+    } catch (error) {
+      Logger.error(`Status check failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+repo
+  .command('log [path]')
+  .description('Show commit history')
+  .option('-n, --limit <number>', 'Number of commits to show', '20')
+  .action((repoPath: string = process.cwd(), options: { limit: string }) => {
+    try {
+      const commits = GitOpsModule.getCommitHistory(repoPath, parseInt(options.limit));
+      Logger.section(`Commit History (${commits.length} commits)`);
+      
+      commits.forEach((commit) => {
+        console.log(chalk.yellow(commit.hash.substring(0, 8)) + ' ' + chalk.white(commit.message));
+        console.log(chalk.gray(`  ${commit.author} <${commit.email}> - ${commit.date.toLocaleString()}`));
+        if (commit.files.length > 0) {
+          console.log(chalk.gray(`  Files: ${commit.files.length}`));
+        }
+        console.log('');
+      });
+    } catch (error) {
+      Logger.error(`Log failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+repo
+  .command('branches [path]')
+  .description('List branches')
+  .action((repoPath: string = process.cwd()) => {
+    try {
+      const branches = GitOpsModule.getBranches(repoPath);
+      Logger.section('Branches');
+      
+      branches.forEach((branch) => {
+        const prefix = branch.current ? '* ' : '  ';
+        const color = branch.current ? chalk.green : chalk.white;
+        const remote = branch.remote ? chalk.gray(' (remote)') : '';
+        console.log(prefix + color(branch.name) + remote);
+      });
+    } catch (error) {
+      Logger.error(`Branch list failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+repo
+  .command('sync [path]')
+  .description('Sync repository (pull + push)')
+  .action(async (repoPath: string = process.cwd()) => {
+    try {
+      const syncOp = await GitOpsModule.sync(repoPath);
+      
+      if (syncOp.status === 'success') {
+        Logger.success(`Sync completed with ${syncOp.changes} changes`);
+      } else {
+        Logger.error('Sync failed');
+        syncOp.errors?.forEach((err) => Logger.error(err));
+      }
+    } catch (error) {
+      Logger.error(`Sync failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+repo
+  .command('browse [path]')
+  .description('Browse repository files')
+  .option('-d, --depth <number>', 'Tree depth', '3')
+  .action((repoPath: string = process.cwd(), options: { depth: string }) => {
+    try {
+      const tree = RepositoryViewerModule.buildFileTree(repoPath, parseInt(options.depth));
+      Logger.section(`Repository: ${tree.name}`);
+      RepositoryViewerModule.displayFileTree(tree);
+    } catch (error) {
+      Logger.error(`Browse failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+repo
+  .command('diff [path]')
+  .description('Show diff')
+  .option('-c, --commit <commit>', 'Compare with commit', 'HEAD~1')
+  .action((repoPath: string = process.cwd(), options: { commit: string }) => {
+    try {
+      const diffs = RepositoryViewerModule.getDiff(repoPath, options.commit, 'HEAD');
+      
+      if (diffs.length === 0) {
+        Logger.info('No changes');
+        return;
+      }
+
+      Logger.section('Changes');
+      RepositoryViewerModule.displayDiff(diffs);
+    } catch (error) {
+      Logger.error(`Diff failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+repo
+  .command('search <term> [path]')
+  .description('Search in repository')
+  .option('-f, --files', 'Search file names only')
+  .action((term: string, repoPath: string = process.cwd(), options: { files?: boolean }) => {
+    try {
+      if (options.files) {
+        const files = RepositoryViewerModule.searchFiles(repoPath, term);
+        Logger.section(`Files matching "${term}"`);
+        files.forEach((file) => console.log(chalk.white(file)));
+      } else {
+        const results = RepositoryViewerModule.searchContent(repoPath, term);
+        Logger.section(`Content matching "${term}"`);
+        results.forEach((result) => {
+          console.log(chalk.blue(result.file) + ':' + chalk.yellow(result.line));
+          console.log(chalk.gray('  ' + result.content));
+        });
+      }
+    } catch (error) {
+      Logger.error(`Search failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+repo
+  .command('summary [path]')
+  .description('Show repository summary')
+  .action((repoPath: string = process.cwd()) => {
+    try {
+      const summary = RepositoryViewerModule.getSummary(repoPath);
+      Logger.section('Repository Summary');
+      Logger.info(`Total files: ${summary.totalFiles}`);
+      Logger.info(`Total commits: ${summary.totalCommits}`);
+      Logger.info(`Total authors: ${summary.totalAuthors}`);
+      
+      console.log('\n' + chalk.bold('Languages:'));
+      Object.entries(summary.languages)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 10)
+        .forEach(([lang, count]) => {
+          console.log(`  ${chalk.cyan(lang)}: ${count} files`);
+        });
+    } catch (error) {
+      Logger.error(`Summary failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+// GitOps commands
+const gitops = program.command('gitops').description('GitOps configuration management');
+
+gitops
+  .command('enable [path]')
+  .description('Enable GitOps for project')
+  .option('-u, --url <url>', 'Repository URL')
+  .option('-b, --branch <branch>', 'Branch name', 'main')
+  .action(async (projectPath: string = process.cwd(), options: { url?: string; branch: string }) => {
+    try {
+      const repository = await GitOpsModule.initRepository(projectPath, options.url);
+      repository.branch = options.branch;
+      await GitOpsModule.enableGitOps(projectPath, repository);
+      Logger.success('GitOps enabled for project');
+    } catch (error) {
+      Logger.error(`GitOps enable failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+gitops
+  .command('disable [path]')
+  .description('Disable GitOps for project')
+  .action(async (projectPath: string = process.cwd()) => {
+    try {
+      await GitOpsModule.disableGitOps(projectPath);
+    } catch (error) {
+      Logger.error(`GitOps disable failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+gitops
+  .command('config [path]')
+  .description('Show GitOps configuration')
+  .action((projectPath: string = process.cwd()) => {
+    try {
+      const config = GitOpsModule.loadConfig(projectPath);
+      
+      if (!config) {
+        Logger.warn('GitOps not configured for this project');
+        return;
+      }
+
+      Logger.section('GitOps Configuration');
+      Logger.info(`Enabled: ${config.enabled}`);
+      Logger.info(`Auto-sync: ${config.autoSync || false}`);
+      Logger.info(`Sync interval: ${config.syncInterval || 'manual'} minutes`);
+      
+      console.log('\n' + chalk.bold('Repositories:'));
+      config.repositories.forEach((repo) => {
+        console.log(`  ${chalk.cyan(repo.name)}: ${repo.url} (${repo.branch})`);
+      });
+    } catch (error) {
+      Logger.error(`Config display failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
   });
 
 // Default action - show help if no command
