@@ -3,16 +3,19 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
+import readline from 'readline';
 import { TestRegistry } from './modules/test-registry';
 import { TestExecutor } from './modules/test-executor';
 import { CodeTracer } from './modules/code-tracer';
 import { DashboardReporter } from './modules/dashboard-reporter';
 import { IssueManager } from './modules/issue-manager';
 import { DefectManager } from './modules/defect-manager';
+import { UserManager } from './modules/user-manager';
 import { GitOpsModule } from './modules/gitops';
 import { AgileModule } from './modules/agile';
 import { Logger } from './utils/logger';
-import type { UserStory, TestCase, CodeReference, Issue, Defect } from './types';
+import type { ModuleName } from './types';
+import type { UserStory, TestCase, CodeReference, Issue, Defect, ModuleName } from './types';
 
 /**
  * Custom Test Management CLI - Main Entry Point
@@ -755,6 +758,438 @@ defectCmd
     }
   });
 
+// User Administration Commands
+const userCmd = program
+  .command('user')
+  .description('User administration and access control');
+
+userCmd
+  .command('create')
+  .description('Create a new user with module role assignments')
+  .action(async () => {
+    const userManager = UserManager.getInstance();
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    const question = (prompt: string): Promise<string> => {
+      return new Promise(resolve => rl.question(prompt, resolve));
+    };
+
+    try {
+      const email = await question(chalk.cyan('Email: '));
+      const name = await question(chalk.cyan('Full Name: '));
+      const isAdmin = await question(chalk.cyan('System Admin? (yes/no): '));
+      
+      const newUser = userManager.createUser(email, name, isAdmin.toLowerCase() === 'yes');
+      
+      console.log(chalk.green('\n✓ User created successfully'));
+      console.log(chalk.dim('─'.repeat(60)));
+      console.log(`ID: ${newUser.id}`);
+      console.log(`Email: ${newUser.email}`);
+      console.log(`Name: ${newUser.name}`);
+      console.log(`Status: ${newUser.status}`);
+      console.log(`System Role: ${newUser.systemRole}`);
+      console.log(chalk.dim('─'.repeat(60)));
+      
+      Logger.info(`User created: ${email}`);
+    } catch (error) {
+      Logger.error(`Failed to create user: ${(error as Error).message}`);
+    } finally {
+      rl.close();
+    }
+  });
+
+userCmd
+  .command('list')
+  .description('List all users with optional filtering')
+  .option('--status <status>', 'Filter by status (active, inactive, suspended)')
+  .option('--role <role>', 'Filter by system role (admin, user)')
+  .action((options: { status?: string; role?: string }) => {
+    try {
+      const userManager = UserManager.getInstance();
+      const users = userManager.getAllUsers();
+      
+      let filtered = users;
+      if (options.status) {
+        filtered = userManager.filterUsers({ status: options.status as any });
+      }
+      if (options.role) {
+        filtered = userManager.filterUsers({ role: options.role as any });
+      }
+
+      console.log('\n' + chalk.bold('Users'));
+      console.log(chalk.dim('─'.repeat(100)));
+      
+      if (filtered.length === 0) {
+        console.log(chalk.yellow('No users found'));
+        return;
+      }
+
+      filtered.forEach((user) => {
+        const statusColor = user.status === 'active' ? chalk.green : chalk.yellow;
+        const roleColor = user.systemRole === 'admin' ? chalk.cyan : chalk.white;
+        
+        console.log(
+          `${user.email.padEnd(30)} | ` +
+          `${user.name.padEnd(25)} | ` +
+          `${statusColor(user.status.padEnd(12))} | ` +
+          `${roleColor(user.systemRole.padEnd(8))}`
+        );
+      });
+
+      console.log(chalk.dim('─'.repeat(100)));
+      console.log(chalk.dim(`Total: ${filtered.length} users`));
+    } catch (error) {
+      Logger.error(`Failed to list users: ${(error as Error).message}`);
+    }
+  });
+
+userCmd
+  .command('details <email>')
+  .description('Show detailed user information and module permissions')
+  .action((email: string) => {
+    try {
+      const userManager = UserManager.getInstance();
+      const user = userManager.getUser(email);
+
+      if (!user) {
+        Logger.error(`User not found: ${email}`);
+        return;
+      }
+
+      console.log('\n' + chalk.bold(`User Details: ${user.name}`));
+      console.log(chalk.dim('─'.repeat(80)));
+      console.log(`ID: ${user.id}`);
+      console.log(`Email: ${user.email}`);
+      console.log(`Name: ${user.name}`);
+      console.log(`Status: ${user.status}`);
+      console.log(`System Role: ${user.systemRole}`);
+      console.log(`Created: ${new Date(user.createdAt).toLocaleString()}`);
+      
+      console.log('\n' + chalk.bold('Module Permissions:'));
+      console.log(chalk.dim('─'.repeat(80)));
+      
+      for (const [module, permission] of user.modulePermissions) {
+        const role = permission.role;
+        const roleColor = role === 'admin' ? chalk.cyan : role === 'user' ? chalk.green : chalk.blue;
+        console.log(
+          `${module.padEnd(25)} | Role: ${roleColor(role.padEnd(8))} | ` +
+          `Read: ${permission.canRead ? '✓' : '✗'} | ` +
+          `Write: ${permission.canWrite ? '✓' : '✗'} | ` +
+          `Delete: ${permission.canDelete ? '✓' : '✗'} | ` +
+          `Manage: ${permission.canManage ? '✓' : '✗'}`
+        );
+      }
+
+      console.log(chalk.dim('─'.repeat(80)));
+    } catch (error) {
+      Logger.error(`Failed to get user details: ${(error as Error).message}`);
+    }
+  });
+
+userCmd
+  .command('role assign <email> <module> <role>')
+  .description('Assign a role to user for specific module (read, user, admin)')
+  .action((email: string, module: string, role: string) => {
+    try {
+      const userManager = UserManager.getInstance();
+      const user = userManager.getUser(email);
+
+      if (!user) {
+        Logger.error(`User not found: ${email}`);
+        return;
+      }
+
+      userManager.assignModuleRole(email, module as ModuleName, role as any);
+
+      console.log(chalk.green(`\n✓ Role assigned successfully`));
+      console.log(chalk.dim('─'.repeat(60)));
+      console.log(`User: ${email}`);
+      console.log(`Module: ${module}`);
+      console.log(`Role: ${role}`);
+      console.log(chalk.dim('─'.repeat(60)));
+      
+      Logger.info(`Role assigned: ${email} -> ${module}: ${role}`);
+    } catch (error) {
+      Logger.error(`Failed to assign role: ${(error as Error).message}`);
+    }
+  });
+
+userCmd
+  .command('role list <email>')
+  .description('List all module roles for a user')
+  .action((email: string) => {
+    try {
+      const userManager = UserManager.getInstance();
+      const user = userManager.getUser(email);
+
+      if (!user) {
+        Logger.error(`User not found: ${email}`);
+        return;
+      }
+
+      console.log('\n' + chalk.bold(`Roles for ${user.name}`));
+      console.log(chalk.dim('─'.repeat(60)));
+
+      for (const [module, permission] of user.modulePermissions) {
+        const roleColor = permission.role === 'admin' ? chalk.cyan : permission.role === 'user' ? chalk.green : chalk.blue;
+        console.log(`${module.padEnd(30)} ${roleColor(permission.role)}`);
+      }
+
+      console.log(chalk.dim('─'.repeat(60)));
+    } catch (error) {
+      Logger.error(`Failed to list roles: ${(error as Error).message}`);
+    }
+  });
+
+userCmd
+  .command('status <email> <status>')
+  .description('Update user status (active, inactive, suspended)')
+  .action((email: string, status: string) => {
+    try {
+      const userManager = UserManager.getInstance();
+      const user = userManager.getUser(email);
+
+      if (!user) {
+        Logger.error(`User not found: ${email}`);
+        return;
+      }
+
+      userManager.updateStatus(email, status as any);
+
+      const statusColor = status === 'active' ? chalk.green : chalk.yellow;
+      console.log(chalk.green(`\n✓ User status updated`));
+      console.log(chalk.dim('─'.repeat(60)));
+      console.log(`Email: ${email}`);
+      console.log(`New Status: ${statusColor(status)}`);
+      console.log(chalk.dim('─'.repeat(60)));
+      
+      Logger.info(`User status updated: ${email} -> ${status}`);
+    } catch (error) {
+      Logger.error(`Failed to update user status: ${(error as Error).message}`);
+    }
+  });
+
+userCmd
+  .command('login <email>')
+  .description('Start user session (login)')
+  .option('--ip <ip>', 'IP address')
+  .option('--agent <agent>', 'User agent')
+  .action((email: string, options: { ip?: string; agent?: string }) => {
+    try {
+      const userManager = UserManager.getInstance();
+      const user = userManager.getUser(email);
+
+      if (!user) {
+        Logger.error(`User not found: ${email}`);
+        return;
+      }
+
+      if (user.status !== 'active') {
+        Logger.error(`Cannot login: User status is ${user.status}`);
+        return;
+      }
+
+      const session = userManager.startSession(email, options.ip, options.agent);
+
+      console.log(chalk.green(`\n✓ Session started`));
+      console.log(chalk.dim('─'.repeat(60)));
+      console.log(`Session ID: ${session.id}`);
+      console.log(`User: ${email}`);
+      console.log(`Login Time: ${new Date(session.loginTime).toLocaleString()}`);
+      console.log(`IP: ${session.ipAddress}`);
+      console.log(chalk.dim('─'.repeat(60)));
+      
+      Logger.info(`User logged in: ${email}`);
+    } catch (error) {
+      Logger.error(`Failed to start session: ${(error as Error).message}`);
+    }
+  });
+
+userCmd
+  .command('logout <sessionId>')
+  .description('End user session (logout)')
+  .action((sessionId: string) => {
+    try {
+      const userManager = UserManager.getInstance();
+      const session = userManager.endSession(sessionId);
+
+      if (!session) {
+        Logger.error(`Session not found: ${sessionId}`);
+        return;
+      }
+
+      console.log(chalk.green(`\n✓ Session ended`));
+      console.log(chalk.dim('─'.repeat(60)));
+      console.log(`Session ID: ${sessionId}`);
+      console.log(`Duration: ${Math.round((session.logoutTime - session.loginTime) / 1000)} seconds`);
+      console.log(chalk.dim('─'.repeat(60)));
+      
+      Logger.info(`User logged out: ${sessionId}`);
+    } catch (error) {
+      Logger.error(`Failed to end session: ${(error as Error).message}`);
+    }
+  });
+
+userCmd
+  .command('sessions [email]')
+  .description('List active or historical sessions')
+  .option('--all', 'Show all sessions including inactive')
+  .action((email?: string, options?: { all?: boolean }) => {
+    try {
+      const userManager = UserManager.getInstance();
+      const sessions = email ? userManager.getUserSessions(email) : userManager.getActiveSessions();
+
+      console.log('\n' + chalk.bold('User Sessions'));
+      console.log(chalk.dim('─'.repeat(120)));
+
+      if (sessions.length === 0) {
+        console.log(chalk.yellow('No sessions found'));
+        return;
+      }
+
+      sessions.forEach((session) => {
+        const status = session.logoutTime ? chalk.gray('inactive') : chalk.green('active');
+        const duration = session.logoutTime 
+          ? Math.round((session.logoutTime - session.loginTime) / 1000)
+          : Math.round((Date.now() - session.loginTime) / 1000);
+        
+        console.log(
+          `${session.id.substring(0, 12)}... | ` +
+          `${session.userId.padEnd(20)} | ` +
+          `${new Date(session.loginTime).toLocaleString().padEnd(20)} | ` +
+          `${status} | ` +
+          `${duration}s | ` +
+          `${session.ipAddress}`
+        );
+      });
+
+      console.log(chalk.dim('─'.repeat(120)));
+      console.log(chalk.dim(`Total: ${sessions.length} sessions`));
+    } catch (error) {
+      Logger.error(`Failed to list sessions: ${(error as Error).message}`);
+    }
+  });
+
+userCmd
+  .command('audit')
+  .description('View user audit log with optional filtering')
+  .option('--user <email>', 'Filter by user email')
+  .option('--module <module>', 'Filter by module')
+  .option('--limit <number>', 'Number of entries to show', '50')
+  .action((options: { user?: string; module?: string; limit: string }) => {
+    try {
+      const userManager = UserManager.getInstance();
+      const limit = parseInt(options.limit);
+      const log = userManager.getAuditLog({ userId: options.user, moduleName: options.module as ModuleName });
+
+      console.log('\n' + chalk.bold('User Audit Log'));
+      console.log(chalk.dim('─'.repeat(140)));
+
+      const entries = log.slice(-limit);
+      if (entries.length === 0) {
+        console.log(chalk.yellow('No audit entries found'));
+        return;
+      }
+
+      entries.forEach((entry) => {
+        const actionColor = entry.action.includes('delete') ? chalk.red : entry.action.includes('create') ? chalk.green : chalk.blue;
+        console.log(
+          `${new Date(entry.timestamp).toLocaleString().padEnd(20)} | ` +
+          `${entry.userId.padEnd(20)} | ` +
+          `${entry.moduleName.padEnd(20)} | ` +
+          `${actionColor(entry.action.padEnd(20))} | ` +
+          `${(entry.details || 'N/A').substring(0, 40)}`
+        );
+      });
+
+      console.log(chalk.dim('─'.repeat(140)));
+      console.log(chalk.dim(`Showing ${entries.length} of ${log.length} entries`));
+    } catch (error) {
+      Logger.error(`Failed to get audit log: ${(error as Error).message}`);
+    }
+  });
+
+userCmd
+  .command('metrics')
+  .description('Display user administration metrics and statistics')
+  .action(() => {
+    try {
+      const userManager = UserManager.getInstance();
+      const metrics = userManager.getMetrics();
+
+      console.log('\n' + chalk.bold('User Administration Metrics'));
+      console.log(chalk.dim('─'.repeat(80)));
+      console.log(`Total Users: ${chalk.cyan(metrics.totalUsers.toString())}`);
+      console.log(`Active Users: ${chalk.green(metrics.activeUsers.toString())}`);
+      console.log(`Inactive Users: ${chalk.yellow(metrics.inactiveUsers.toString())}`);
+      console.log(`Suspended Users: ${chalk.red(metrics.suspendedUsers.toString())}`);
+      
+      console.log('\n' + chalk.bold('By System Role:'));
+      console.log(chalk.dim('─'.repeat(80)));
+      console.log(`  Admins: ${metrics.bySystemRole.admin || 0}`);
+      console.log(`  Users: ${metrics.bySystemRole.user || 0}`);
+
+      console.log('\n' + chalk.bold('By Module and Role:'));
+      console.log(chalk.dim('─'.repeat(80)));
+      for (const [module, roles] of Object.entries(metrics.byModuleRole || {})) {
+        console.log(`  ${module}:`);
+        for (const [role, count] of Object.entries(roles || {})) {
+          console.log(`    ${role}: ${count}`);
+        }
+      }
+
+      console.log('\n' + chalk.bold('Session Statistics:'));
+      console.log(chalk.dim('─'.repeat(80)));
+      console.log(`  Active Sessions: ${metrics.activeSessions || 0}`);
+      console.log(`  Total Sessions (historical): ${metrics.totalSessions || 0}`);
+
+      console.log(chalk.dim('─'.repeat(80)));
+    } catch (error) {
+      Logger.error(`Failed to get metrics: ${(error as Error).message}`);
+    }
+  });
+
+userCmd
+  .command('delete <email>')
+  .description('Delete a user account (mark as inactive)')
+  .action(async (email: string) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    const confirm = (prompt: string): Promise<string> => {
+      return new Promise(resolve => rl.question(prompt, resolve));
+    };
+
+    try {
+      const response = await confirm(chalk.yellow(`Are you sure you want to delete user ${email}? (yes/no): `));
+      
+      if (response.toLowerCase() !== 'yes') {
+        console.log(chalk.dim('Cancelled'));
+        return;
+      }
+
+      const userManager = UserManager.getInstance();
+      userManager.deleteUser(email);
+
+      console.log(chalk.green(`\n✓ User deleted successfully`));
+      console.log(chalk.dim('─'.repeat(60)));
+      console.log(`Email: ${email}`);
+      console.log(`Status: User account removed`);
+      console.log(chalk.dim('─'.repeat(60)));
+      
+      Logger.info(`User deleted: ${email}`);
+    } catch (error) {
+      Logger.error(`Failed to delete user: ${(error as Error).message}`);
+    } finally {
+      rl.close();
+    }
+  });
+
 const agileCmd = program
   .command('agile')
   .description('Agile board management');
@@ -778,6 +1213,9 @@ program.on('--help', () => {
   console.log('  $ testmgr issue list');
   console.log('  $ testmgr defect list');
   console.log('  $ testmgr defect health');
+  console.log('  $ testmgr user create');
+  console.log('  $ testmgr user list');
+  console.log('  $ testmgr user role assign');
   console.log('  $ testmgr dashboard');
   console.log('  $ testmgr matrix');
   console.log('');

@@ -10,16 +10,19 @@
 1. [ARCHITECTURE.md](ARCHITECTURE.md) - System design and components
 2. [README_CUSTOM_TEST_MGMT.md](README_CUSTOM_TEST_MGMT.md) - Test management guide
 3. [README_ISSUE_DEFECT_MANAGEMENT.md](README_ISSUE_DEFECT_MANAGEMENT.md) - Issue/defect guide
+4. [README_USER_ADMINISTRATION.md](README_USER_ADMINISTRATION.md) - User administration guide ✨ NEW
 
 ### ⚡ Quick References (5-10 minutes)
 1. [ISSUE_DEFECT_QUICK_REFERENCE.md](ISSUE_DEFECT_QUICK_REFERENCE.md) - Commands and examples
-2. [README_CUSTOM_TEST_MGMT.md](README_CUSTOM_TEST_MGMT.md) - Test commands
+2. [USER_ADMIN_QUICK_REFERENCE.md](USER_ADMIN_QUICK_REFERENCE.md) - User admin commands ✨ NEW
+3. [README_CUSTOM_TEST_MGMT.md](README_CUSTOM_TEST_MGMT.md) - Test commands
 
 ### 📚 Detailed Documentation (60+ minutes)
 1. [ARCHITECTURE.md](ARCHITECTURE.md) - Complete system architecture
 2. [README_CUSTOM_TEST_MGMT.md](README_CUSTOM_TEST_MGMT.md) - Full test management guide
 3. [README_ISSUE_DEFECT_MANAGEMENT.md](README_ISSUE_DEFECT_MANAGEMENT.md) - Full issue/defect guide
-4. [IMPLEMENTATION_ISSUE_DEFECT.md](IMPLEMENTATION_ISSUE_DEFECT.md) - Implementation details
+4. [README_USER_ADMINISTRATION.md](README_USER_ADMINISTRATION.md) - Full user admin guide ✨ NEW
+5. [IMPLEMENTATION_ISSUE_DEFECT.md](IMPLEMENTATION_ISSUE_DEFECT.md) - Implementation details
 
 ---
 
@@ -46,8 +49,14 @@
 - Commands: `testmgr defect create`, `list`, `status`, `resolve`, `health`
 - Features: Auto-creation, root cause tracking, PR linking, health scoring
 
+### User Administration ✨ NEW
+- [README_USER_ADMINISTRATION.md](README_USER_ADMINISTRATION.md) - Complete user admin guide
+- [USER_ADMIN_QUICK_REFERENCE.md](USER_ADMIN_QUICK_REFERENCE.md) - Quick reference
+- Commands: `testmgr user create`, `list`, `role assign`, `status`, `audit`
+- Features: Role-based access control (RBAC), per-module permissions, session tracking, audit logging
+
 ### Implementation Details
-- [IMPLEMENTATION_ISSUE_DEFECT.md](IMPLEMENTATION_ISSUE_DEFECT.md) - What was added
+- [IMPLEMENTATION_ISSUE_DEFECT.md](IMPLEMENTATION_ISSUE_DEFECT.md) - Issue/defect implementation
 - New files, type definitions, CLI commands, storage format
 
 ### Delivery Information
@@ -95,7 +104,21 @@ testmgr defect status <id> <status>    # Update status
 testmgr defect resolve <id>            # Resolve defect
 testmgr defect health                  # Show health score
 ```
-
+### User Administration ✨ NEW
+```bash
+testmgr user create                    # Create user
+testmgr user list [options]            # List users
+testmgr user details <email>           # Show user info
+testmgr user role assign <email> <module> <role>  # Assign role
+testmgr user role list <email>         # Show user roles
+testmgr user status <email> <status>   # Update status
+testmgr user login <email>             # Start session
+testmgr user logout <sessionId>        # End session
+testmgr user sessions [email]          # List sessions
+testmgr user audit [options]           # View audit log
+testmgr user metrics                   # Show statistics
+testmgr user delete <email>            # Delete user
+```
 ### Reports
 ```bash
 testmgr dashboard                      # Generate HTML dashboard
@@ -122,16 +145,17 @@ test-management-tooling/
 ├── IMPLEMENTATION_ISSUE_DEFECT.md     # Implementation details
 │
 ├── src/
-│   ├── cli-new.ts                     # CLI with 14 commands
+│   ├── cli-new.ts                     # CLI with 20+ commands
 │   ├── index.ts                       # Main exports
 │   ├── types/
-│   │   └── index.ts                   # Type definitions (30+ types)
+│   │   └── index.ts                   # Type definitions (40+ types)
 │   ├── modules/
 │   │   ├── test-registry.ts           # Story & test management
 │   │   ├── test-executor.ts           # Test execution
 │   │   ├── code-tracer.ts             # Code linking
-│   │   ├── issue-manager.ts           # Issue tracking ✨
-│   │   ├── defect-manager.ts          # Defect tracking ✨
+│   │   ├── issue-manager.ts           # Issue tracking
+│   │   ├── defect-manager.ts          # Defect tracking
+│   │   ├── user-manager.ts            # User administration ✨ NEW
 │   │   ├── dashboard-reporter.ts      # Report generation
 │   │   ├── config.ts                  # Configuration
 │   │   ├── agile.ts                   # Agile integration
@@ -144,8 +168,11 @@ test-management-tooling/
 │   ├── config.json                    # Configuration
 │   ├── stories.json                   # User stories
 │   ├── tests.json                     # Test cases
-│   ├── issues.json                    # Issues ✨
-│   └── defects.json                   # Defects ✨
+│   ├── issues.json                    # Issues
+│   ├── defects.json                   # Defects
+│   ├── users.json                     # Users ✨ NEW
+│   ├── user-sessions.json             # Sessions ✨ NEW
+│   └── user-audit.json                # Audit log ✨ NEW
 │
 ├── test-data/
 │   ├── registry.json                  # Test registry

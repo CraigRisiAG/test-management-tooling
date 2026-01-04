@@ -14,6 +14,9 @@ export { DashboardReporter } from './modules/dashboard-reporter';
 export { IssueManager } from './modules/issue-manager';
 export { DefectManager } from './modules/defect-manager';
 
+// User Administration
+export { UserManager } from './modules/user-manager';
+
 // Supporting Modules
 export { UIModule } from './modules/ui';
 export { ConfigModule } from './modules/config';

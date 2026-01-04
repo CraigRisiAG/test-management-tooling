@@ -498,3 +498,106 @@ export interface NotificationSettings {
   storyAssigned: boolean;
   testFailures: boolean;
 }
+
+// ========================================
+// User Administration Types
+// ========================================
+
+/**
+ * Role types for module-level access control
+ */
+export type UserRole = 'read' | 'user' | 'admin';
+
+/**
+ * Module names that can have role-based access
+ */
+export type ModuleName = 
+  | 'test-registry'
+  | 'test-executor'
+  | 'code-tracer'
+  | 'issue-manager'
+  | 'defect-manager'
+  | 'dashboard-reporter'
+  | 'agile'
+  | 'gitops'
+  | 'user-admin';
+
+/**
+ * Module-level permissions
+ */
+export interface ModulePermission {
+  moduleName: ModuleName;
+  role: UserRole;
+  canRead: boolean;
+  canWrite: boolean;
+  canDelete: boolean;
+  canManage: boolean; // For admin functions like user assignment
+}
+
+/**
+ * User account with module-level permissions
+ */
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  status: 'active' | 'inactive' | 'suspended';
+  role: 'admin' | 'user'; // System-wide role
+  modulePermissions: Map<ModuleName, UserRole>; // Per-module roles
+  createdDate: Date;
+  lastLogin?: Date;
+  lastModified: Date;
+  modifiedBy: string;
+}
+
+/**
+ * User session for tracking logins
+ */
+export interface UserSession {
+  id: string;
+  userId: string;
+  email: string;
+  loginTime: Date;
+  lastActivityTime: Date;
+  logoutTime?: Date;
+  ipAddress?: string;
+  userAgent?: string;
+  active: boolean;
+}
+
+/**
+ * User audit log entry
+ */
+export interface UserAuditLog {
+  id: string;
+  userId: string;
+  action: string;
+  moduleName: ModuleName;
+  resourceId?: string;
+  timestamp: Date;
+  details?: Record<string, unknown>;
+}
+
+/**
+ * Filter for user queries
+ */
+export interface UserFilter {
+  status?: User['status'][];
+  role?: User['role'][];
+  moduleName?: ModuleName;
+  moduleRole?: UserRole;
+}
+
+/**
+ * User management metrics
+ */
+export interface UserMetrics {
+  totalUsers: number;
+  activeUsers: number;
+  inactiveUsers: number;
+  suspendedUsers: number;
+  adminUsers: number;
+  regularUsers: number;
+  recentLogins: number;
+  moduleAccessBreakdown: Record<ModuleName, Record<UserRole, number>>;
+}
