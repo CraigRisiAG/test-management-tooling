@@ -10,6 +10,7 @@ export { ConfigModule } from './modules/config';
 export { LifecycleModule } from './modules/lifecycle';
 export { GitOpsModule } from './modules/gitops';
 export { RepositoryViewerModule } from './modules/repository-viewer';
+export { AgileModule } from './modules/agile';
 
 // Utilities
 export { Logger } from './utils/logger';

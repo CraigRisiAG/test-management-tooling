@@ -7,6 +7,7 @@ import { ConfigModule } from './modules/config';
 import { LifecycleModule } from './modules/lifecycle';
 import { GitOpsModule } from './modules/gitops';
 import { RepositoryViewerModule } from './modules/repository-viewer';
+import { AgileModule } from './modules/agile';
 import { Logger } from './utils/logger';
 
 /**
@@ -407,6 +408,293 @@ gitops
       });
     } catch (error) {
       Logger.error(`Config display failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+// ==================== Agile Board Commands ====================
+
+const agile = program.command('agile').description('Agile board management');
+
+// Initialize agile configuration
+agile
+  .command('init')
+  .description('Initialize agile board configuration')
+  .option('-p, --path <path>', 'Project path', process.cwd())
+  .action(async (options) => {
+    try {
+      await AgileModule.init(options.path);
+    } catch (error) {
+      Logger.error(`Agile init failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+// Board commands
+const board = agile.command('board').description('Manage agile boards');
+
+board
+  .command('create <name>')
+  .description('Create a new agile board')
+  .option('-d, --description <desc>', 'Board description')
+  .option('-s, --sprint-duration <weeks>', 'Sprint duration in weeks', '2')
+  .option('-p, --path <path>', 'Project path', process.cwd())
+  .action(async (name, options) => {
+    try {
+      await AgileModule.createBoard(name, {
+        description: options.description,
+        sprintDurationWeeks: parseInt(options.sprintDuration),
+        projectPath: options.path,
+      });
+    } catch (error) {
+      Logger.error(`Board creation failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+board
+  .command('list')
+  .description('List all agile boards')
+  .option('-p, --path <path>', 'Project path', process.cwd())
+  .action(async (options) => {
+    try {
+      const boards = await AgileModule.getBoards(undefined, options.path);
+      
+      if (boards.length === 0) {
+        Logger.warning('No boards found. Create one with: zebrunner agile board create <name>');
+        return;
+      }
+
+      console.log('\n' + chalk.bold('📊 Agile Boards:'));
+      boards.forEach((board) => {
+        console.log(`\n  ${chalk.cyan(board.name)} (ID: ${board.id})`);
+        console.log(`    Status: ${board.status}`);
+        console.log(`    Sprints: ${board.sprints.length}`);
+        console.log(`    Backlog: ${board.backlog.length} stories`);
+        if (board.description) {
+          console.log(`    ${board.description}`);
+        }
+      });
+    } catch (error) {
+      Logger.error(`Board list failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+board
+  .command('show <boardId>')
+  .description('Show detailed board information')
+  .option('-p, --path <path>', 'Project path', process.cwd())
+  .action(async (boardId, options) => {
+    try {
+      await AgileModule.displayBoardSummary(boardId, options.path);
+    } catch (error) {
+      Logger.error(`Board display failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+// Sprint commands
+const sprint = agile.command('sprint').description('Manage sprints');
+
+sprint
+  .command('create <boardId> <name>')
+  .description('Create a new sprint')
+  .option('-g, --goal <goal>', 'Sprint goal')
+  .option('-s, --start <date>', 'Start date (YYYY-MM-DD)')
+  .option('-e, --end <date>', 'End date (YYYY-MM-DD)')
+  .option('-p, --path <path>', 'Project path', process.cwd())
+  .action(async (boardId, name, options) => {
+    try {
+      const startDate = options.start ? new Date(options.start) : undefined;
+      const endDate = options.end ? new Date(options.end) : undefined;
+
+      await AgileModule.createSprint(boardId, name, {
+        goal: options.goal,
+        startDate,
+        endDate,
+        projectPath: options.path,
+      });
+    } catch (error) {
+      Logger.error(`Sprint creation failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+sprint
+  .command('start <sprintId>')
+  .description('Start a sprint')
+  .option('-p, --path <path>', 'Project path', process.cwd())
+  .action(async (sprintId, options) => {
+    try {
+      await AgileModule.startSprint(sprintId, options.path);
+    } catch (error) {
+      Logger.error(`Sprint start failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+sprint
+  .command('complete <sprintId>')
+  .description('Complete a sprint')
+  .option('-p, --path <path>', 'Project path', process.cwd())
+  .action(async (sprintId, options) => {
+    try {
+      const metrics = await AgileModule.completeSprint(sprintId, options.path);
+      Logger.info(`\n📈 Sprint Metrics:`);
+      Logger.info(`  Completed Stories: ${metrics.completedStories}/${metrics.totalStories}`);
+      Logger.info(`  Completed Points: ${metrics.completedPoints}/${metrics.totalPoints}`);
+      Logger.info(`  Velocity: ${metrics.velocity} points`);
+      Logger.info(`  Test Coverage: ${metrics.testCoverage.toFixed(1)}%`);
+    } catch (error) {
+      Logger.error(`Sprint completion failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+sprint
+  .command('show <sprintId>')
+  .description('Show sprint details')
+  .option('-p, --path <path>', 'Project path', process.cwd())
+  .action(async (sprintId, options) => {
+    try {
+      await AgileModule.displaySprintSummary(sprintId, options.path);
+    } catch (error) {
+      Logger.error(`Sprint display failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+// Story commands
+const story = agile.command('story').description('Manage user stories');
+
+story
+  .command('create <boardId> <title>')
+  .description('Create a new user story')
+  .option('-d, --description <desc>', 'Story description')
+  .option('-t, --type <type>', 'Story type (feature|bug|chore|spike)', 'feature')
+  .option('--priority <priority>', 'Priority (low|medium|high|critical)', 'medium')
+  .option('-e, --estimate <points>', 'Story point estimate')
+  .option('-a, --assignee <name>', 'Assignee name')
+  .option('-s, --sprint <sprintId>', 'Sprint ID (if not in backlog)')
+  .option('--tags <tags>', 'Comma-separated tags')
+  .option('-p, --path <path>', 'Project path', process.cwd())
+  .action(async (boardId, title, options) => {
+    try {
+      await AgileModule.createStory(boardId, title, {
+        description: options.description,
+        type: options.type as any,
+        priority: options.priority as any,
+        estimate: options.estimate ? parseInt(options.estimate) : undefined,
+        assignee: options.assignee,
+        sprintId: options.sprint,
+        tags: options.tags ? options.tags.split(',') : undefined,
+        projectPath: options.path,
+      });
+    } catch (error) {
+      Logger.error(`Story creation failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+story
+  .command('status <storyId> <status>')
+  .description('Update story status')
+  .option('-p, --path <path>', 'Project path', process.cwd())
+  .action(async (storyId, status, options) => {
+    try {
+      await AgileModule.updateStoryStatus(storyId, status as any, options.path);
+    } catch (error) {
+      Logger.error(`Status update failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+story
+  .command('move <storyId> <sprintId>')
+  .description('Move story to sprint')
+  .option('-p, --path <path>', 'Project path', process.cwd())
+  .action(async (storyId, sprintId, options) => {
+    try {
+      await AgileModule.moveStoryToSprint(storyId, sprintId, options.path);
+    } catch (error) {
+      Logger.error(`Story move failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+story
+  .command('link-test <storyId> <testPath>')
+  .description('Link a test to a story')
+  .option('-n, --name <name>', 'Test name')
+  .option('-t, --type <type>', 'Test type (unit|integration|e2e|performance)', 'unit')
+  .option('-p, --path <path>', 'Project path', process.cwd())
+  .action(async (storyId, testPath, options) => {
+    try {
+      await AgileModule.linkTest(storyId, testPath, {
+        testName: options.name,
+        testType: options.type as any,
+        projectPath: options.path,
+      });
+    } catch (error) {
+      Logger.error(`Test linking failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+story
+  .command('link-repo <storyId> <repoUrl>')
+  .description('Link repository to a story')
+  .option('-b, --branch <branch>', 'Branch name')
+  .option('-c, --commits <commits>', 'Comma-separated commit hashes')
+  .option('--auto-detect', 'Auto-detect commits mentioning story')
+  .option('-p, --path <path>', 'Project path', process.cwd())
+  .action(async (storyId, repoUrl, options) => {
+    try {
+      await AgileModule.linkRepository(storyId, repoUrl, {
+        branch: options.branch,
+        commits: options.commits ? options.commits.split(',') : undefined,
+        autoDetect: options.autoDetect,
+        projectPath: options.path,
+      });
+    } catch (error) {
+      Logger.error(`Repository linking failed: ${(error as Error).message}`);
+      process.exit(1);
+    }
+  });
+
+// Metrics commands
+agile
+  .command('metrics <boardId>')
+  .description('Show board metrics and analytics')
+  .option('-p, --path <path>', 'Project path', process.cwd())
+  .action(async (boardId, options) => {
+    try {
+      const metrics = await AgileModule.getBoardMetrics(boardId, options.path);
+      
+      console.log('\n' + chalk.bold('📊 Board Metrics:'));
+      console.log(`\n  Total Stories: ${metrics.totalStories}`);
+      
+      console.log('\n  Stories by Status:');
+      Object.entries(metrics.storiesByStatus).forEach(([status, count]) => {
+        if (count > 0) {
+          console.log(`    ${status}: ${count}`);
+        }
+      });
+      
+      console.log('\n  Stories by Priority:');
+      Object.entries(metrics.storiesByPriority).forEach(([priority, count]) => {
+        if (count > 0) {
+          console.log(`    ${priority}: ${count}`);
+        }
+      });
+      
+      console.log(`\n  Average Velocity: ${metrics.averageVelocity.toFixed(1)} points/sprint`);
+      console.log(`  Average Cycle Time: ${metrics.averageCycleTime.toFixed(1)} days`);
+      console.log(`  Test Coverage: ${metrics.testCoveragePercentage.toFixed(1)}%`);
+      console.log(`  Completed Sprints: ${metrics.completedSprints}`);
+    } catch (error) {
+      Logger.error(`Metrics display failed: ${(error as Error).message}`);
       process.exit(1);
     }
   });

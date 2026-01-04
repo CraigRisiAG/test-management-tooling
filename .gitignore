@@ -6,3 +6,4 @@ backup/settings.env
 backup/*tar.gz
 NOTICE.txt
 setup.txt
+node_modules

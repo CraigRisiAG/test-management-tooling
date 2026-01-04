@@ -195,3 +195,170 @@ export interface FileTreeNode {
   children?: FileTreeNode[];
   expanded?: boolean;
 }
+
+// ==================== Agile Board Types ====================
+
+export type BoardStatus = 'active' | 'archived' | 'completed';
+export type SprintStatus = 'planning' | 'active' | 'completed' | 'cancelled';
+export type StoryStatus = 'backlog' | 'todo' | 'in-progress' | 'review' | 'testing' | 'done';
+export type TaskStatus = 'todo' | 'in-progress' | 'blocked' | 'done';
+export type Priority = 'low' | 'medium' | 'high' | 'critical';
+export type StoryType = 'feature' | 'bug' | 'chore' | 'spike';
+
+export interface AgileBoard {
+  id: string;
+  name: string;
+  description?: string;
+  status: BoardStatus;
+  createdAt: Date;
+  updatedAt: Date;
+  sprints: Sprint[];
+  backlog: Story[];
+  settings: BoardSettings;
+}
+
+export interface BoardSettings {
+  sprintDurationWeeks: number;
+  storyPointScale: number[]; // e.g., [1, 2, 3, 5, 8, 13, 21]
+  columns: BoardColumn[];
+  autoArchiveSprints: boolean;
+  requireEstimates: boolean;
+}
+
+export interface BoardColumn {
+  id: string;
+  name: string;
+  status: StoryStatus;
+  wipLimit?: number; // Work-in-progress limit
+  position: number;
+}
+
+export interface Sprint {
+  id: string;
+  boardId: string;
+  name: string;
+  goal?: string;
+  status: SprintStatus;
+  startDate: Date;
+  endDate: Date;
+  stories: Story[];
+  velocity?: number; // Completed story points
+  createdAt: Date;
+}
+
+export interface Story {
+  id: string;
+  boardId: string;
+  sprintId?: string; // null if in backlog
+  title: string;
+  description?: string;
+  type: StoryType;
+  status: StoryStatus;
+  priority: Priority;
+  estimate?: number; // Story points
+  assignee?: string;
+  reporter: string;
+  tags: string[];
+  tasks: Task[];
+  testLinks: TestLink[];
+  repositoryLinks: RepositoryLink[];
+  comments: Comment[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Task {
+  id: string;
+  storyId: string;
+  title: string;
+  description?: string;
+  status: TaskStatus;
+  assignee?: string;
+  estimatedHours?: number;
+  completedAt?: Date;
+  createdAt: Date;
+}
+
+export interface TestLink {
+  id: string;
+  storyId: string;
+  testId: string;
+  testName: string;
+  testType: 'unit' | 'integration' | 'e2e' | 'performance';
+  testPath: string; // File path to test
+  coverage?: TestCoverage;
+  status: 'passing' | 'failing' | 'skipped';
+  linkedAt: Date;
+}
+
+export interface TestCoverage {
+  lines: number;
+  branches: number;
+  functions: number;
+  statements: number;
+  percentage: number;
+}
+
+export interface RepositoryLink {
+  id: string;
+  storyId: string;
+  repositoryUrl: string;
+  branch?: string;
+  commits: string[]; // Commit hashes
+  filePaths: string[]; // Files changed for this story
+  linkedAt: Date;
+}
+
+export interface Comment {
+  id: string;
+  storyId: string;
+  author: string;
+  content: string;
+  createdAt: Date;
+  updatedAt?: Date;
+}
+
+export interface SprintMetrics {
+  sprintId: string;
+  totalStories: number;
+  completedStories: number;
+  totalPoints: number;
+  completedPoints: number;
+  velocity: number;
+  burndownData: BurndownPoint[];
+  testCoverage: number;
+}
+
+export interface BurndownPoint {
+  date: Date;
+  remainingPoints: number;
+  idealRemaining: number;
+}
+
+export interface BoardMetrics {
+  boardId: string;
+  totalStories: number;
+  storiesByStatus: Record<StoryStatus, number>;
+  storiesByPriority: Record<Priority, number>;
+  averageVelocity: number;
+  averageCycleTime: number; // Days from start to done
+  testCoveragePercentage: number;
+  completedSprints: number;
+}
+
+export interface AgileBoardConfig {
+  enabled: boolean;
+  defaultBoard?: string;
+  boards: AgileBoard[];
+  gitOpsIntegration: boolean;
+  autoLinkTests: boolean;
+  autoLinkCommits: boolean;
+  notificationSettings: NotificationSettings;
+}
+
+export interface NotificationSettings {
+  sprintStartReminder: boolean;
+  sprintEndReminder: boolean;
+  storyAssigned: boolean;
+  testFailures: boolean;
+}
