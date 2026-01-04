@@ -2,7 +2,6 @@ import ora from 'ora';
 import { Logger } from '../utils/logger';
 import { ShellExecutor } from '../utils/shell';
 import { ConfigModule } from './config';
-import { SetupOptions } from '../types';
 
 /**
  * Lifecycle Module - Docker container management

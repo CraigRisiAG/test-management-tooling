@@ -339,7 +339,6 @@ export class GitOpsModule {
         syncOp.logs?.push('Pushed local commits');
       }
 
-      const statusAfter = this.getStatus(repoPath);
       syncOp.changes = statusBefore.behind + statusBefore.ahead;
       syncOp.status = 'success';
       syncOp.completedAt = new Date();

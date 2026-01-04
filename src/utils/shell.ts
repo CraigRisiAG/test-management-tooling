@@ -12,7 +12,7 @@ export class ShellExecutor {
   static exec(command: string, options?: ExecOptions): CommandResult {
     Logger.debug(`Executing: ${command}`);
     
-    const result = exec(command, { silent: true, ...options });
+    const result = exec(command, { silent: true, ...options }) as any;
     
     return {
       code: result.code,

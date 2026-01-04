@@ -98,6 +98,42 @@ zebrunner repo sync
 zebrunner gitops enable --url <repository-url>
 ```
 
+### Agile Board Commands
+
+```bash
+# Initialize agile board
+zebrunner agile init
+
+# Create board
+zebrunner agile board create <name>
+
+# Create sprint
+zebrunner agile sprint create <boardId> <name>
+
+# Start sprint
+zebrunner agile sprint start <sprintId>
+
+# Create story
+zebrunner agile story create <boardId> <title> --estimate 8
+
+# Update story status
+zebrunner agile story status <storyId> in-progress
+
+# Link test to story
+zebrunner agile story link-test <storyId> ./tests/test.ts
+
+# Link repository
+zebrunner agile story link-repo <storyId> <repoUrl> --auto-detect
+
+# View metrics
+zebrunner agile metrics <boardId>
+
+# Complete sprint
+zebrunner agile sprint complete <sprintId>
+```
+
+See [AGILE_BOARD_GUIDE.md](./AGILE_BOARD_GUIDE.md) for comprehensive agile board documentation.
+
 See [GITOPS_GUIDE.md](./GITOPS_GUIDE.md) for comprehensive GitOps documentation.
 
 ### Development Mode

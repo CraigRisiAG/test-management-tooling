@@ -1,6 +1,5 @@
-import { Logger } from '../utils/logger';
-import { ConfigModule } from './config';
-import { UIModule } from './ui';
+import { ConfigModule } from '../config';
+import { UIModule } from '../ui';
 
 describe('UIModule', () => {
   beforeEach(() => {

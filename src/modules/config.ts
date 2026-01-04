@@ -1,9 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
-import { ZebrunnerConfig, ServiceConfig } from '../types';
+import { ZebrunnerConfig } from '../types';
 import { Logger } from '../utils/logger';
-import { ShellExecutor } from '../utils/shell';
 
 /**
  * Configuration Module

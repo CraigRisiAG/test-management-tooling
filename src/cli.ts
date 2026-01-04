@@ -461,7 +461,7 @@ board
       const boards = await AgileModule.getBoards(undefined, options.path);
       
       if (boards.length === 0) {
-        Logger.warning('No boards found. Create one with: zebrunner agile board create <name>');
+        Logger.warn('No boards found. Create one with: zebrunner agile board create <name>');
         return;
       }
 

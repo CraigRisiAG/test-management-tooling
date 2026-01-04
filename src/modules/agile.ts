@@ -20,21 +20,15 @@ import type {
   BoardColumn,
   Sprint,
   Story,
-  Task,
   TestLink,
   RepositoryLink,
-  Comment,
   SprintMetrics,
   BurndownPoint,
   BoardMetrics,
   AgileBoardConfig,
-  BoardStatus,
-  SprintStatus,
   StoryStatus,
-  TaskStatus,
   Priority,
   StoryType,
-  TestCoverage,
 } from '../types';
 
 export class AgileModule {
@@ -87,7 +81,7 @@ export class AgileModule {
       this.config = JSON.parse(data);
       return this.config!;
     } catch (error) {
-      Logger.warning('Agile config not found, initializing...');
+      Logger.warn('Agile config not found, initializing...');
       await this.init(projectPath);
       return this.config!;
     }
@@ -602,8 +596,7 @@ export class AgileModule {
     // Auto-detect commits mentioning story ID
     if (options.autoDetect && config.gitOpsIntegration) {
       try {
-        const gitOps = new GitOpsModule();
-        const history = await gitOps.getCommitHistory(options.projectPath || process.cwd(), 100);
+        const history = await GitOpsModule.getCommitHistory(options.projectPath || process.cwd(), 100);
 
         // Find commits mentioning the story ID
         const relevantCommits = history.filter(
@@ -624,7 +617,7 @@ export class AgileModule {
 
         Logger.info(`Auto-detected ${commits.length} commits for story`);
       } catch (error) {
-        Logger.warning(`Could not auto-detect commits: ${(error as Error).message}`);
+        Logger.warn(`Could not auto-detect commits: ${(error as Error).message}`);
       }
     }
 
@@ -794,7 +787,7 @@ export class AgileModule {
     const boards = await this.getBoards(boardId, projectPath);
 
     if (boards.length === 0) {
-      Logger.warning('No boards found');
+      Logger.warn('No boards found');
       return;
     }
 

@@ -3,7 +3,7 @@ import path from 'path';
 import chalk from 'chalk';
 import { Logger } from '../utils/logger';
 import { ShellExecutor } from '../utils/shell';
-import { GitFile, FileTreeNode, GitDiff, DiffChunk, DiffLine } from '../types';
+import { FileTreeNode, GitDiff, DiffChunk, DiffLine } from '../types';
 
 /**
  * Repository Viewer Module - Browse repository files and view diffs
@@ -13,7 +13,6 @@ export class RepositoryViewerModule {
    * Build file tree from repository path
    */
   static buildFileTree(repoPath: string, maxDepth: number = 3): FileTreeNode {
-    const rootName = path.basename(repoPath);
 
     const buildNode = (dirPath: string, depth: number): FileTreeNode => {
       const stats = fs.statSync(dirPath);
