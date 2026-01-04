@@ -8,11 +8,9 @@ import { Logger } from '../utils/logger';
  */
 export class DashboardReporter {
   private registry: TestRegistry;
-  private logger: Logger;
 
   constructor(registry: TestRegistry) {
     this.registry = registry;
-    this.logger = new Logger('info');
   }
 
   /**
@@ -25,7 +23,7 @@ export class DashboardReporter {
     
     const html = this.createHTML(matrix, stories, tests);
     await fs.writeFile(outputPath, html);
-    this.logger.info(`Dashboard generated: ${outputPath}`);
+    Logger.info(`Dashboard generated: ${outputPath}`);
   }
 
   /**
@@ -51,7 +49,7 @@ export class DashboardReporter {
     };
 
     await fs.writeFile(outputPath, JSON.stringify(report, null, 2));
-    this.logger.info(`JSON report generated: ${outputPath}`);
+    Logger.info(`JSON report generated: ${outputPath}`);
   }
 
   private createHTML(matrix: TraceabilityMatrix[], stories: UserStory[], tests: TestCase[]): string {

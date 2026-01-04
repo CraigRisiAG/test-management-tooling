@@ -130,7 +130,8 @@ program
   .description('Enable a service layer')
   .action(async (service: string) => {
     try {
-      await ConfigModule.enableLayer(service);
+      Logger.warn('Service layer configuration coming soon');
+      Logger.info(`Requested to enable: ${service}`);
     } catch (error) {
       Logger.error(`Enable failed: ${(error as Error).message}`);
       process.exit(1);
@@ -143,7 +144,8 @@ program
   .description('Disable a service layer')
   .action(async (service: string) => {
     try {
-      await ConfigModule.disableLayer(service);
+      Logger.warn('Service layer configuration coming soon');
+      Logger.info(`Requested to disable: ${service}`);
     } catch (error) {
       Logger.error(`Disable failed: ${(error as Error).message}`);
       process.exit(1);

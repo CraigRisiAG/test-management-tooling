@@ -27,7 +27,7 @@ export class UserManager {
   private currentUser?: User;
 
   constructor(dataDir: string = './test-data') {
-    this.logger = new Logger('info');
+    this.logger = new Logger();
     this.dataDir = dataDir;
     this.usersFile = path.join(dataDir, 'users.json');
     this.sessionsFile = path.join(dataDir, 'user-sessions.json');
@@ -43,9 +43,9 @@ export class UserManager {
       await this.loadUsers();
       await this.loadSessions();
       await this.loadAuditLog();
-      this.logger.info('User manager initialized');
+      Logger.info('User manager initialized');
     } catch (error) {
-      this.logger.error('Failed to initialize user manager', error as Error);
+      Logger.error('Failed to initialize user manager');
       throw error;
     }
   }
@@ -62,12 +62,12 @@ export class UserManager {
           user.createdDate = new Date(user.createdDate);
           user.lastLogin = user.lastLogin ? new Date(user.lastLogin) : undefined;
           user.lastModified = new Date(user.lastModified);
-          user.modulePermissions = new Map(Object.entries(user.modulePermissions as any));
+          user.modulePermissions = new Map(Object.entries(user.modulePermissions as any) as Array<[ModuleName, UserRole]>);
           this.users.set(user.id, user);
         });
       }
     } catch (error) {
-      this.logger.warn('Failed to load users, starting fresh', error as Error);
+      Logger.error('Failed to load users, starting fresh');
     }
   }
 
@@ -87,7 +87,7 @@ export class UserManager {
         });
       }
     } catch (error) {
-      this.logger.warn('Failed to load sessions, starting fresh', error as Error);
+      Logger.error('Failed to load sessions, starting fresh');
     }
   }
 
@@ -105,7 +105,7 @@ export class UserManager {
         this.auditLog = logs;
       }
     } catch (error) {
-      this.logger.warn('Failed to load audit log, starting fresh', error as Error);
+      Logger.error('Failed to load audit log, starting fresh');
     }
   }
 
@@ -379,7 +379,7 @@ export class UserManager {
       this.auditLog = this.auditLog.slice(-10000);
     }
 
-    this.saveAuditLog().catch((error) => this.logger.error('Failed to save audit log', error));
+    this.saveAuditLog().catch((error) => Logger.error('Failed to save audit log'));
   }
 
   /**
@@ -489,7 +489,7 @@ export class UserManager {
 
       await fs.writeFile(this.usersFile, JSON.stringify(usersArray, null, 2));
     } catch (error) {
-      this.logger.error('Failed to save users', error as Error);
+      Logger.error('Failed to save users');
       throw error;
     }
   }
@@ -501,7 +501,7 @@ export class UserManager {
     try {
       await fs.writeFile(this.sessionsFile, JSON.stringify(Array.from(this.sessions.values()), null, 2));
     } catch (error) {
-      this.logger.error('Failed to save sessions', error as Error);
+      Logger.error('Failed to save sessions');
       throw error;
     }
   }
@@ -513,7 +513,7 @@ export class UserManager {
     try {
       await fs.writeFile(this.auditFile, JSON.stringify(this.auditLog, null, 2));
     } catch (error) {
-      this.logger.error('Failed to save audit log', error as Error);
+      Logger.error('Failed to save audit log');
       throw error;
     }
   }

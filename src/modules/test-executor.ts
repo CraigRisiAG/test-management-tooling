@@ -10,7 +10,7 @@ export class TestExecutor {
   private shell: ShellExecutor;
 
   constructor() {
-    this.logger = new Logger('info');
+    this.logger = new Logger();
     this.shell = new ShellExecutor();
   }
 
@@ -51,7 +51,7 @@ export class TestExecutor {
       throw new Error('No automated script defined');
     }
 
-    this.logger.info(`Executing automated test: ${testCase.name}`);
+    Logger.info(`Executing automated test: ${testCase.name}`);
 
     try {
       const result = await this.shell.execute(testCase.automatedScript);
@@ -82,7 +82,7 @@ export class TestExecutor {
       throw new Error('No manual test steps defined');
     }
 
-    this.logger.info(`Starting manual test: ${testCase.name}`);
+    Logger.info(`Starting manual test: ${testCase.name}`);
     
     // In a real implementation, this would interact with a UI
     // For now, we'll mark it as pending manual execution
