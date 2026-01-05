@@ -51,6 +51,10 @@ export class AgileModule {
         gitOpsIntegration: true,
         autoLinkTests: true,
         autoLinkCommits: true,
+        portfolioObjectives: [],
+        goals: [],
+        features: [],
+        epics: [],
         notificationSettings: {
           sprintStartReminder: true,
           sprintEndReminder: true,
@@ -369,6 +373,7 @@ export class AgileModule {
       assignee: options.assignee,
       reporter: options.reporter || 'system',
       tags: options.tags || [],
+      acceptanceCriteria: [],
       tasks: [],
       testLinks: [],
       repositoryLinks: [],

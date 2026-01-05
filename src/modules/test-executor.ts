@@ -54,14 +54,14 @@ export class TestExecutor {
     Logger.info(`Executing automated test: ${testCase.name}`);
 
     try {
-      const result = await this.shell.execute(testCase.automatedScript);
+      const result = await this.shell.run(testCase.automatedScript);
       
       return {
         id: `result-${Date.now()}`,
         testId: testCase.id,
         executedAt: new Date(),
         executedBy,
-        status: result.code === 0 ? 'passed' : 'failed',
+        status: result.exitCode === 0 ? 'passed' : 'failed',
         duration: Date.now() - startTime,
         logs: [result.stdout, result.stderr].filter(Boolean),
       };
