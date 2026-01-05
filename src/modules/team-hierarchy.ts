@@ -121,6 +121,7 @@ export class TeamHierarchyModule {
 
     const newOrg: Organization = {
       ...org,
+      segments: org.segments || [], // Ensure segments is initialized
       id: `ORG-${Date.now()}`,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -191,7 +192,8 @@ export class TeamHierarchyModule {
 
     const newSegment: Segment = {
       ...segment,
-      id: `SEGMENT-${Date.now()}`,
+      id: `SEG-${Date.now()}`,
+      departments: segment.departments || [],
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -252,6 +254,7 @@ export class TeamHierarchyModule {
     const newDept: Department = {
       ...dept,
       id: `DEPT-${Date.now()}`,
+      teams: dept.teams || [],
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -310,6 +313,9 @@ export class TeamHierarchyModule {
     const newTeam: Team = {
       ...team,
       id: `TEAM-${Date.now()}`,
+      members: team.members || [],
+      boards: team.boards || [],
+      repositories: team.repositories || [],
       createdAt: new Date(),
       updatedAt: new Date(),
     };

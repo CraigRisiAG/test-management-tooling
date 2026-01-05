@@ -7,11 +7,8 @@ import { Router, Request, Response } from 'express';
 import * as AuthUtils from '../modules/auth/auth-utils';
 import * as MFA from '../modules/auth/mfa';
 import { OAuthService } from '../modules/auth/oauth';
-import { SAMLService } from '../modules/auth/saml';
-import { LDAPService } from '../modules/auth/ldap';
 import { APIKeyService } from '../modules/auth/api-keys';
 import {
-  authenticate,
   authenticateToken,
   requireAdmin,
   rateLimit,
@@ -242,7 +239,7 @@ router.post('/refresh-token', async (req: Request, res: Response) => {
 
     const payload = AuthUtils.verifyToken(refreshToken);
 
-    if (!payload || payload.type !== 'refresh') {
+    if (!payload || (payload as any).type !== 'refresh') {
       return res.status(401).json({ error: 'Invalid refresh token' });
     }
 
@@ -284,7 +281,7 @@ router.post('/password/forgot', passwordResetRateLimit, async (req: Request, res
 
     // TODO: Load user from database
     // Generate reset token
-    const { token, hash, expiresAt } = AuthUtils.generatePasswordResetToken();
+    AuthUtils.generatePasswordResetToken();
 
     // TODO: Store hash in database
     // TODO: Send reset email with token

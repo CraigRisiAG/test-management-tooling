@@ -602,7 +602,7 @@ export class UserManager {
       ),
     });
 
-    await this.logAudit(user.id, 'login', 'success', { method: 'password' });
+    this.logAudit(user.id, 'login', 'user-admin', undefined, { method: 'password' });
 
     return { user, token };
   }
@@ -621,7 +621,7 @@ export class UserManager {
     const isValid = await AuthUtils.verifyPassword(currentPassword, user.passwordHash);
 
     if (!isValid) {
-      await this.logAudit(userId, 'password_change', 'failed', { reason: 'invalid_current_password' });
+      this.logAudit(userId, 'password_change', 'user-admin', undefined, { status: 'failed', reason: 'invalid_current_password' });
       throw new Error('Current password is incorrect');
     }
 
@@ -642,7 +642,7 @@ export class UserManager {
     user.lastModified = new Date();
 
     await this.saveUsers();
-    await this.logAudit(userId, 'password_change', 'success', {});
+    this.logAudit(userId, 'password_change', 'user-admin', undefined, { status: 'success' });
   }
 
   /**
@@ -674,7 +674,7 @@ export class UserManager {
     user.lastModified = new Date();
 
     await this.saveUsers();
-    await this.logAudit(user.id, 'password_reset', 'success', {});
+    this.logAudit(user.id, 'password_reset', 'user-admin', undefined, { status: 'success' });
   }
 
   /**
@@ -694,7 +694,7 @@ export class UserManager {
     user.lastModified = new Date();
 
     await this.saveUsers();
-    await this.logAudit(userId, 'mfa_enabled', 'success', {});
+    this.logAudit(userId, 'mfa_enabled', 'user-admin', undefined, { status: 'success' });
 
     return mfaSecret;
   }
@@ -711,7 +711,7 @@ export class UserManager {
 
     const isValid = MFA.verifyTOTP(user.mfaSecret, code);
 
-    await this.logAudit(userId, 'mfa_verify', isValid ? 'success' : 'failed', {});
+    this.logAudit(userId, 'mfa_verify', 'user-admin', undefined, { status: isValid ? 'success' : 'failed' });
 
     return isValid;
   }
@@ -731,7 +731,7 @@ export class UserManager {
     user.lastModified = new Date();
 
     await this.saveUsers();
-    await this.logAudit(userId, 'mfa_disabled', 'success', {});
+    this.logAudit(userId, 'mfa_disabled', 'user-admin', undefined, { status: 'success' });
   }
 
   /**
@@ -760,7 +760,7 @@ export class UserManager {
 
     this.users.set(newUser.email, newUser);
     await this.saveUsers();
-    await this.logAudit(newUser.id, 'user_created', 'success', { method: 'oauth', provider: profile.provider });
+    this.logAudit(newUser.id, 'user_created', 'user-admin', undefined, { status: 'success', method: 'oauth', provider: profile.provider });
 
     return newUser;
   }
@@ -791,7 +791,7 @@ export class UserManager {
 
     this.users.set(newUser.email, newUser);
     await this.saveUsers();
-    await this.logAudit(newUser.id, 'user_created', 'success', { method: 'saml' });
+    this.logAudit(newUser.id, 'user_created', 'user-admin', undefined, { status: 'success', method: 'saml' });
 
     return newUser;
   }
@@ -821,7 +821,7 @@ export class UserManager {
 
       this.users.set(user.email, user);
       await this.saveUsers();
-      await this.logAudit(user.id, 'user_created', 'success', { method: 'ldap' });
+      this.logAudit(user.id, 'user_created', 'user-admin', undefined, { status: 'success', method: 'ldap' });
     }
 
     return user;
@@ -848,7 +848,7 @@ export class UserManager {
     user.lastModified = new Date();
 
     await this.saveUsers();
-    await this.logAudit(userId, 'account_locked', 'success', { reason });
+    this.logAudit(userId, 'account_locked', 'user-admin', undefined, { status: 'success', reason });
   }
 
   /**
@@ -867,6 +867,6 @@ export class UserManager {
     user.lastModified = new Date();
 
     await this.saveUsers();
-    await this.logAudit(userId, 'account_unlocked', 'success', {});
+    this.logAudit(userId, 'account_unlocked', 'user-admin', undefined, { status: 'success' });
   }
 }

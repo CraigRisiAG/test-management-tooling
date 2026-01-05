@@ -53,6 +53,7 @@
     "yaml": "^2.3.4"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/figlet": "^1.5.8",
     "@types/inquirer": "^9.0.7",
     "@types/jest": "^29.5.11",
