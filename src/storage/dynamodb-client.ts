@@ -2,6 +2,16 @@
  * @file dynamodb-client.ts
  * @description DynamoDB client wrapper for single-table design
  * Provides type-safe operations for test management data
+ * 
+ * Supported Entity Types:
+ * - TEST: Test cases
+ * - STORY: User stories
+ * - EPIC: Epic collections
+ * - FEATURE: Feature deliverables
+ * - GOAL: Strategic goals
+ * - PORTFOLIO: Portfolio objectives
+ * - ISSUE: Issues and defects
+ * - USER: User accounts
  */
 
 import {
@@ -20,6 +30,18 @@ export interface DynamoDBConfig {
   region: string;
   endpoint?: string; // For local testing
 }
+
+export type EntityType = 
+  | 'TEST' 
+  | 'STORY' 
+  | 'EPIC' 
+  | 'FEATURE' 
+  | 'GOAL' 
+  | 'PORTFOLIO' 
+  | 'ISSUE' 
+  | 'USER' 
+  | 'SPRINT' 
+  | 'BOARD';
 
 export class DynamoDBClient {
   private client: AWSDynamoDBClient;
@@ -200,5 +222,78 @@ export class DynamoDBClient {
       console.error(`Error querying with filter:`, error.message);
       throw error;
     }
+  }
+
+  /**
+   * Query child items by parent relationship
+   * Example: Get all EPICs for a FEATURE, or all STORYs for an EPIC
+   */
+  async queryByParent(childType: EntityType, parentIdField: string, parentId: string): Promise<any[]> {
+    return this.queryWithFilter(
+      childType,
+      `${parentIdField} = :parentId`,
+      { ':parentId': parentId }
+    );
+  }
+
+  /**
+   * Get hierarchy: Portfolio → Goals → Features → Epics → Stories
+   */
+  async getAgileHierarchy(portfolioId?: string, goalId?: string, featureId?: string, epicId?: string): Promise<any> {
+    const hierarchy: any = {};
+
+    if (portfolioId) {
+      hierarchy.portfolio = await this.getItem('PORTFOLIO', portfolioId);
+      const goals = await this.queryByParent('GOAL', 'portfolioObjectiveId', portfolioId);
+      hierarchy.goals = goals;
+
+      for (const goal of goals) {
+        const features = await this.queryByParent('FEATURE', 'goalId', goal.id);
+        hierarchy.features = [...(hierarchy.features || []), ...features];
+      }
+    } else if (goalId) {
+      hierarchy.goal = await this.getItem('GOAL', goalId);
+      hierarchy.features = await this.queryByParent('FEATURE', 'goalId', goalId);
+    } else if (featureId) {
+      hierarchy.feature = await this.getItem('FEATURE', featureId);
+      hierarchy.epics = await this.queryByParent('EPIC', 'featureId', featureId);
+    } else if (epicId) {
+      hierarchy.epic = await this.getItem('EPIC', epicId);
+      hierarchy.stories = await this.queryByParent('STORY', 'epicId', epicId);
+    }
+
+    return hierarchy;
+  }
+
+  /**
+   * Get complete lineage for a story (Story → Epic → Feature → Goal → Portfolio)
+   */
+  async getStoryLineage(storyId: string): Promise<any> {
+    const story = await this.getItem('STORY', storyId);
+    if (!story) return null;
+
+    const lineage: any = { story };
+
+    if (story.epicId) {
+      const epic = await this.getItem('EPIC', story.epicId);
+      lineage.epic = epic;
+
+      if (epic?.featureId) {
+        const feature = await this.getItem('FEATURE', epic.featureId);
+        lineage.feature = feature;
+
+        if (feature?.goalId) {
+          const goal = await this.getItem('GOAL', feature.goalId);
+          lineage.goal = goal;
+
+          if (goal?.portfolioObjectiveId) {
+            const portfolio = await this.getItem('PORTFOLIO', goal.portfolioObjectiveId);
+            lineage.portfolio = portfolio;
+          }
+        }
+      }
+    }
+
+    return lineage;
   }
 }

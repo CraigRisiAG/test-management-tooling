@@ -336,6 +336,151 @@ export type TaskStatus = 'todo' | 'in-progress' | 'blocked' | 'done';
 export type Priority = 'low' | 'medium' | 'high' | 'critical';
 export type StoryType = 'feature' | 'bug' | 'chore' | 'spike';
 
+// ==================== Agile Hierarchy Types ====================
+
+/**
+ * Portfolio Objective - Highest level strategic goal
+ * Maps to business strategy and multi-year initiatives
+ */
+export interface PortfolioObjective {
+  id: string;
+  name: string;
+  description: string;
+  status: 'draft' | 'active' | 'on-track' | 'at-risk' | 'completed' | 'cancelled';
+  owner: string;
+  startDate: Date;
+  targetDate: Date;
+  completedDate?: Date;
+  keyResults: KeyResult[];
+  linkedGoals: string[]; // Goal IDs
+  metrics: PortfolioMetrics;
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface KeyResult {
+  id: string;
+  description: string;
+  targetValue: number;
+  currentValue: number;
+  unit: string; // e.g., '%', 'users', 'revenue'
+  status: 'not-started' | 'in-progress' | 'achieved' | 'at-risk';
+}
+
+export interface PortfolioMetrics {
+  totalGoals: number;
+  completedGoals: number;
+  progressPercentage: number;
+  estimatedCompletionDate?: Date;
+  budgetAllocated?: number;
+  budgetSpent?: number;
+}
+
+/**
+ * Goal - Strategic initiative that contributes to Portfolio Objectives
+ * Typically spans 1-3 quarters
+ */
+export interface Goal {
+  id: string;
+  portfolioObjectiveId?: string; // Links to parent portfolio objective
+  name: string;
+  description: string;
+  status: 'draft' | 'planned' | 'in-progress' | 'completed' | 'cancelled';
+  priority: Priority;
+  owner: string;
+  startDate: Date;
+  targetDate: Date;
+  completedDate?: Date;
+  linkedFeatures: string[]; // Feature IDs
+  successCriteria: string[];
+  metrics: GoalMetrics;
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface GoalMetrics {
+  totalFeatures: number;
+  completedFeatures: number;
+  progressPercentage: number;
+  blockers: number;
+  estimatedCompletionDate?: Date;
+}
+
+/**
+ * Feature - Large body of work that delivers business value
+ * Typically spans 1-3 sprints and contains multiple epics
+ */
+export interface Feature {
+  id: string;
+  goalId?: string; // Links to parent goal
+  name: string;
+  description: string;
+  status: 'backlog' | 'planned' | 'in-progress' | 'testing' | 'done' | 'cancelled';
+  priority: Priority;
+  owner: string;
+  startDate?: Date;
+  targetDate?: Date;
+  completedDate?: Date;
+  linkedEpics: string[]; // Epic IDs
+  acceptanceCriteria: string[];
+  businessValue: number; // 1-100 scale
+  effort: number; // Story points or effort estimate
+  testCoverageTarget?: number; // Percentage
+  metrics: FeatureMetrics;
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface FeatureMetrics {
+  totalEpics: number;
+  completedEpics: number;
+  totalStories: number;
+  completedStories: number;
+  totalStoryPoints: number;
+  completedStoryPoints: number;
+  progressPercentage: number;
+  testCoveragePercentage: number;
+  blockers: number;
+}
+
+/**
+ * Epic - Collection of related user stories
+ * Typically delivered within 1-2 sprints
+ */
+export interface Epic {
+  id: string;
+  featureId?: string; // Links to parent feature
+  boardId: string; // Links to agile board
+  name: string;
+  description: string;
+  status: 'backlog' | 'planned' | 'in-progress' | 'testing' | 'done' | 'cancelled';
+  priority: Priority;
+  owner: string;
+  startDate?: Date;
+  targetDate?: Date;
+  completedDate?: Date;
+  linkedStories: string[]; // Story IDs
+  acceptanceCriteria: string[];
+  estimate: number; // Total story points
+  metrics: EpicMetrics;
+  tags: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface EpicMetrics {
+  totalStories: number;
+  completedStories: number;
+  totalStoryPoints: number;
+  completedStoryPoints: number;
+  progressPercentage: number;
+  testCoveragePercentage: number;
+  blockers: number;
+}
+
 export interface AgileBoard {
   id: string;
   name: string;
@@ -374,6 +519,7 @@ export interface Sprint {
   endDate: Date;
   stories: Story[];
   velocity?: number; // Completed story points
+  capacity?: number; // Team capacity in story points
   createdAt: Date;
 }
 
@@ -381,6 +527,7 @@ export interface Story {
   id: string;
   boardId: string;
   sprintId?: string; // null if in backlog
+  epicId?: string; // Links to parent epic
   title: string;
   description?: string;
   type: StoryType;
@@ -390,12 +537,14 @@ export interface Story {
   assignee?: string;
   reporter: string;
   tags: string[];
+  acceptanceCriteria: string[]; // Added for consistency
   tasks: Task[];
   testLinks: TestLink[];
   repositoryLinks: RepositoryLink[];
   comments: Comment[];
   createdAt: Date;
   updatedAt: Date;
+  completedAt?: Date;
 }
 
 export interface Task {
@@ -481,6 +630,10 @@ export interface AgileBoardConfig {
   enabled: boolean;
   defaultBoard?: string;
   boards: AgileBoard[];
+  portfolioObjectives: PortfolioObjective[];
+  goals: Goal[];
+  features: Feature[];
+  epics: Epic[];
   gitOpsIntegration: boolean;
   autoLinkTests: boolean;
   autoLinkCommits: boolean;
@@ -492,6 +645,76 @@ export interface NotificationSettings {
   sprintEndReminder: boolean;
   storyAssigned: boolean;
   testFailures: boolean;
+}
+
+/**
+ * Agile Hierarchy View - Provides full traceability from Portfolio to Task
+ */
+export interface AgileHierarchyView {
+  portfolioObjective?: PortfolioObjective;
+  goal?: Goal;
+  feature?: Feature;
+  epic?: Epic;
+  story: Story;
+  tasks: Task[];
+  tests: TestLink[];
+}
+
+/**
+ * Filter for querying agile hierarchy items
+ */
+export interface AgileHierarchyFilter {
+  portfolioObjectiveId?: string;
+  goalId?: string;
+  featureId?: string;
+  epicId?: string;
+  storyId?: string;
+  status?: string[];
+  priority?: Priority[];
+  owner?: string;
+  startDateFrom?: Date;
+  startDateTo?: Date;
+  targetDateFrom?: Date;
+  targetDateTo?: Date;
+  tags?: string[];
+}
+
+/**
+ * Complete agile metrics across all hierarchy levels
+ */
+export interface CompleteAgileMetrics {
+  portfolio: {
+    totalObjectives: number;
+    activeObjectives: number;
+    completedObjectives: number;
+    averageProgress: number;
+  };
+  goals: {
+    totalGoals: number;
+    activeGoals: number;
+    completedGoals: number;
+    averageProgress: number;
+  };
+  features: {
+    totalFeatures: number;
+    activeFeatures: number;
+    completedFeatures: number;
+    averageProgress: number;
+    averageTestCoverage: number;
+  };
+  epics: {
+    totalEpics: number;
+    activeEpics: number;
+    completedEpics: number;
+    averageProgress: number;
+  };
+  stories: {
+    totalStories: number;
+    activeStories: number;
+    completedStories: number;
+    totalStoryPoints: number;
+    completedStoryPoints: number;
+  };
 }
 
 // ========================================
