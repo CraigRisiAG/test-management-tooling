@@ -10,6 +10,11 @@ import {
 import { Logger } from '../utils/logger';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import * as AuthUtils from './auth/auth-utils';
+import * as MFA from './auth/mfa';
+import { OAuthProfile } from './auth/oauth';
+import { SAMLProfile } from './auth/saml';
+import { LDAPUser } from './auth/ldap';
 
 /**
  * User Administration Manager
@@ -115,7 +120,8 @@ export class UserManager {
   async createUser(
     email: string,
     name: string,
-    role: 'admin' | 'user' = 'user'
+    role: 'admin' | 'user' = 'user',
+    password?: string
   ): Promise<User> {
     if (this.users.has(email)) {
       throw new Error(`User with email ${email} already exists`);
@@ -128,10 +134,26 @@ export class UserManager {
       status: 'active',
       role,
       modulePermissions: new Map(),
+      authProvider: password ? 'local' : 'oauth',
+      emailVerified: false,
+      mfaEnabled: false,
+      failedLoginAttempts: 0,
       createdDate: new Date(),
       lastModified: new Date(),
       modifiedBy: this.currentUser?.email || 'system',
     };
+
+    // Hash password if provided
+    if (password) {
+      // Validate password
+      const validation = AuthUtils.validatePassword(password, undefined, { email, name });
+      if (!validation.valid) {
+        throw new Error(`Password validation failed: ${validation.errors.join(', ')}`);
+      }
+      newUser.passwordHash = await AuthUtils.hashPassword(password);
+      newUser.passwordChangedAt = new Date();
+      newUser.passwordExpiresAt = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000); // 90 days
+    }
 
     // Set default module permissions based on role
     if (role === 'admin') {
@@ -528,5 +550,323 @@ export class UserManager {
     } catch {
       return false;
     }
+  }
+
+  /**
+   * Authenticate user with email and password
+   */
+  async authenticateUser(email: string, password: string): Promise<{ user: User; token: string } | null> {
+    const user = this.users.get(email);
+
+    if (!user || !user.passwordHash) {
+      return null;
+    }
+
+    // Check if account is locked
+    if (AuthUtils.isAccountLocked(user.lockedUntil)) {
+      throw new Error('Account is locked');
+    }
+
+    // Verify password
+    const isValid = await AuthUtils.verifyPassword(password, user.passwordHash);
+
+    if (!isValid) {
+      // Increment failed attempts
+      user.failedLoginAttempts++;
+      
+      if (user.failedLoginAttempts >= 5) {
+        const lockoutDuration = AuthUtils.calculateLockoutDuration(user.failedLoginAttempts);
+        user.lockedUntil = new Date(Date.now() + lockoutDuration);
+        await this.saveUsers();
+        throw new Error('Account locked due to too many failed attempts');
+      }
+
+      await this.saveUsers();
+      return null;
+    }
+
+    // Reset failed attempts
+    user.failedLoginAttempts = 0;
+    user.lockedUntil = undefined;
+    user.lastLogin = new Date();
+    await this.saveUsers();
+
+    // Generate JWT token
+    const token = AuthUtils.generateAccessToken({
+      sub: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      permissions: Array.from(user.modulePermissions.entries()).map(
+        ([mod, perm]) => `${mod}:${perm}`
+      ),
+    });
+
+    await this.logAudit(user.id, 'login', 'success', { method: 'password' });
+
+    return { user, token };
+  }
+
+  /**
+   * Change user password
+   */
+  async changePassword(userId: string, currentPassword: string, newPassword: string): Promise<void> {
+    const user = Array.from(this.users.values()).find(u => u.id === userId);
+
+    if (!user || !user.passwordHash) {
+      throw new Error('User not found');
+    }
+
+    // Verify current password
+    const isValid = await AuthUtils.verifyPassword(currentPassword, user.passwordHash);
+
+    if (!isValid) {
+      await this.logAudit(userId, 'password_change', 'failed', { reason: 'invalid_current_password' });
+      throw new Error('Current password is incorrect');
+    }
+
+    // Validate new password
+    const validation = AuthUtils.validatePassword(newPassword, undefined, {
+      email: user.email,
+      name: user.name,
+    });
+
+    if (!validation.valid) {
+      throw new Error(`Password validation failed: ${validation.errors.join(', ')}`);
+    }
+
+    // Hash and save new password
+    user.passwordHash = await AuthUtils.hashPassword(newPassword);
+    user.passwordChangedAt = new Date();
+    user.passwordExpiresAt = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000);
+    user.lastModified = new Date();
+
+    await this.saveUsers();
+    await this.logAudit(userId, 'password_change', 'success', {});
+  }
+
+  /**
+   * Reset user password (admin or password reset flow)
+   */
+  async resetPassword(email: string, newPassword: string): Promise<void> {
+    const user = this.users.get(email);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // Validate new password
+    const validation = AuthUtils.validatePassword(newPassword, undefined, {
+      email: user.email,
+      name: user.name,
+    });
+
+    if (!validation.valid) {
+      throw new Error(`Password validation failed: ${validation.errors.join(', ')}`);
+    }
+
+    // Hash and save new password
+    user.passwordHash = await AuthUtils.hashPassword(newPassword);
+    user.passwordChangedAt = new Date();
+    user.passwordExpiresAt = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000);
+    user.failedLoginAttempts = 0;
+    user.lockedUntil = undefined;
+    user.lastModified = new Date();
+
+    await this.saveUsers();
+    await this.logAudit(user.id, 'password_reset', 'success', {});
+  }
+
+  /**
+   * Enable MFA for user
+   */
+  async enableMFA(userId: string): Promise<{ secret: string; qrCode: string; backupCodes: string[] }> {
+    const user = Array.from(this.users.values()).find(u => u.id === userId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const mfaSecret = await MFA.generateMFASecret(user.email);
+
+    user.mfaSecret = mfaSecret.secret;
+    user.mfaEnabled = true;
+    user.lastModified = new Date();
+
+    await this.saveUsers();
+    await this.logAudit(userId, 'mfa_enabled', 'success', {});
+
+    return mfaSecret;
+  }
+
+  /**
+   * Verify MFA code
+   */
+  async verifyMFA(userId: string, code: string): Promise<boolean> {
+    const user = Array.from(this.users.values()).find(u => u.id === userId);
+
+    if (!user || !user.mfaSecret) {
+      return false;
+    }
+
+    const isValid = MFA.verifyTOTP(user.mfaSecret, code);
+
+    await this.logAudit(userId, 'mfa_verify', isValid ? 'success' : 'failed', {});
+
+    return isValid;
+  }
+
+  /**
+   * Disable MFA for user
+   */
+  async disableMFA(userId: string): Promise<void> {
+    const user = Array.from(this.users.values()).find(u => u.id === userId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    user.mfaEnabled = false;
+    user.mfaSecret = undefined;
+    user.lastModified = new Date();
+
+    await this.saveUsers();
+    await this.logAudit(userId, 'mfa_disabled', 'success', {});
+  }
+
+  /**
+   * Create user from OAuth profile
+   */
+  async createFromOAuth(profile: OAuthProfile): Promise<User> {
+    if (this.users.has(profile.email)) {
+      throw new Error(`User with email ${profile.email} already exists`);
+    }
+
+    const newUser: User = {
+      id: `USER-${Date.now()}`,
+      email: profile.email,
+      name: profile.name,
+      status: 'active',
+      role: 'user',
+      modulePermissions: new Map(),
+      authProvider: 'oauth',
+      emailVerified: true,
+      mfaEnabled: false,
+      failedLoginAttempts: 0,
+      createdDate: new Date(),
+      lastModified: new Date(),
+      modifiedBy: 'oauth',
+    };
+
+    this.users.set(newUser.email, newUser);
+    await this.saveUsers();
+    await this.logAudit(newUser.id, 'user_created', 'success', { method: 'oauth', provider: profile.provider });
+
+    return newUser;
+  }
+
+  /**
+   * Create user from SAML profile
+   */
+  async createFromSAML(profile: SAMLProfile): Promise<User> {
+    if (this.users.has(profile.email)) {
+      throw new Error(`User with email ${profile.email} already exists`);
+    }
+
+    const newUser: User = {
+      id: `USER-${Date.now()}`,
+      email: profile.email,
+      name: profile.displayName || `${profile.firstName} ${profile.lastName}`,
+      status: 'active',
+      role: 'user',
+      modulePermissions: new Map(),
+      authProvider: 'saml',
+      emailVerified: true,
+      mfaEnabled: false,
+      failedLoginAttempts: 0,
+      createdDate: new Date(),
+      lastModified: new Date(),
+      modifiedBy: 'saml',
+    };
+
+    this.users.set(newUser.email, newUser);
+    await this.saveUsers();
+    await this.logAudit(newUser.id, 'user_created', 'success', { method: 'saml' });
+
+    return newUser;
+  }
+
+  /**
+   * Find or create user from LDAP
+   */
+  async findOrCreateFromLDAP(ldapUser: LDAPUser): Promise<User> {
+    let user = this.users.get(ldapUser.email);
+
+    if (!user) {
+      user = {
+        id: `USER-${Date.now()}`,
+        email: ldapUser.email,
+        name: ldapUser.displayName || `${ldapUser.firstName} ${ldapUser.lastName}`,
+        status: 'active',
+        role: 'user',
+        modulePermissions: new Map(),
+        authProvider: 'ldap',
+        emailVerified: true,
+        mfaEnabled: false,
+        failedLoginAttempts: 0,
+        createdDate: new Date(),
+        lastModified: new Date(),
+        modifiedBy: 'ldap',
+      };
+
+      this.users.set(user.email, user);
+      await this.saveUsers();
+      await this.logAudit(user.id, 'user_created', 'success', { method: 'ldap' });
+    }
+
+    return user;
+  }
+
+  /**
+   * Find user by email
+   */
+  async findByEmail(email: string): Promise<User | undefined> {
+    return this.users.get(email);
+  }
+
+  /**
+   * Lock user account
+   */
+  async lockAccount(userId: string, reason: string): Promise<void> {
+    const user = Array.from(this.users.values()).find(u => u.id === userId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    user.status = 'suspended';
+    user.lastModified = new Date();
+
+    await this.saveUsers();
+    await this.logAudit(userId, 'account_locked', 'success', { reason });
+  }
+
+  /**
+   * Unlock user account
+   */
+  async unlockAccount(userId: string): Promise<void> {
+    const user = Array.from(this.users.values()).find(u => u.id === userId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    user.status = 'active';
+    user.failedLoginAttempts = 0;
+    user.lockedUntil = undefined;
+    user.lastModified = new Date();
+
+    await this.saveUsers();
+    await this.logAudit(userId, 'account_unlocked', 'success', {});
   }
 }

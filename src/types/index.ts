@@ -762,8 +762,26 @@ export interface User {
   status: 'active' | 'inactive' | 'suspended';
   role: 'admin' | 'user'; // System-wide role
   modulePermissions: Map<ModuleName, UserRole>; // Per-module roles
+  
+  // Authentication fields
+  passwordHash?: string; // NULL for OAuth/SAML users
+  authProvider: 'local' | 'oauth' | 'saml' | 'ldap';
+  emailVerified: boolean;
+  
+  // MFA fields
+  mfaEnabled: boolean;
+  mfaSecret?: string;
+  
+  // Security fields
+  passwordChangedAt?: Date;
+  passwordExpiresAt?: Date;
+  failedLoginAttempts: number;
+  lockedUntil?: Date;
+  
+  // Timestamps
   createdDate: Date;
   lastLogin?: Date;
+  lastLoginIp?: string;
   lastModified: Date;
   modifiedBy: string;
 }
