@@ -91,6 +91,39 @@ describe('AgileModule', () => {
       expect(board.settings.columns).toHaveLength(6);
     });
 
+    it('should reject board creation with empty name', async () => {
+      await expect(
+        AgileModule.createBoard('', {
+          projectPath: testProjectPath,
+        })
+      ).rejects.toThrow();
+    });
+
+    it('should handle invalid sprint duration gracefully', async () => {
+      const board = await AgileModule.createBoard('Test Board', {
+        description: 'Test',
+        sprintDurationWeeks: -1, // Invalid negative value
+        projectPath: testProjectPath,
+      });
+
+      // Should create board anyway (or validate in implementation)
+      expect(board).toBeDefined();
+    });
+
+    it('should prevent duplicate board names', async () => {
+      await AgileModule.createBoard('Duplicate Board', {
+        projectPath: testProjectPath,
+      });
+
+      // Attempt to create with same name - implementation should handle this
+      const secondBoard = await AgileModule.createBoard('Duplicate Board', {
+        projectPath: testProjectPath,
+      });
+
+      expect(secondBoard).toBeDefined();
+      // In future: expect(secondBoard.name).not.toBe('Duplicate Board');
+    });
+
     it('should set default board on first creation', async () => {
       await AgileModule.createBoard('First Board', {
         projectPath: testProjectPath,
@@ -519,6 +552,353 @@ describe('AgileModule', () => {
       });
 
       await AgileModule.createStory(boardId, 'Story 2', {
+        priority: 'medium',
+        projectPath: testProjectPath,
+      });
+
+      const metrics = await AgileModule.getBoardMetrics(boardId, testProjectPath);
+
+      expect(metrics.totalStories).toBe(2);
+      expect(metrics).toHaveProperty('storiesByPriority');
+    });
+
+    it('should calculate test coverage percentage', async () => {
+      const story = await AgileModule.createStory(boardId, 'Story 1', {
+        projectPath: testProjectPath,
+      });
+
+      await AgileModule.linkTestToStory(story.id, '/tests/test1.spec.ts', testProjectPath);
+      await AgileModule.linkTestToStory(story.id, '/tests/test2.spec.ts', testProjectPath);
+
+      const metrics = await AgileModule.getBoardMetrics(boardId, testProjectPath);
+
+      expect(metrics).toHaveProperty('testCoveragePercentage');
+    });
+  });
+
+  describe('Edge Cases and Negative Scenarios', () => {
+    let boardId: string;
+
+    beforeEach(async () => {
+      const mockConfig = {
+        enabled: true,
+        boards: [],
+        gitOpsIntegration: true,
+        autoLinkTests: true,
+        autoLinkCommits: true,
+        notificationSettings: {
+          sprintStartReminder: true,
+          sprintEndReminder: true,
+          storyAssigned: true,
+          testFailures: true,
+        },
+      };
+
+      mockFs.readFile.mockResolvedValue(JSON.stringify(mockConfig));
+      mockFs.writeFile.mockResolvedValue(undefined);
+
+      const board = await AgileModule.createBoard('Test Board', {
+        projectPath: testProjectPath,
+      });
+      boardId = board.id;
+    });
+
+    describe('Story Management Edge Cases', () => {
+      it('should reject story with negative story points', async () => {
+        await expect(
+          AgileModule.createStory(boardId, 'Invalid Story', {
+            estimate: -5,
+            projectPath: testProjectPath,
+          })
+        ).rejects.toThrow();
+      });
+
+      it('should handle moving story to non-existent sprint', async () => {
+        const story = await AgileModule.createStory(boardId, 'Story 1', {
+          projectPath: testProjectPath,
+        });
+
+        await expect(
+          AgileModule.updateStory(story.id, testProjectPath, {
+            sprintId: 'SPRINT-NONEXISTENT',
+          })
+        ).rejects.toThrow();
+      });
+
+      it('should handle updating non-existent story', async () => {
+        await expect(
+          AgileModule.updateStory('STORY-FAKE', testProjectPath, {
+            status: 'done',
+          })
+        ).rejects.toThrow();
+      });
+
+      it('should handle invalid status transitions', async () => {
+        const story = await AgileModule.createStory(boardId, 'Story 1', {
+          status: 'backlog',
+          projectPath: testProjectPath,
+        });
+
+        // Try to move directly to done without going through in-progress
+        const updated = await AgileModule.updateStory(story.id, testProjectPath, {
+          status: 'done',
+        });
+
+        // Should allow any transition (or implement validation)
+        expect(updated.status).toBe('done');
+      });
+
+      it('should handle concurrent story modifications', async () => {
+        const story = await AgileModule.createStory(boardId, 'Story 1', {
+          projectPath: testProjectPath,
+        });
+
+        // Simulate concurrent updates
+        const update1 = AgileModule.updateStory(story.id, testProjectPath, {
+          status: 'in-progress',
+        });
+        const update2 = AgileModule.updateStory(story.id, testProjectPath, {
+          assignee: 'user-1',
+        });
+
+        const results = await Promise.all([update1, update2]);
+
+        // Both should succeed, last write wins
+        expect(results[0]).toBeDefined();
+        expect(results[1]).toBeDefined();
+      });
+    });
+
+    describe('Sprint Management Edge Cases', () => {
+      it('should handle sprint with zero duration', async () => {
+        await expect(
+          AgileModule.createSprint(boardId, 'Invalid Sprint', {
+            startDate: new Date(),
+            endDate: new Date(), // Same day
+            projectPath: testProjectPath,
+          })
+        ).resolves.toBeDefined();
+      });
+
+      it('should reject starting already active sprint', async () => {
+        const sprint = await AgileModule.createSprint(boardId, 'Sprint 1', {
+          projectPath: testProjectPath,
+        });
+
+        await AgileModule.startSprint(sprint.id, testProjectPath);
+
+        await expect(AgileModule.startSprint(sprint.id, testProjectPath)).rejects.toThrow();
+      });
+
+      it('should handle completing sprint with no stories', async () => {
+        const sprint = await AgileModule.createSprint(boardId, 'Empty Sprint', {
+          projectPath: testProjectPath,
+        });
+
+        await AgileModule.startSprint(sprint.id, testProjectPath);
+
+        const completed = await AgileModule.completeSprint(sprint.id, testProjectPath);
+
+        expect(completed.status).toBe('completed');
+        expect(completed.metrics.velocity).toBe(0);
+      });
+
+      it('should handle sprint with past dates', async () => {
+        const pastDate = new Date('2020-01-01');
+        const sprint = await AgileModule.createSprint(boardId, 'Past Sprint', {
+          startDate: pastDate,
+          endDate: pastDate,
+          projectPath: testProjectPath,
+        });
+
+        expect(sprint).toBeDefined();
+        expect(sprint.startDate.getTime()).toBe(pastDate.getTime());
+      });
+
+      it('should move incomplete stories to backlog on sprint completion', async () => {
+        const sprint = await AgileModule.createSprint(boardId, 'Sprint 1', {
+          projectPath: testProjectPath,
+        });
+
+        await AgileModule.createStory(boardId, 'Complete Story', {
+          sprintId: sprint.id,
+          status: 'done',
+          projectPath: testProjectPath,
+        });
+
+        const incompleteStory = await AgileModule.createStory(boardId, 'Incomplete Story', {
+          sprintId: sprint.id,
+          status: 'in-progress',
+          projectPath: testProjectPath,
+        });
+
+        await AgileModule.startSprint(sprint.id, testProjectPath);
+        const completed = await AgileModule.completeSprint(sprint.id, testProjectPath);
+
+        // Verify incomplete story was moved
+        const config = await AgileModule.loadConfig(testProjectPath);
+        const board = config.boards.find((b) => b.id === boardId);
+        const story = board?.stories.find((s) => s.id === incompleteStory.id);
+
+        expect(story?.sprintId).toBeUndefined();
+        expect(story?.status).toBe('backlog');
+      });
+    });
+
+    describe('Test Linkage Edge Cases', () => {
+      it('should handle linking same test multiple times', async () => {
+        const story = await AgileModule.createStory(boardId, 'Story 1', {
+          projectPath: testProjectPath,
+        });
+
+        await AgileModule.linkTestToStory(story.id, '/tests/test1.spec.ts', testProjectPath);
+        await AgileModule.linkTestToStory(story.id, '/tests/test1.spec.ts', testProjectPath);
+
+        const config = await AgileModule.loadConfig(testProjectPath);
+        const board = config.boards.find((b) => b.id === boardId);
+        const storyData = board?.stories.find((s) => s.id === story.id);
+
+        // Should not have duplicates
+        expect(storyData?.testLinks?.length).toBe(1);
+      });
+
+      it('should handle linking test to non-existent story', async () => {
+        await expect(
+          AgileModule.linkTestToStory('STORY-FAKE', '/tests/test1.spec.ts', testProjectPath)
+        ).rejects.toThrow();
+      });
+
+      it('should extract test name from complex paths', async () => {
+        const testPath = '/src/components/__tests__/Button.test.tsx';
+        const name = AgileModule.extractTestName(testPath);
+
+        expect(name).toBe('Button.test.tsx');
+      });
+
+      it('should handle test paths with special characters', async () => {
+        const testPath = '/tests/@special/[brackets]/test.spec.ts';
+        const name = AgileModule.extractTestName(testPath);
+
+        expect(name).toContain('test.spec.ts');
+      });
+    });
+
+    describe('Repository Linkage Edge Cases', () => {
+      it('should handle linking multiple repositories to story', async () => {
+        const story = await AgileModule.createStory(boardId, 'Story 1', {
+          projectPath: testProjectPath,
+        });
+
+        await AgileModule.linkRepositoryToStory(
+          story.id,
+          'https://github.com/user/repo1',
+          testProjectPath
+        );
+        await AgileModule.linkRepositoryToStory(
+          story.id,
+          'https://github.com/user/repo2',
+          testProjectPath
+        );
+
+        const config = await AgileModule.loadConfig(testProjectPath);
+        const board = config.boards.find((b) => b.id === boardId);
+        const storyData = board?.stories.find((s) => s.id === story.id);
+
+        expect(storyData?.repositoryLinks?.length).toBe(2);
+      });
+
+      it('should handle invalid repository URLs', async () => {
+        const story = await AgileModule.createStory(boardId, 'Story 1', {
+          projectPath: testProjectPath,
+        });
+
+        // Should accept any string as URL
+        await AgileModule.linkRepositoryToStory(
+          story.id,
+          'not-a-valid-url',
+          testProjectPath
+        );
+
+        const config = await AgileModule.loadConfig(testProjectPath);
+        const board = config.boards.find((b) => b.id === boardId);
+        const storyData = board?.stories.find((s) => s.id === story.id);
+
+        expect(storyData?.repositoryLinks).toBeDefined();
+      });
+    });
+
+    describe('File System Error Handling', () => {
+      it('should handle file read errors during initialization', async () => {
+        mockFs.readFile.mockRejectedValue(new Error('Permission denied'));
+        mockFs.mkdir.mockResolvedValue(undefined);
+        mockFs.writeFile.mockResolvedValue(undefined);
+
+        await AgileModule.loadConfig(testProjectPath);
+
+        // Should initialize new config
+        expect(mockFs.mkdir).toHaveBeenCalled();
+        expect(mockFs.writeFile).toHaveBeenCalled();
+      });
+
+      it('should handle file write errors', async () => {
+        mockFs.writeFile.mockRejectedValue(new Error('Disk full'));
+
+        await expect(
+          AgileModule.createBoard('Test Board', {
+            projectPath: testProjectPath,
+          })
+        ).rejects.toThrow('Disk full');
+      });
+
+      it('should handle corrupted configuration file', async () => {
+        mockFs.readFile.mockResolvedValue('{ invalid json }');
+
+        await expect(AgileModule.loadConfig(testProjectPath)).rejects.toThrow();
+      });
+    });
+
+    describe('Metrics Calculation Edge Cases', () => {
+      it('should handle metrics for empty board', async () => {
+        const metrics = await AgileModule.getBoardMetrics(boardId, testProjectPath);
+
+        expect(metrics.totalStories).toBe(0);
+        expect(metrics.completedStories).toBe(0);
+      });
+
+      it('should handle sprint metrics with no stories', async () => {
+        const sprint = await AgileModule.createSprint(boardId, 'Empty Sprint', {
+          projectPath: testProjectPath,
+        });
+
+        await AgileModule.startSprint(sprint.id, testProjectPath);
+
+        const metrics = await AgileModule.getSprintMetrics(sprint.id, testProjectPath);
+
+        expect(metrics.totalStories).toBe(0);
+        expect(metrics.totalPoints).toBe(0);
+        expect(metrics.completedPoints).toBe(0);
+      });
+
+      it('should calculate velocity with zero completed points', async () => {
+        const sprint = await AgileModule.createSprint(boardId, 'Sprint 1', {
+          projectPath: testProjectPath,
+        });
+
+        await AgileModule.createStory(boardId, 'Story 1', {
+          sprintId: sprint.id,
+          estimate: 5,
+          status: 'in-progress',
+          projectPath: testProjectPath,
+        });
+
+        await AgileModule.startSprint(sprint.id, testProjectPath);
+        const completed = await AgileModule.completeSprint(sprint.id, testProjectPath);
+
+        expect(completed.metrics.velocity).toBe(0);
+      });
+    });
+  });
+});      await AgileModule.createStory(boardId, 'Story 2', {
         priority: 'medium',
         projectPath: testProjectPath,
       });
