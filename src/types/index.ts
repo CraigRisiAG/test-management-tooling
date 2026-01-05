@@ -819,3 +819,287 @@ export interface UserMetrics {
   recentLogins: number;
   moduleAccessBreakdown: Record<ModuleName, Record<UserRole, number>>;
 }
+// ========================================
+// Team & Organizational Hierarchy Types
+// ========================================
+
+/**
+ * Permission levels for resources
+ */
+export type PermissionLevel = 'none' | 'read' | 'write' | 'admin';
+
+/**
+ * Resource types that can be permission-controlled
+ */
+export type ResourceType = 
+  | 'story'
+  | 'epic'
+  | 'feature'
+  | 'goal'
+  | 'portfolio'
+  | 'test'
+  | 'issue'
+  | 'board'
+  | 'sprint'
+  | 'repository';
+
+/**
+ * Organization - Highest level of organizational structure
+ */
+export interface Organization {
+  id: string;
+  name: string;
+  description?: string;
+  status: 'active' | 'inactive';
+  segments: string[]; // Segment IDs
+  settings: OrganizationSettings;
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy: string;
+}
+
+export interface OrganizationSettings {
+  allowCrossSegmentVisibility: boolean;
+  defaultPermissionLevel: PermissionLevel;
+  enableTeamIsolation: boolean;
+  requireApprovalForCrossTeamAccess: boolean;
+}
+
+/**
+ * Segment - Business unit or division within organization
+ * Examples: Engineering, Product, Marketing, Sales
+ */
+export interface Segment {
+  id: string;
+  organizationId: string;
+  name: string;
+  description?: string;
+  status: 'active' | 'inactive';
+  departments: string[]; // Department IDs
+  segmentLead: string; // User ID
+  settings: SegmentSettings;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface SegmentSettings {
+  allowCrossDepartmentVisibility: boolean;
+  defaultPermissionLevel: PermissionLevel;
+}
+
+/**
+ * Department - Functional group within segment
+ * Examples: Backend Engineering, Frontend Engineering, QA, DevOps
+ */
+export interface Department {
+  id: string;
+  segmentId: string;
+  name: string;
+  description?: string;
+  status: 'active' | 'inactive';
+  teams: string[]; // Team IDs
+  departmentHead: string; // User ID
+  settings: DepartmentSettings;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface DepartmentSettings {
+  allowCrossTeamVisibility: boolean;
+  defaultPermissionLevel: PermissionLevel;
+  requireCodeReview: boolean;
+}
+
+/**
+ * Team - Smallest organizational unit
+ * Examples: Payments Team, User Auth Team, Mobile Team
+ */
+export interface Team {
+  id: string;
+  departmentId: string;
+  name: string;
+  description?: string;
+  status: 'active' | 'inactive';
+  teamLead: string; // User ID
+  members: string[]; // User IDs
+  boards: string[]; // Board IDs owned by this team
+  repositories: string[]; // Repository IDs owned by this team
+  settings: TeamSettings;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface TeamSettings {
+  defaultPermissionLevel: PermissionLevel;
+  allowExternalContributors: boolean;
+  requireApprovalForNewMembers: boolean;
+}
+
+/**
+ * Team Member with role and permissions
+ */
+export interface TeamMember {
+  id: string;
+  userId: string;
+  teamId: string;
+  role: 'member' | 'lead' | 'admin';
+  permissions: TeamMemberPermissions;
+  joinedAt: Date;
+  status: 'active' | 'inactive' | 'pending';
+}
+
+export interface TeamMemberPermissions {
+  canCreateStories: boolean;
+  canCreateEpics: boolean;
+  canCreateFeatures: boolean;
+  canAssignWork: boolean;
+  canManageBoard: boolean;
+  canManageRepositories: boolean;
+  canInviteMembers: boolean;
+  canViewAllTeamWork: boolean;
+  canEditAllTeamWork: boolean;
+}
+
+/**
+ * Resource Permission - Granular permission for specific resources
+ */
+export interface ResourcePermission {
+  id: string;
+  resourceType: ResourceType;
+  resourceId: string;
+  userId: string;
+  permissionLevel: PermissionLevel;
+  grantedBy: string; // User ID who granted permission
+  grantedAt: Date;
+  expiresAt?: Date;
+  reason?: string;
+}
+
+/**
+ * Permission Scope - Defines access scope for a user
+ */
+export interface PermissionScope {
+  userId: string;
+  organizationAccess: {
+    organizationId: string;
+    level: PermissionLevel;
+  }[];
+  segmentAccess: {
+    segmentId: string;
+    level: PermissionLevel;
+  }[];
+  departmentAccess: {
+    departmentId: string;
+    level: PermissionLevel;
+  }[];
+  teamAccess: {
+    teamId: string;
+    level: PermissionLevel;
+    role: 'member' | 'lead' | 'admin';
+  }[];
+  resourcePermissions: ResourcePermission[];
+}
+
+/**
+ * Access Request - For requesting access to teams or resources
+ */
+export interface AccessRequest {
+  id: string;
+  requesterId: string;
+  requesterName: string;
+  requestType: 'team' | 'department' | 'segment' | 'resource';
+  targetId: string; // Team/Department/Segment/Resource ID
+  targetName: string;
+  requestedPermission: PermissionLevel;
+  reason: string;
+  status: 'pending' | 'approved' | 'rejected' | 'expired';
+  approver?: string;
+  approvedAt?: Date;
+  rejectionReason?: string;
+  createdAt: Date;
+  expiresAt?: Date;
+}
+
+/**
+ * Enhanced User with organizational structure
+ */
+export interface EnhancedUser extends User {
+  organizationId?: string;
+  primaryTeamId?: string;
+  teams: string[]; // All team IDs user belongs to
+  departments: string[]; // Derived from teams
+  segments: string[]; // Derived from departments
+  permissionScope: PermissionScope;
+}
+
+/**
+ * Organizational hierarchy view for a user
+ */
+export interface OrganizationalHierarchyView {
+  organization?: Organization;
+  segments: Segment[];
+  departments: Department[];
+  teams: Team[];
+  userTeamRoles: Map<string, 'member' | 'lead' | 'admin'>;
+}
+
+/**
+ * Permission check result
+ */
+export interface PermissionCheckResult {
+  hasAccess: boolean;
+  permissionLevel: PermissionLevel;
+  source: 'organization' | 'segment' | 'department' | 'team' | 'resource' | 'none';
+  reason?: string;
+}
+
+/**
+ * Team metrics
+ */
+export interface TeamMetrics {
+  teamId: string;
+  memberCount: number;
+  activeMembers: number;
+  totalStories: number;
+  completedStories: number;
+  totalStoryPoints: number;
+  completedStoryPoints: number;
+  velocity: number;
+  averageCycleTime: number;
+  testCoverage: number;
+  openIssues: number;
+}
+
+/**
+ * Department metrics
+ */
+export interface DepartmentMetrics {
+  departmentId: string;
+  teamCount: number;
+  totalMembers: number;
+  activeMembers: number;
+  teams: TeamMetrics[];
+  aggregateMetrics: {
+    totalStories: number;
+    completedStories: number;
+    averageVelocity: number;
+    averageTestCoverage: number;
+  };
+}
+
+/**
+ * Segment metrics
+ */
+export interface SegmentMetrics {
+  segmentId: string;
+  departmentCount: number;
+  teamCount: number;
+  totalMembers: number;
+  departments: DepartmentMetrics[];
+  aggregateMetrics: {
+    totalStories: number;
+    completedStories: number;
+    averageVelocity: number;
+    averageTestCoverage: number;
+  };
+}

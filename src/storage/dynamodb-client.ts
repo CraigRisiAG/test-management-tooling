@@ -41,7 +41,14 @@ export type EntityType =
   | 'ISSUE' 
   | 'USER' 
   | 'SPRINT' 
-  | 'BOARD';
+  | 'BOARD'
+  | 'ORGANIZATION'
+  | 'SEGMENT'
+  | 'DEPARTMENT'
+  | 'TEAM'
+  | 'TEAM_MEMBER'
+  | 'RESOURCE_PERMISSION'
+  | 'ACCESS_REQUEST';
 
 export class DynamoDBClient {
   private client: AWSDynamoDBClient;
