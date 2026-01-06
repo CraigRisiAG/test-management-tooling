@@ -5,10 +5,10 @@
 
 import request from 'supertest';
 import express from 'express';
-import { UserManager } from '../modules/user-manager';
-import { AuthUtils } from '../modules/auth/auth-utils';
-import { MFAService } from '../modules/auth/mfa';
-import { APIKeyService } from '../modules/auth/api-keys';
+import { UserManager } from '../user-manager';
+import { AuthUtils } from './auth-utils';
+import { MFAService } from './mfa';
+import { APIKeyService } from './api-keys';
 import { authMiddleware } from '../middleware/auth.middleware';
 import authRoutes from '../routes/auth.routes';
 

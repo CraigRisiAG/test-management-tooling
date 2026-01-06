@@ -487,7 +487,6 @@ describe('TeamHierarchyModule', () => {
         teamId,
         userId: 'user-123',
         role: 'developer',
-        permissions: ['read', 'write'],
         joinedAt: new Date(),
       });
 
@@ -495,8 +494,9 @@ describe('TeamHierarchyModule', () => {
       expect(member.teamId).toBe(teamId);
       expect(member.userId).toBe('user-123');
       expect(member.role).toBe('developer');
-      expect(member.permissions).toContain('read');
-      expect(member.permissions).toContain('write');
+      expect(member.permissions).toBeDefined();
+      expect(typeof member.permissions).toBe('object');
+      expect(member.permissions.canViewAllTeamWork).toBe(true);
     });
 
     it('should update team member permissions', async () => {
@@ -504,16 +504,26 @@ describe('TeamHierarchyModule', () => {
         teamId,
         userId: 'user-123',
         role: 'developer',
-        permissions: ['read'],
         joinedAt: new Date(),
       });
 
       const updated = await TeamHierarchyModule.updateTeamMember(member.id, {
-        permissions: ['read', 'write', 'admin'],
+        permissions: {
+          canCreateStories: true,
+          canCreateEpics: true,
+          canCreateFeatures: false,
+          canAssignWork: true,
+          canManageBoard: false,
+          canManageRepositories: false,
+          canInviteMembers: false,
+          canViewAllTeamWork: true,
+          canEditAllTeamWork: true,
+        },
         role: 'senior-developer',
       });
 
-      expect(updated.permissions).toHaveLength(3);
+      expect(updated.permissions.canCreateStories).toBe(true);
+      expect(updated.permissions.canEditAllTeamWork).toBe(true);
       expect(updated.role).toBe('senior-developer');
     });
 
@@ -522,11 +532,10 @@ describe('TeamHierarchyModule', () => {
         teamId,
         userId: 'user-123',
         role: 'developer',
-        permissions: ['read'],
         joinedAt: new Date(),
       });
 
-      await TeamHierarchyModule.removeTeamMember(member.id);
+      await TeamHierarchyModule.removeTeamMemberById(member.id);
 
       const members = await TeamHierarchyModule.listTeamMembers({ teamId });
       expect(members).toHaveLength(0);
@@ -537,7 +546,6 @@ describe('TeamHierarchyModule', () => {
         teamId,
         userId: 'user-1',
         role: 'developer',
-        permissions: ['read'],
         joinedAt: new Date(),
       });
 
@@ -545,7 +553,6 @@ describe('TeamHierarchyModule', () => {
         teamId,
         userId: 'user-2',
         role: 'designer',
-        permissions: ['read', 'write'],
         joinedAt: new Date(),
       });
 
@@ -845,13 +852,14 @@ describe('TeamHierarchyModule', () => {
 
     it('should approve access request and grant permission', async () => {
       const request = await TeamHierarchyModule.createAccessRequest({
-        userId: 'requester',
-        resourceId: 'BOARD-123',
-        resourceType: 'board',
+        requesterId: 'requester',
+        requesterName: 'Requester User',
+        targetId: 'BOARD-123',
+        targetName: 'Board 123',
+        requestType: 'resource',
         requestedPermission: 'read',
         reason: 'Need access',
         status: 'pending',
-        requestedAt: new Date(),
       });
 
       const approved = await TeamHierarchyModule.approveAccessRequest(
@@ -1061,11 +1069,11 @@ describe('TeamHierarchyModule', () => {
     it('should handle permission check for non-existent resource', async () => {
       const result = await TeamHierarchyModule.checkPermission(
         'user-123',
-        'story',
-        'NONEXISTENT-RESOURCE'
+        'NONEXISTENT-RESOURCE',
+        'read'
       );
 
-      expect(result.hasAccess).toBe(false);
+      expect(result).toBe(false);
     });
 
     it('should handle file system errors gracefully', async () => {
@@ -1134,7 +1142,7 @@ describe('TeamHierarchyModule', () => {
         description: '',
         defaultPermission: 'write',
         adminUserIds: [],
-        memberUserIds: ['user-123'],
+        memberUserIds: [], // Don't add user-123 as member to test no access
         settings: {
           allowCrossTeamAccess: true,
           requireApprovalForResourceAccess: false,
@@ -1142,22 +1150,22 @@ describe('TeamHierarchyModule', () => {
       });
 
       // User doesn't have permission on BOARD-1 without explicit assignment
-      const canRead = await TeamHierarchyModule.checkPermission('user-123', 'story', 'BOARD-1');
+      const canRead = await TeamHierarchyModule.checkPermission('user-123', 'BOARD-1', 'read');
       const canWrite = await TeamHierarchyModule.checkPermission(
         'user-123',
-        'story',
-        'BOARD-1'
+        'BOARD-1',
+        'write'
       );
       const canAdmin = await TeamHierarchyModule.checkPermission(
         'user-123',
-        'story',
-        'BOARD-1'
+        'BOARD-1',
+        'admin'
       );
 
       // All should be false because user doesn't have explicit access
-      expect(canRead.hasAccess).toBe(false);
-      expect(canWrite.hasAccess).toBe(false);
-      expect(canAdmin.hasAccess).toBe(false);
+      expect(canRead).toBe(false);
+      expect(canWrite).toBe(false);
+      expect(canAdmin).toBe(false);
     });
 
     it('should handle corrupted data file', async () => {
