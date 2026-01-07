@@ -446,7 +446,7 @@ TypeScript/Node.js offers similar performance to Bash for I/O-bound operations:
 ## Future Enhancements
 
 - [ ] Add setup module with interactive prompts
-- [ ] Implement backup/restore modules
+- [ ] Implement backup/restore modules (legacy removed - use native Docker volumes/external tools)
 - [ ] Add upgrade module with patch management
 - [ ] Create REST API for programmatic access
 - [ ] Add web UI for visual management

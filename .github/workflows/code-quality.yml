@@ -6,169 +6,63 @@ on:
   pull_request:
     branches: [ main, master, develop ]
   schedule:
-    - cron: '0 0 * * 0'  # Weekly on Sunday
+    - cron: '0 0 * * 0'
 
 jobs:
-  shellcheck:
-    name: ShellCheck Analysis
+  lint:
+    name: ESLint
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
-      - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
-        with:
-          scandir: '.'
-          severity: warning
-          ignore_paths: '.git node_modules'
-      
-      - name: Upload ShellCheck results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: shellcheck-results
-          path: shellcheck.log
 
-  code-complexity:
-    name: Code Complexity Analysis
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint
+
+  test:
+    name: Jest Tests
     runs-on: ubuntu-latest
-    
+    needs: lint
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
-      - name: Analyze code complexity
-        run: |
-          echo "# Code Complexity Report" > complexity-report.md
-          echo "" >> complexity-report.md
-          
-          for file in zebrunner.sh lib/*.sh; do
-            if [ -f "$file" ]; then
-              lines=$(wc -l < "$file")
-              functions=$(grep -c "^[a-zA-Z_][a-zA-Z0-9_]*\s*()" "$file" || echo 0)
-              echo "## $file" >> complexity-report.md
-              echo "- Lines: $lines" >> complexity-report.md
-              echo "- Functions: $functions" >> complexity-report.md
-              echo "" >> complexity-report.md
-            fi
-          done
-          
-          cat complexity-report.md
-      
-      - name: Upload complexity report
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        run: npm test -- --coverage
+
+      - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
-          name: complexity-report
-          path: complexity-report.md
-
-  test-coverage:
-    name: Test Coverage Analysis
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Make scripts executable
-        run: |
-          chmod +x tests/*.sh
-          chmod +x zebrunner.sh
-          chmod +x lib/*.sh
-      
-      - name: Run tests with coverage tracking
-        run: |
-          cd tests
-          bash test_runner.sh
-      
-      - name: Generate coverage report
-        run: |
-          echo "# Test Coverage Report" > coverage-report.md
-          echo "" >> coverage-report.md
-          
-          total_functions=0
-          tested_functions=0
-          
-          for lib_file in lib/*.sh; do
-            if [ -f "$lib_file" ]; then
-              lib_name=$(basename "$lib_file" .sh)
-              test_file="tests/test_${lib_name}.sh"
-              
-              functions=$(grep -c "^[a-zA-Z_][a-zA-Z0-9_]*\s*()" "$lib_file" || echo 0)
-              total_functions=$((total_functions + functions))
-              
-              if [ -f "$test_file" ]; then
-                tests=$(grep -c "^test_" "$test_file" || echo 0)
-                tested_functions=$((tested_functions + tests))
-                echo "## $lib_name.sh" >> coverage-report.md
-                echo "- Functions: $functions" >> coverage-report.md
-                echo "- Tests: $tests" >> coverage-report.md
-                echo "- Coverage: $(awk "BEGIN {printf \"%.1f\", ($tests/$functions)*100}")%" >> coverage-report.md
-              else
-                echo "## $lib_name.sh" >> coverage-report.md
-                echo "- Functions: $functions" >> coverage-report.md
-                echo "- Tests: 0" >> coverage-report.md
-                echo "- Coverage: 0%" >> coverage-report.md
-              fi
-              echo "" >> coverage-report.md
-            fi
-          done
-          
-          overall_coverage=$(awk "BEGIN {printf \"%.1f\", ($tested_functions/$total_functions)*100}")
-          echo "## Overall Coverage" >> coverage-report.md
-          echo "- Total Functions: $total_functions" >> coverage-report.md
-          echo "- Tested Functions: $tested_functions" >> coverage-report.md
-          echo "- **Coverage: ${overall_coverage}%**" >> coverage-report.md
-          
-          cat coverage-report.md
-      
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v3
-        with:
           name: coverage-report
-          path: coverage-report.md
-      
+          path: coverage
+
       - name: Coverage summary
+        if: always()
         run: |
           echo "## Test Coverage" >> $GITHUB_STEP_SUMMARY
-          cat coverage-report.md >> $GITHUB_STEP_SUMMARY
-
-  dependency-check:
-    name: Dependency Security Check
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Check for vulnerable dependencies
-        run: |
-          echo "Checking Docker image versions..."
-          if [ -f docker-compose.yml ]; then
-            grep "image:" docker-compose.yml | while read -r line; do
-              echo "$line"
-            done
+          if [ -f coverage/lcov.info ]; then
+            lines=$(grep -m1 'LF:' coverage/lcov.info | cut -d: -f2)
+            covered=$(grep -m1 'LH:' coverage/lcov.info | cut -d: -f2)
+            percent=$(awk "BEGIN { if ($lines>0) printf \"%.1f\", ($covered/$lines)*100; else print 0 }")
+            echo "- Lines covered: ${covered}/${lines} (${percent}%)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- Coverage report not generated" >> $GITHUB_STEP_SUMMARY
           fi
-          
-          echo "Checking for outdated packages..."
-          # Add specific checks as needed
-
-  quality-gate:
-    name: Quality Gate
-    runs-on: ubuntu-latest
-    needs: [shellcheck, code-complexity, test-coverage, dependency-check]
-    
-    steps:
-      - name: Quality gate check
-        run: |
-          echo "# Quality Gate Results" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "✅ All quality checks passed!" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| ShellCheck | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
-          echo "| Code Complexity | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
-          echo "| Test Coverage | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
-          echo "| Dependency Check | ✅ Passed |" >> $GITHUB_STEP_SUMMARY

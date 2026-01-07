@@ -2,8 +2,6 @@
 *.bak
 nginx/conf.d/default.conf
 .disabled
-backup/settings.env
-backup/*tar.gz
 NOTICE.txt
 setup.txt
 node_modules

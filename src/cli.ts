@@ -12,7 +12,7 @@ import { Logger } from './utils/logger';
 
 /**
  * Zebrunner CLI - Main Entry Point
- * Converted from zebrunner.sh
+
  */
 
 const program = new Command();
