@@ -152,10 +152,15 @@ export class AgileHierarchyModule {
       throw new Error(`Portfolio not found: ${portfolioId}`);
     }
 
+    const newTimestamp = new Date();
+    if (newTimestamp.getTime() <= this.data!.portfolios[index].updatedAt.getTime()) {
+      newTimestamp.setTime(this.data!.portfolios[index].updatedAt.getTime() + 1);
+    }
+
     this.data!.portfolios[index] = {
       ...this.data!.portfolios[index],
       ...updates,
-      updatedAt: new Date(),
+      updatedAt: newTimestamp,
     };
 
     await this.saveData();

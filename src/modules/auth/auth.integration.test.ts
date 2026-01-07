@@ -15,9 +15,9 @@ import authRoutes from '../routes/auth.routes';
 describe('Authentication Integration Tests', () => {
   let app: express.Application;
   let userManager: UserManager;
-  let authUtils: AuthUtils;
-  let mfaService: MFAService;
-  let apiKeyService: APIKeyService;
+  
+  
+  
 
   beforeAll(() => {
     // Initialize express app
@@ -27,9 +27,9 @@ describe('Authentication Integration Tests', () => {
 
     // Initialize services
     userManager = new UserManager();
-    authUtils = new AuthUtils();
-    mfaService = new MFAService();
-    apiKeyService = new APIKeyService();
+    
+    
+    
   });
 
   // ============================================================================

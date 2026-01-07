@@ -556,7 +556,7 @@ export class UserManager {
    * Authenticate user with email and password
    */
   async authenticateUser(email: string, password: string): Promise<{ user: User; token: string } | null> {
-    const user = this.users.get(email);
+    const user = this.getUser(email);
 
     if (!user || !user.passwordHash) {
       return null;
@@ -649,7 +649,7 @@ export class UserManager {
    * Reset user password (admin or password reset flow)
    */
   async resetPassword(email: string, newPassword: string): Promise<void> {
-    const user = this.users.get(email);
+    const user = this.getUser(email);
 
     if (!user) {
       throw new Error('User not found');

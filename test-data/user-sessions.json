@@ -1,0 +1,2986 @@
+[
+  {
+    "id": "SESSION-1767789001777",
+    "userId": "USER-1767789001510",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:30:01.777Z",
+    "lastActivityTime": "2026-01-07T12:30:01.777Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789002059",
+    "userId": "USER-1767789001808",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:30:02.059Z",
+    "lastActivityTime": "2026-01-07T12:30:02.059Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789002323",
+    "userId": "USER-1767789002076",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:30:02.323Z",
+    "lastActivityTime": "2026-01-07T12:30:02.323Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789002593",
+    "userId": "USER-1767789002347",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:30:02.593Z",
+    "lastActivityTime": "2026-01-07T12:30:02.593Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:30:02.601Z"
+  },
+  {
+    "id": "SESSION-1767789002867",
+    "userId": "USER-1767789002612",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:30:02.867Z",
+    "lastActivityTime": "2026-01-07T12:30:02.867Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789003129",
+    "userId": "USER-1767789002880",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:30:03.129Z",
+    "lastActivityTime": "2026-01-07T12:30:03.129Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789003387",
+    "userId": "USER-1767789003139",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:30:03.387Z",
+    "lastActivityTime": "2026-01-07T12:30:03.387Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789003647",
+    "userId": "USER-1767789003397",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:30:03.647Z",
+    "lastActivityTime": "2026-01-07T12:30:03.647Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789003904",
+    "userId": "USER-1767789003655",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:30:03.904Z",
+    "lastActivityTime": "2026-01-07T12:30:03.904Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789004359",
+    "userId": "USER-1767789004113",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:30:04.359Z",
+    "lastActivityTime": "2026-01-07T12:30:04.359Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789004803",
+    "userId": "USER-1767789004556",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:30:04.803Z",
+    "lastActivityTime": "2026-01-07T12:30:04.803Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789005244",
+    "userId": "USER-1767789004994",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:05.244Z",
+    "lastActivityTime": "2026-01-07T12:30:05.244Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789005500",
+    "userId": "USER-1767789005252",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:05.500Z",
+    "lastActivityTime": "2026-01-07T12:30:05.500Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789005763",
+    "userId": "USER-1767789005512",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:05.763Z",
+    "lastActivityTime": "2026-01-07T12:30:05.763Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789006027",
+    "userId": "USER-1767789005777",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:06.027Z",
+    "lastActivityTime": "2026-01-07T12:30:06.027Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789006287",
+    "userId": "USER-1767789006041",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:06.287Z",
+    "lastActivityTime": "2026-01-07T12:30:06.287Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789006555",
+    "userId": "USER-1767789006297",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:06.555Z",
+    "lastActivityTime": "2026-01-07T12:30:06.555Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789006819",
+    "userId": "USER-1767789006575",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:30:06.819Z",
+    "lastActivityTime": "2026-01-07T12:30:06.819Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789007090",
+    "userId": "USER-1767789006829",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:30:07.090Z",
+    "lastActivityTime": "2026-01-07T12:30:07.090Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789007101",
+    "userId": "USER-1767789007098",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:30:07.101Z",
+    "lastActivityTime": "2026-01-07T12:30:07.101Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789007351",
+    "userId": "USER-1767789007108",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:30:07.351Z",
+    "lastActivityTime": "2026-01-07T12:30:07.351Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789007606",
+    "userId": "USER-1767789007358",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:30:07.606Z",
+    "lastActivityTime": "2026-01-07T12:30:07.606Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789007858",
+    "userId": "USER-1767789007610",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:30:07.858Z",
+    "lastActivityTime": "2026-01-07T12:30:07.858Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789010100",
+    "userId": "USER-1767789009843",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:30:10.100Z",
+    "lastActivityTime": "2026-01-07T12:30:10.100Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789010374",
+    "userId": "USER-1767789010127",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:30:10.374Z",
+    "lastActivityTime": "2026-01-07T12:30:10.374Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789010635",
+    "userId": "USER-1767789010390",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:30:10.635Z",
+    "lastActivityTime": "2026-01-07T12:30:10.635Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789010903",
+    "userId": "USER-1767789010659",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:30:10.903Z",
+    "lastActivityTime": "2026-01-07T12:30:10.903Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:30:10.908Z"
+  },
+  {
+    "id": "SESSION-1767789011163",
+    "userId": "USER-1767789010917",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:30:11.163Z",
+    "lastActivityTime": "2026-01-07T12:30:11.163Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789011412",
+    "userId": "USER-1767789011173",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:30:11.412Z",
+    "lastActivityTime": "2026-01-07T12:30:11.412Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789011670",
+    "userId": "USER-1767789011425",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:30:11.670Z",
+    "lastActivityTime": "2026-01-07T12:30:11.670Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789011923",
+    "userId": "USER-1767789011679",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:30:11.923Z",
+    "lastActivityTime": "2026-01-07T12:30:11.923Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789012177",
+    "userId": "USER-1767789011931",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:30:12.177Z",
+    "lastActivityTime": "2026-01-07T12:30:12.177Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789012623",
+    "userId": "USER-1767789012382",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:30:12.623Z",
+    "lastActivityTime": "2026-01-07T12:30:12.623Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789013069",
+    "userId": "USER-1767789012824",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:30:13.069Z",
+    "lastActivityTime": "2026-01-07T12:30:13.069Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789013501",
+    "userId": "USER-1767789013258",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:13.501Z",
+    "lastActivityTime": "2026-01-07T12:30:13.501Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789013759",
+    "userId": "USER-1767789013510",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:13.759Z",
+    "lastActivityTime": "2026-01-07T12:30:13.759Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789014016",
+    "userId": "USER-1767789013771",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:14.016Z",
+    "lastActivityTime": "2026-01-07T12:30:14.016Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789014278",
+    "userId": "USER-1767789014030",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:14.278Z",
+    "lastActivityTime": "2026-01-07T12:30:14.278Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789014534",
+    "userId": "USER-1767789014291",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:14.534Z",
+    "lastActivityTime": "2026-01-07T12:30:14.534Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789014789",
+    "userId": "USER-1767789014545",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:14.789Z",
+    "lastActivityTime": "2026-01-07T12:30:14.789Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789015058",
+    "userId": "USER-1767789014810",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:30:15.058Z",
+    "lastActivityTime": "2026-01-07T12:30:15.058Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789015312",
+    "userId": "USER-1767789015067",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:30:15.312Z",
+    "lastActivityTime": "2026-01-07T12:30:15.312Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789015325",
+    "userId": "USER-1767789015322",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:30:15.325Z",
+    "lastActivityTime": "2026-01-07T12:30:15.325Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789015574",
+    "userId": "USER-1767789015331",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:30:15.574Z",
+    "lastActivityTime": "2026-01-07T12:30:15.574Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789015823",
+    "userId": "USER-1767789015581",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:30:15.823Z",
+    "lastActivityTime": "2026-01-07T12:30:15.823Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789016072",
+    "userId": "USER-1767789015829",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:30:16.072Z",
+    "lastActivityTime": "2026-01-07T12:30:16.072Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789034479",
+    "userId": "USER-1767789034220",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:30:34.479Z",
+    "lastActivityTime": "2026-01-07T12:30:34.479Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789034751",
+    "userId": "USER-1767789034506",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:30:34.751Z",
+    "lastActivityTime": "2026-01-07T12:30:34.751Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789035016",
+    "userId": "USER-1767789034767",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:30:35.016Z",
+    "lastActivityTime": "2026-01-07T12:30:35.016Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789035284",
+    "userId": "USER-1767789035039",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:30:35.284Z",
+    "lastActivityTime": "2026-01-07T12:30:35.284Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:30:35.289Z"
+  },
+  {
+    "id": "SESSION-1767789035543",
+    "userId": "USER-1767789035299",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:30:35.543Z",
+    "lastActivityTime": "2026-01-07T12:30:35.543Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789035798",
+    "userId": "USER-1767789035554",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:30:35.798Z",
+    "lastActivityTime": "2026-01-07T12:30:35.798Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789036056",
+    "userId": "USER-1767789035809",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:30:36.056Z",
+    "lastActivityTime": "2026-01-07T12:30:36.056Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789036318",
+    "userId": "USER-1767789036067",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:30:36.318Z",
+    "lastActivityTime": "2026-01-07T12:30:36.318Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789036581",
+    "userId": "USER-1767789036328",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:30:36.581Z",
+    "lastActivityTime": "2026-01-07T12:30:36.581Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789037036",
+    "userId": "USER-1767789036789",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:30:37.036Z",
+    "lastActivityTime": "2026-01-07T12:30:37.036Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789037488",
+    "userId": "USER-1767789037242",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:30:37.488Z",
+    "lastActivityTime": "2026-01-07T12:30:37.488Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789037931",
+    "userId": "USER-1767789037681",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:37.931Z",
+    "lastActivityTime": "2026-01-07T12:30:37.931Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789038188",
+    "userId": "USER-1767789037942",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:38.188Z",
+    "lastActivityTime": "2026-01-07T12:30:38.188Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789038446",
+    "userId": "USER-1767789038202",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:38.446Z",
+    "lastActivityTime": "2026-01-07T12:30:38.446Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789038705",
+    "userId": "USER-1767789038462",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:38.705Z",
+    "lastActivityTime": "2026-01-07T12:30:38.705Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789038964",
+    "userId": "USER-1767789038717",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:38.964Z",
+    "lastActivityTime": "2026-01-07T12:30:38.964Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789039223",
+    "userId": "USER-1767789038977",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:39.223Z",
+    "lastActivityTime": "2026-01-07T12:30:39.223Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789039494",
+    "userId": "USER-1767789039245",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:30:39.494Z",
+    "lastActivityTime": "2026-01-07T12:30:39.494Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789039749",
+    "userId": "USER-1767789039503",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:30:39.749Z",
+    "lastActivityTime": "2026-01-07T12:30:39.749Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789039764",
+    "userId": "USER-1767789039760",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:30:39.764Z",
+    "lastActivityTime": "2026-01-07T12:30:39.764Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789040019",
+    "userId": "USER-1767789039770",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:30:40.019Z",
+    "lastActivityTime": "2026-01-07T12:30:40.019Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789040279",
+    "userId": "USER-1767789040027",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:30:40.279Z",
+    "lastActivityTime": "2026-01-07T12:30:40.279Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789040531",
+    "userId": "USER-1767789040284",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:30:40.531Z",
+    "lastActivityTime": "2026-01-07T12:30:40.531Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789050841",
+    "userId": "USER-1767789050593",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:30:50.841Z",
+    "lastActivityTime": "2026-01-07T12:30:50.841Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789051116",
+    "userId": "USER-1767789050871",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:30:51.116Z",
+    "lastActivityTime": "2026-01-07T12:30:51.116Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789051376",
+    "userId": "USER-1767789051133",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:30:51.376Z",
+    "lastActivityTime": "2026-01-07T12:30:51.376Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789051645",
+    "userId": "USER-1767789051401",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:30:51.645Z",
+    "lastActivityTime": "2026-01-07T12:30:51.645Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:30:51.652Z"
+  },
+  {
+    "id": "SESSION-1767789051906",
+    "userId": "USER-1767789051660",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:30:51.906Z",
+    "lastActivityTime": "2026-01-07T12:30:51.906Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789052159",
+    "userId": "USER-1767789051916",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:30:52.159Z",
+    "lastActivityTime": "2026-01-07T12:30:52.159Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789052416",
+    "userId": "USER-1767789052173",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:30:52.416Z",
+    "lastActivityTime": "2026-01-07T12:30:52.416Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789052675",
+    "userId": "USER-1767789052426",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:30:52.675Z",
+    "lastActivityTime": "2026-01-07T12:30:52.675Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789052936",
+    "userId": "USER-1767789052685",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:30:52.936Z",
+    "lastActivityTime": "2026-01-07T12:30:52.936Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789053383",
+    "userId": "USER-1767789053139",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:30:53.383Z",
+    "lastActivityTime": "2026-01-07T12:30:53.383Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789053816",
+    "userId": "USER-1767789053572",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:30:53.816Z",
+    "lastActivityTime": "2026-01-07T12:30:53.816Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789054247",
+    "userId": "USER-1767789054004",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:54.247Z",
+    "lastActivityTime": "2026-01-07T12:30:54.247Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789054502",
+    "userId": "USER-1767789054257",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:54.502Z",
+    "lastActivityTime": "2026-01-07T12:30:54.502Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789054762",
+    "userId": "USER-1767789054516",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:54.762Z",
+    "lastActivityTime": "2026-01-07T12:30:54.762Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789055027",
+    "userId": "USER-1767789054778",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:55.027Z",
+    "lastActivityTime": "2026-01-07T12:30:55.027Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789055285",
+    "userId": "USER-1767789055039",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:55.285Z",
+    "lastActivityTime": "2026-01-07T12:30:55.285Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789055543",
+    "userId": "USER-1767789055299",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:30:55.543Z",
+    "lastActivityTime": "2026-01-07T12:30:55.543Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789055811",
+    "userId": "USER-1767789055566",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:30:55.811Z",
+    "lastActivityTime": "2026-01-07T12:30:55.811Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789056062",
+    "userId": "USER-1767789055819",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:30:56.062Z",
+    "lastActivityTime": "2026-01-07T12:30:56.062Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789056076",
+    "userId": "USER-1767789056072",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:30:56.076Z",
+    "lastActivityTime": "2026-01-07T12:30:56.076Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789056332",
+    "userId": "USER-1767789056083",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:30:56.332Z",
+    "lastActivityTime": "2026-01-07T12:30:56.332Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789056589",
+    "userId": "USER-1767789056339",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:30:56.589Z",
+    "lastActivityTime": "2026-01-07T12:30:56.589Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789056841",
+    "userId": "USER-1767789056596",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:30:56.841Z",
+    "lastActivityTime": "2026-01-07T12:30:56.841Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789070502",
+    "userId": "USER-1767789070233",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:31:10.502Z",
+    "lastActivityTime": "2026-01-07T12:31:10.502Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789070786",
+    "userId": "USER-1767789070536",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:31:10.786Z",
+    "lastActivityTime": "2026-01-07T12:31:10.786Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789071055",
+    "userId": "USER-1767789070807",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:31:11.055Z",
+    "lastActivityTime": "2026-01-07T12:31:11.055Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789071325",
+    "userId": "USER-1767789071080",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:31:11.325Z",
+    "lastActivityTime": "2026-01-07T12:31:11.325Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:31:11.334Z"
+  },
+  {
+    "id": "SESSION-1767789071599",
+    "userId": "USER-1767789071344",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:31:11.599Z",
+    "lastActivityTime": "2026-01-07T12:31:11.599Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789071862",
+    "userId": "USER-1767789071610",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:31:11.862Z",
+    "lastActivityTime": "2026-01-07T12:31:11.862Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789072123",
+    "userId": "USER-1767789071876",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:31:12.123Z",
+    "lastActivityTime": "2026-01-07T12:31:12.123Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789072385",
+    "userId": "USER-1767789072136",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:31:12.385Z",
+    "lastActivityTime": "2026-01-07T12:31:12.385Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789072645",
+    "userId": "USER-1767789072396",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:31:12.645Z",
+    "lastActivityTime": "2026-01-07T12:31:12.645Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789073103",
+    "userId": "USER-1767789072859",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:31:13.103Z",
+    "lastActivityTime": "2026-01-07T12:31:13.103Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789073550",
+    "userId": "USER-1767789073301",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:31:13.550Z",
+    "lastActivityTime": "2026-01-07T12:31:13.550Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789073996",
+    "userId": "USER-1767789073749",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:31:13.996Z",
+    "lastActivityTime": "2026-01-07T12:31:13.996Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789074253",
+    "userId": "USER-1767789074007",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:31:14.253Z",
+    "lastActivityTime": "2026-01-07T12:31:14.253Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789074519",
+    "userId": "USER-1767789074269",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:31:14.519Z",
+    "lastActivityTime": "2026-01-07T12:31:14.519Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789074783",
+    "userId": "USER-1767789074535",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:31:14.783Z",
+    "lastActivityTime": "2026-01-07T12:31:14.783Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789075043",
+    "userId": "USER-1767789074798",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:31:15.043Z",
+    "lastActivityTime": "2026-01-07T12:31:15.043Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789075303",
+    "userId": "USER-1767789075055",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:31:15.303Z",
+    "lastActivityTime": "2026-01-07T12:31:15.303Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789075571",
+    "userId": "USER-1767789075326",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:31:15.571Z",
+    "lastActivityTime": "2026-01-07T12:31:15.571Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789075830",
+    "userId": "USER-1767789075582",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:31:15.830Z",
+    "lastActivityTime": "2026-01-07T12:31:15.830Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789075846",
+    "userId": "USER-1767789075842",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:31:15.846Z",
+    "lastActivityTime": "2026-01-07T12:31:15.846Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789076106",
+    "userId": "USER-1767789075852",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:31:16.106Z",
+    "lastActivityTime": "2026-01-07T12:31:16.106Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789076361",
+    "userId": "USER-1767789076114",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:31:16.361Z",
+    "lastActivityTime": "2026-01-07T12:31:16.361Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789076616",
+    "userId": "USER-1767789076369",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:31:16.616Z",
+    "lastActivityTime": "2026-01-07T12:31:16.616Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789091914",
+    "userId": "USER-1767789091647",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:31:31.914Z",
+    "lastActivityTime": "2026-01-07T12:31:31.914Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789092197",
+    "userId": "USER-1767789091943",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:31:32.197Z",
+    "lastActivityTime": "2026-01-07T12:31:32.197Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789092464",
+    "userId": "USER-1767789092214",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:31:32.464Z",
+    "lastActivityTime": "2026-01-07T12:31:32.464Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789092742",
+    "userId": "USER-1767789092488",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:31:32.742Z",
+    "lastActivityTime": "2026-01-07T12:31:32.742Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:31:32.751Z"
+  },
+  {
+    "id": "SESSION-1767789093018",
+    "userId": "USER-1767789092765",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:31:33.018Z",
+    "lastActivityTime": "2026-01-07T12:31:33.018Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789093273",
+    "userId": "USER-1767789093030",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:31:33.273Z",
+    "lastActivityTime": "2026-01-07T12:31:33.273Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789093535",
+    "userId": "USER-1767789093287",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:31:33.535Z",
+    "lastActivityTime": "2026-01-07T12:31:33.535Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789093796",
+    "userId": "USER-1767789093547",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:31:33.796Z",
+    "lastActivityTime": "2026-01-07T12:31:33.796Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789094059",
+    "userId": "USER-1767789093808",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:31:34.059Z",
+    "lastActivityTime": "2026-01-07T12:31:34.059Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789094516",
+    "userId": "USER-1767789094268",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:31:34.516Z",
+    "lastActivityTime": "2026-01-07T12:31:34.516Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789094956",
+    "userId": "USER-1767789094705",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:31:34.956Z",
+    "lastActivityTime": "2026-01-07T12:31:34.956Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789095404",
+    "userId": "USER-1767789095152",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:31:35.404Z",
+    "lastActivityTime": "2026-01-07T12:31:35.404Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789095666",
+    "userId": "USER-1767789095416",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:31:35.666Z",
+    "lastActivityTime": "2026-01-07T12:31:35.666Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789095930",
+    "userId": "USER-1767789095681",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:31:35.930Z",
+    "lastActivityTime": "2026-01-07T12:31:35.930Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789096194",
+    "userId": "USER-1767789095948",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:31:36.194Z",
+    "lastActivityTime": "2026-01-07T12:31:36.194Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789096458",
+    "userId": "USER-1767789096208",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:31:36.458Z",
+    "lastActivityTime": "2026-01-07T12:31:36.458Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789096717",
+    "userId": "USER-1767789096472",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:31:36.717Z",
+    "lastActivityTime": "2026-01-07T12:31:36.717Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789096984",
+    "userId": "USER-1767789096742",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:31:36.984Z",
+    "lastActivityTime": "2026-01-07T12:31:36.984Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789097241",
+    "userId": "USER-1767789096995",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:31:37.241Z",
+    "lastActivityTime": "2026-01-07T12:31:37.241Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789097258",
+    "userId": "USER-1767789097252",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:31:37.258Z",
+    "lastActivityTime": "2026-01-07T12:31:37.258Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789097512",
+    "userId": "USER-1767789097266",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:31:37.512Z",
+    "lastActivityTime": "2026-01-07T12:31:37.512Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789097771",
+    "userId": "USER-1767789097519",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:31:37.771Z",
+    "lastActivityTime": "2026-01-07T12:31:37.771Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789098030",
+    "userId": "USER-1767789097780",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:31:38.030Z",
+    "lastActivityTime": "2026-01-07T12:31:38.030Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789372084",
+    "userId": "USER-1767789371826",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:36:12.084Z",
+    "lastActivityTime": "2026-01-07T12:36:12.084Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789372372",
+    "userId": "USER-1767789372118",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:36:12.372Z",
+    "lastActivityTime": "2026-01-07T12:36:12.372Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789372634",
+    "userId": "USER-1767789372388",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:36:12.634Z",
+    "lastActivityTime": "2026-01-07T12:36:12.634Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789372904",
+    "userId": "USER-1767789372658",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:36:12.904Z",
+    "lastActivityTime": "2026-01-07T12:36:12.904Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:36:12.912Z"
+  },
+  {
+    "id": "SESSION-1767789373169",
+    "userId": "USER-1767789372921",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:36:13.169Z",
+    "lastActivityTime": "2026-01-07T12:36:13.169Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789373435",
+    "userId": "USER-1767789373180",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:36:13.435Z",
+    "lastActivityTime": "2026-01-07T12:36:13.435Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789373695",
+    "userId": "USER-1767789373450",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:36:13.695Z",
+    "lastActivityTime": "2026-01-07T12:36:13.695Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789373963",
+    "userId": "USER-1767789373707",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:36:13.963Z",
+    "lastActivityTime": "2026-01-07T12:36:13.963Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789374231",
+    "userId": "USER-1767789373975",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:36:14.231Z",
+    "lastActivityTime": "2026-01-07T12:36:14.231Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789374679",
+    "userId": "USER-1767789374436",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:36:14.679Z",
+    "lastActivityTime": "2026-01-07T12:36:14.679Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789375126",
+    "userId": "USER-1767789374879",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:36:15.126Z",
+    "lastActivityTime": "2026-01-07T12:36:15.126Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789375578",
+    "userId": "USER-1767789375329",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:36:15.578Z",
+    "lastActivityTime": "2026-01-07T12:36:15.578Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789375839",
+    "userId": "USER-1767789375588",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:36:15.839Z",
+    "lastActivityTime": "2026-01-07T12:36:15.839Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789376100",
+    "userId": "USER-1767789375853",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:36:16.100Z",
+    "lastActivityTime": "2026-01-07T12:36:16.100Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789376368",
+    "userId": "USER-1767789376117",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:36:16.368Z",
+    "lastActivityTime": "2026-01-07T12:36:16.368Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789376630",
+    "userId": "USER-1767789376382",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:36:16.630Z",
+    "lastActivityTime": "2026-01-07T12:36:16.630Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789376890",
+    "userId": "USER-1767789376645",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:36:16.890Z",
+    "lastActivityTime": "2026-01-07T12:36:16.890Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789377157",
+    "userId": "USER-1767789376916",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:36:17.157Z",
+    "lastActivityTime": "2026-01-07T12:36:17.157Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789377420",
+    "userId": "USER-1767789377168",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:36:17.420Z",
+    "lastActivityTime": "2026-01-07T12:36:17.420Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789377440",
+    "userId": "USER-1767789377434",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:36:17.440Z",
+    "lastActivityTime": "2026-01-07T12:36:17.440Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789377695",
+    "userId": "USER-1767789377449",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:36:17.695Z",
+    "lastActivityTime": "2026-01-07T12:36:17.695Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789377948",
+    "userId": "USER-1767789377702",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:36:17.948Z",
+    "lastActivityTime": "2026-01-07T12:36:17.948Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789378207",
+    "userId": "USER-1767789377956",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:36:18.207Z",
+    "lastActivityTime": "2026-01-07T12:36:18.207Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789559685",
+    "userId": "USER-1767789559413",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:39:19.685Z",
+    "lastActivityTime": "2026-01-07T12:39:19.685Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789559976",
+    "userId": "USER-1767789559720",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:39:19.976Z",
+    "lastActivityTime": "2026-01-07T12:39:19.976Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789560254",
+    "userId": "USER-1767789559994",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:39:20.254Z",
+    "lastActivityTime": "2026-01-07T12:39:20.254Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789560562",
+    "userId": "USER-1767789560284",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:39:20.562Z",
+    "lastActivityTime": "2026-01-07T12:39:20.562Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:39:20.570Z"
+  },
+  {
+    "id": "SESSION-1767789560842",
+    "userId": "USER-1767789560581",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:39:20.842Z",
+    "lastActivityTime": "2026-01-07T12:39:20.842Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789561121",
+    "userId": "USER-1767789560855",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:39:21.121Z",
+    "lastActivityTime": "2026-01-07T12:39:21.121Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789561403",
+    "userId": "USER-1767789561139",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:39:21.403Z",
+    "lastActivityTime": "2026-01-07T12:39:21.403Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789561672",
+    "userId": "USER-1767789561419",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:39:21.672Z",
+    "lastActivityTime": "2026-01-07T12:39:21.672Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789561944",
+    "userId": "USER-1767789561683",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:39:21.944Z",
+    "lastActivityTime": "2026-01-07T12:39:21.944Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789562480",
+    "userId": "USER-1767789562155",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:39:22.480Z",
+    "lastActivityTime": "2026-01-07T12:39:22.480Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789562917",
+    "userId": "USER-1767789562670",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:39:22.917Z",
+    "lastActivityTime": "2026-01-07T12:39:22.917Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789563365",
+    "userId": "USER-1767789563121",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:39:23.365Z",
+    "lastActivityTime": "2026-01-07T12:39:23.365Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789563652",
+    "userId": "USER-1767789563379",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:39:23.652Z",
+    "lastActivityTime": "2026-01-07T12:39:23.652Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789563924",
+    "userId": "USER-1767789563670",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:39:23.924Z",
+    "lastActivityTime": "2026-01-07T12:39:23.924Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789564194",
+    "userId": "USER-1767789563943",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:39:24.194Z",
+    "lastActivityTime": "2026-01-07T12:39:24.194Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789564455",
+    "userId": "USER-1767789564209",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:39:24.455Z",
+    "lastActivityTime": "2026-01-07T12:39:24.455Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789564721",
+    "userId": "USER-1767789564471",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:39:24.721Z",
+    "lastActivityTime": "2026-01-07T12:39:24.721Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789564996",
+    "userId": "USER-1767789564748",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:39:24.996Z",
+    "lastActivityTime": "2026-01-07T12:39:24.996Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789565252",
+    "userId": "USER-1767789565008",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:39:25.252Z",
+    "lastActivityTime": "2026-01-07T12:39:25.252Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789565271",
+    "userId": "USER-1767789565266",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:39:25.271Z",
+    "lastActivityTime": "2026-01-07T12:39:25.271Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789565533",
+    "userId": "USER-1767789565281",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:39:25.533Z",
+    "lastActivityTime": "2026-01-07T12:39:25.533Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789565791",
+    "userId": "USER-1767789565544",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:39:25.791Z",
+    "lastActivityTime": "2026-01-07T12:39:25.791Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789566048",
+    "userId": "USER-1767789565799",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:39:26.048Z",
+    "lastActivityTime": "2026-01-07T12:39:26.048Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789569093",
+    "userId": "USER-1767789568828",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:39:29.093Z",
+    "lastActivityTime": "2026-01-07T12:39:29.093Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789569376",
+    "userId": "USER-1767789569126",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:39:29.376Z",
+    "lastActivityTime": "2026-01-07T12:39:29.376Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789569638",
+    "userId": "USER-1767789569394",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:39:29.638Z",
+    "lastActivityTime": "2026-01-07T12:39:29.638Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789569915",
+    "userId": "USER-1767789569667",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:39:29.915Z",
+    "lastActivityTime": "2026-01-07T12:39:29.915Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:39:29.924Z"
+  },
+  {
+    "id": "SESSION-1767789570178",
+    "userId": "USER-1767789569933",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:39:30.178Z",
+    "lastActivityTime": "2026-01-07T12:39:30.178Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789570459",
+    "userId": "USER-1767789570192",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:39:30.459Z",
+    "lastActivityTime": "2026-01-07T12:39:30.459Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789570733",
+    "userId": "USER-1767789570475",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:39:30.733Z",
+    "lastActivityTime": "2026-01-07T12:39:30.733Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789571008",
+    "userId": "USER-1767789570756",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:39:31.008Z",
+    "lastActivityTime": "2026-01-07T12:39:31.008Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789571274",
+    "userId": "USER-1767789571024",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:39:31.274Z",
+    "lastActivityTime": "2026-01-07T12:39:31.274Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789571737",
+    "userId": "USER-1767789571491",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:39:31.737Z",
+    "lastActivityTime": "2026-01-07T12:39:31.737Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789572179",
+    "userId": "USER-1767789571936",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:39:32.179Z",
+    "lastActivityTime": "2026-01-07T12:39:32.179Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789572618",
+    "userId": "USER-1767789572376",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:39:32.618Z",
+    "lastActivityTime": "2026-01-07T12:39:32.618Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789572876",
+    "userId": "USER-1767789572630",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:39:32.876Z",
+    "lastActivityTime": "2026-01-07T12:39:32.876Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789573139",
+    "userId": "USER-1767789572891",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:39:33.139Z",
+    "lastActivityTime": "2026-01-07T12:39:33.139Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789573407",
+    "userId": "USER-1767789573158",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:39:33.407Z",
+    "lastActivityTime": "2026-01-07T12:39:33.407Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789573676",
+    "userId": "USER-1767789573422",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:39:33.676Z",
+    "lastActivityTime": "2026-01-07T12:39:33.676Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789573968",
+    "userId": "USER-1767789573699",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:39:33.968Z",
+    "lastActivityTime": "2026-01-07T12:39:33.968Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789574319",
+    "userId": "USER-1767789574039",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:39:34.319Z",
+    "lastActivityTime": "2026-01-07T12:39:34.319Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789574585",
+    "userId": "USER-1767789574334",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:39:34.585Z",
+    "lastActivityTime": "2026-01-07T12:39:34.585Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789574605",
+    "userId": "USER-1767789574600",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:39:34.605Z",
+    "lastActivityTime": "2026-01-07T12:39:34.605Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789574871",
+    "userId": "USER-1767789574613",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:39:34.871Z",
+    "lastActivityTime": "2026-01-07T12:39:34.871Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789575137",
+    "userId": "USER-1767789574883",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:39:35.137Z",
+    "lastActivityTime": "2026-01-07T12:39:35.137Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789575399",
+    "userId": "USER-1767789575145",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:39:35.399Z",
+    "lastActivityTime": "2026-01-07T12:39:35.399Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789874213",
+    "userId": "USER-1767789873934",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:44:34.213Z",
+    "lastActivityTime": "2026-01-07T12:44:34.213Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789874503",
+    "userId": "USER-1767789874251",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:44:34.503Z",
+    "lastActivityTime": "2026-01-07T12:44:34.503Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789874776",
+    "userId": "USER-1767789874524",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:44:34.776Z",
+    "lastActivityTime": "2026-01-07T12:44:34.776Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789875058",
+    "userId": "USER-1767789874806",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:44:35.058Z",
+    "lastActivityTime": "2026-01-07T12:44:35.058Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:44:35.070Z"
+  },
+  {
+    "id": "SESSION-1767789875336",
+    "userId": "USER-1767789875081",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:44:35.336Z",
+    "lastActivityTime": "2026-01-07T12:44:35.336Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789875608",
+    "userId": "USER-1767789875351",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:44:35.608Z",
+    "lastActivityTime": "2026-01-07T12:44:35.608Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789875895",
+    "userId": "USER-1767789875625",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:44:35.895Z",
+    "lastActivityTime": "2026-01-07T12:44:35.895Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789876189",
+    "userId": "USER-1767789875924",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:44:36.189Z",
+    "lastActivityTime": "2026-01-07T12:44:36.189Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789876459",
+    "userId": "USER-1767789876204",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:44:36.459Z",
+    "lastActivityTime": "2026-01-07T12:44:36.459Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789876937",
+    "userId": "USER-1767789876685",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:44:36.937Z",
+    "lastActivityTime": "2026-01-07T12:44:36.937Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789877400",
+    "userId": "USER-1767789877147",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:44:37.400Z",
+    "lastActivityTime": "2026-01-07T12:44:37.400Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789877862",
+    "userId": "USER-1767789877610",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:44:37.862Z",
+    "lastActivityTime": "2026-01-07T12:44:37.862Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789878130",
+    "userId": "USER-1767789877875",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:44:38.130Z",
+    "lastActivityTime": "2026-01-07T12:44:38.130Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789878402",
+    "userId": "USER-1767789878146",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:44:38.402Z",
+    "lastActivityTime": "2026-01-07T12:44:38.402Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789878676",
+    "userId": "USER-1767789878421",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:44:38.676Z",
+    "lastActivityTime": "2026-01-07T12:44:38.676Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789878948",
+    "userId": "USER-1767789878691",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:44:38.948Z",
+    "lastActivityTime": "2026-01-07T12:44:38.948Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789879230",
+    "userId": "USER-1767789878964",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:44:39.230Z",
+    "lastActivityTime": "2026-01-07T12:44:39.230Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789879517",
+    "userId": "USER-1767789879263",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:44:39.517Z",
+    "lastActivityTime": "2026-01-07T12:44:39.517Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789879786",
+    "userId": "USER-1767789879534",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:44:39.786Z",
+    "lastActivityTime": "2026-01-07T12:44:39.786Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789879809",
+    "userId": "USER-1767789879802",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:44:39.809Z",
+    "lastActivityTime": "2026-01-07T12:44:39.809Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789880074",
+    "userId": "USER-1767789879820",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:44:40.074Z",
+    "lastActivityTime": "2026-01-07T12:44:40.074Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789880342",
+    "userId": "USER-1767789880087",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:44:40.342Z",
+    "lastActivityTime": "2026-01-07T12:44:40.342Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789880608",
+    "userId": "USER-1767789880354",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:44:40.608Z",
+    "lastActivityTime": "2026-01-07T12:44:40.608Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789890475",
+    "userId": "USER-1767789890219",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:44:50.475Z",
+    "lastActivityTime": "2026-01-07T12:44:50.475Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789890744",
+    "userId": "USER-1767789890495",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:44:50.744Z",
+    "lastActivityTime": "2026-01-07T12:44:50.744Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789891025",
+    "userId": "USER-1767789890777",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:44:51.025Z",
+    "lastActivityTime": "2026-01-07T12:44:51.025Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789891304",
+    "userId": "USER-1767789891055",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:44:51.304Z",
+    "lastActivityTime": "2026-01-07T12:44:51.304Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:44:51.314Z"
+  },
+  {
+    "id": "SESSION-1767789891573",
+    "userId": "USER-1767789891325",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:44:51.573Z",
+    "lastActivityTime": "2026-01-07T12:44:51.573Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789891838",
+    "userId": "USER-1767789891586",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:44:51.838Z",
+    "lastActivityTime": "2026-01-07T12:44:51.838Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789892104",
+    "userId": "USER-1767789891854",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:44:52.104Z",
+    "lastActivityTime": "2026-01-07T12:44:52.104Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789892367",
+    "userId": "USER-1767789892117",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:44:52.367Z",
+    "lastActivityTime": "2026-01-07T12:44:52.367Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789892623",
+    "userId": "USER-1767789892378",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:44:52.623Z",
+    "lastActivityTime": "2026-01-07T12:44:52.623Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789893092",
+    "userId": "USER-1767789892836",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:44:53.092Z",
+    "lastActivityTime": "2026-01-07T12:44:53.092Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789893549",
+    "userId": "USER-1767789893299",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:44:53.549Z",
+    "lastActivityTime": "2026-01-07T12:44:53.549Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789893988",
+    "userId": "USER-1767789893745",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:44:53.988Z",
+    "lastActivityTime": "2026-01-07T12:44:53.988Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789894255",
+    "userId": "USER-1767789894003",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:44:54.255Z",
+    "lastActivityTime": "2026-01-07T12:44:54.255Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789894514",
+    "userId": "USER-1767789894270",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:44:54.514Z",
+    "lastActivityTime": "2026-01-07T12:44:54.514Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789894778",
+    "userId": "USER-1767789894534",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:44:54.778Z",
+    "lastActivityTime": "2026-01-07T12:44:54.778Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789895037",
+    "userId": "USER-1767789894794",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:44:55.037Z",
+    "lastActivityTime": "2026-01-07T12:44:55.037Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789895304",
+    "userId": "USER-1767789895054",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:44:55.304Z",
+    "lastActivityTime": "2026-01-07T12:44:55.304Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789895581",
+    "userId": "USER-1767789895334",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:44:55.581Z",
+    "lastActivityTime": "2026-01-07T12:44:55.581Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789895907",
+    "userId": "USER-1767789895594",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:44:55.907Z",
+    "lastActivityTime": "2026-01-07T12:44:55.907Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789895928",
+    "userId": "USER-1767789895922",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:44:55.928Z",
+    "lastActivityTime": "2026-01-07T12:44:55.928Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789896181",
+    "userId": "USER-1767789895938",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:44:56.181Z",
+    "lastActivityTime": "2026-01-07T12:44:56.181Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789896437",
+    "userId": "USER-1767789896192",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:44:56.437Z",
+    "lastActivityTime": "2026-01-07T12:44:56.437Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789896693",
+    "userId": "USER-1767789896448",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:44:56.693Z",
+    "lastActivityTime": "2026-01-07T12:44:56.693Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789998011",
+    "userId": "USER-1767789997754",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:46:38.011Z",
+    "lastActivityTime": "2026-01-07T12:46:38.011Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789998281",
+    "userId": "USER-1767789998032",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:46:38.281Z",
+    "lastActivityTime": "2026-01-07T12:46:38.281Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789998562",
+    "userId": "USER-1767789998312",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:46:38.562Z",
+    "lastActivityTime": "2026-01-07T12:46:38.562Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789998846",
+    "userId": "USER-1767789998590",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:46:38.846Z",
+    "lastActivityTime": "2026-01-07T12:46:38.846Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:46:38.858Z"
+  },
+  {
+    "id": "SESSION-1767789999120",
+    "userId": "USER-1767789998869",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:46:39.120Z",
+    "lastActivityTime": "2026-01-07T12:46:39.120Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789999385",
+    "userId": "USER-1767789999134",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:46:39.385Z",
+    "lastActivityTime": "2026-01-07T12:46:39.385Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789999653",
+    "userId": "USER-1767789999401",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:46:39.653Z",
+    "lastActivityTime": "2026-01-07T12:46:39.653Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767789999915",
+    "userId": "USER-1767789999668",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:46:39.915Z",
+    "lastActivityTime": "2026-01-07T12:46:39.915Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790000172",
+    "userId": "USER-1767789999928",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:46:40.172Z",
+    "lastActivityTime": "2026-01-07T12:46:40.172Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790000633",
+    "userId": "USER-1767790000381",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:46:40.633Z",
+    "lastActivityTime": "2026-01-07T12:46:40.633Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790001083",
+    "userId": "USER-1767790000837",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:46:41.083Z",
+    "lastActivityTime": "2026-01-07T12:46:41.083Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790001528",
+    "userId": "USER-1767790001283",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:46:41.528Z",
+    "lastActivityTime": "2026-01-07T12:46:41.528Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790001792",
+    "userId": "USER-1767790001543",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:46:41.792Z",
+    "lastActivityTime": "2026-01-07T12:46:41.792Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790002059",
+    "userId": "USER-1767790001808",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:46:42.059Z",
+    "lastActivityTime": "2026-01-07T12:46:42.059Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790002325",
+    "userId": "USER-1767790002077",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:46:42.325Z",
+    "lastActivityTime": "2026-01-07T12:46:42.325Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790002594",
+    "userId": "USER-1767790002341",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:46:42.594Z",
+    "lastActivityTime": "2026-01-07T12:46:42.594Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790002860",
+    "userId": "USER-1767790002612",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:46:42.860Z",
+    "lastActivityTime": "2026-01-07T12:46:42.860Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790003142",
+    "userId": "USER-1767790002890",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:46:43.142Z",
+    "lastActivityTime": "2026-01-07T12:46:43.142Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790003408",
+    "userId": "USER-1767790003155",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:46:43.408Z",
+    "lastActivityTime": "2026-01-07T12:46:43.408Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790003431",
+    "userId": "USER-1767790003425",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:46:43.431Z",
+    "lastActivityTime": "2026-01-07T12:46:43.431Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790003692",
+    "userId": "USER-1767790003443",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:46:43.692Z",
+    "lastActivityTime": "2026-01-07T12:46:43.692Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790003948",
+    "userId": "USER-1767790003703",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:46:43.948Z",
+    "lastActivityTime": "2026-01-07T12:46:43.948Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790004207",
+    "userId": "USER-1767790003959",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:46:44.207Z",
+    "lastActivityTime": "2026-01-07T12:46:44.207Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790229265",
+    "userId": "USER-1767790229001",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:50:29.265Z",
+    "lastActivityTime": "2026-01-07T12:50:29.265Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790229553",
+    "userId": "USER-1767790229303",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:50:29.553Z",
+    "lastActivityTime": "2026-01-07T12:50:29.553Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790229823",
+    "userId": "USER-1767789001510",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:50:29.823Z",
+    "lastActivityTime": "2026-01-07T12:50:29.823Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790230364",
+    "userId": "USER-1767790230085",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:50:30.364Z",
+    "lastActivityTime": "2026-01-07T12:50:30.364Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790231936",
+    "userId": "USER-1767790231683",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:50:31.936Z",
+    "lastActivityTime": "2026-01-07T12:50:31.936Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:50:31.946Z"
+  },
+  {
+    "id": "SESSION-1767790232209",
+    "userId": "USER-1767790231959",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:50:32.209Z",
+    "lastActivityTime": "2026-01-07T12:50:32.209Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790232476",
+    "userId": "USER-1767790232224",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:50:32.476Z",
+    "lastActivityTime": "2026-01-07T12:50:32.476Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790232745",
+    "userId": "USER-1767789002880",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:50:32.745Z",
+    "lastActivityTime": "2026-01-07T12:50:32.745Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790233759",
+    "userId": "USER-1767789002880",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:50:33.759Z",
+    "lastActivityTime": "2026-01-07T12:50:33.759Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790234021",
+    "userId": "USER-1767790233771",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:50:34.021Z",
+    "lastActivityTime": "2026-01-07T12:50:34.021Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790234282",
+    "userId": "USER-1767790234035",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:50:34.282Z",
+    "lastActivityTime": "2026-01-07T12:50:34.282Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790234544",
+    "userId": "USER-1767790234295",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:50:34.544Z",
+    "lastActivityTime": "2026-01-07T12:50:34.544Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790235039",
+    "userId": "USER-1767790234781",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:50:35.039Z",
+    "lastActivityTime": "2026-01-07T12:50:35.039Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790235499",
+    "userId": "USER-1767790235247",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:50:35.499Z",
+    "lastActivityTime": "2026-01-07T12:50:35.499Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790235957",
+    "userId": "USER-1767790235700",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:50:35.957Z",
+    "lastActivityTime": "2026-01-07T12:50:35.957Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790236232",
+    "userId": "USER-1767790235974",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:50:36.232Z",
+    "lastActivityTime": "2026-01-07T12:50:36.232Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790236507",
+    "userId": "USER-1767790236251",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:50:36.507Z",
+    "lastActivityTime": "2026-01-07T12:50:36.507Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790236787",
+    "userId": "USER-1767790236530",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:50:36.787Z",
+    "lastActivityTime": "2026-01-07T12:50:36.787Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790237063",
+    "userId": "USER-1767790236807",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:50:37.063Z",
+    "lastActivityTime": "2026-01-07T12:50:37.063Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790237342",
+    "userId": "USER-1767790237086",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:50:37.342Z",
+    "lastActivityTime": "2026-01-07T12:50:37.342Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790237893",
+    "userId": "USER-1767790237620",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:50:37.894Z",
+    "lastActivityTime": "2026-01-07T12:50:37.894Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790238173",
+    "userId": "USER-1767790237917",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:50:38.173Z",
+    "lastActivityTime": "2026-01-07T12:50:38.173Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790238443",
+    "userId": "USER-1767789001510",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:50:38.443Z",
+    "lastActivityTime": "2026-01-07T12:50:38.443Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790238970",
+    "userId": "USER-1767790238714",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:50:38.970Z",
+    "lastActivityTime": "2026-01-07T12:50:38.970Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790239271",
+    "userId": "USER-1767790239014",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:50:39.271Z",
+    "lastActivityTime": "2026-01-07T12:50:39.271Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:50:39.283Z"
+  },
+  {
+    "id": "SESSION-1767790239546",
+    "userId": "USER-1767790239295",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:50:39.546Z",
+    "lastActivityTime": "2026-01-07T12:50:39.546Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790239815",
+    "userId": "USER-1767790239561",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:50:39.815Z",
+    "lastActivityTime": "2026-01-07T12:50:39.815Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790240344",
+    "userId": "USER-1767790240098",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:50:40.344Z",
+    "lastActivityTime": "2026-01-07T12:50:40.344Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790240610",
+    "userId": "USER-1767790240361",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:50:40.610Z",
+    "lastActivityTime": "2026-01-07T12:50:40.610Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790240886",
+    "userId": "USER-1767790240629",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:50:40.886Z",
+    "lastActivityTime": "2026-01-07T12:50:40.886Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790241353",
+    "userId": "USER-1767790241107",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:50:41.353Z",
+    "lastActivityTime": "2026-01-07T12:50:41.353Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790241817",
+    "userId": "USER-1767790241565",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:50:41.817Z",
+    "lastActivityTime": "2026-01-07T12:50:41.817Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790242276",
+    "userId": "USER-1767790242028",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:50:42.276Z",
+    "lastActivityTime": "2026-01-07T12:50:42.276Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790242542",
+    "userId": "USER-1767790242291",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:50:42.542Z",
+    "lastActivityTime": "2026-01-07T12:50:42.542Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790242815",
+    "userId": "USER-1767790242564",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:50:42.815Z",
+    "lastActivityTime": "2026-01-07T12:50:42.815Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790243085",
+    "userId": "USER-1767790242835",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:50:43.085Z",
+    "lastActivityTime": "2026-01-07T12:50:43.085Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790243358",
+    "userId": "USER-1767790243102",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:50:43.358Z",
+    "lastActivityTime": "2026-01-07T12:50:43.358Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790243618",
+    "userId": "USER-1767790243378",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:50:43.618Z",
+    "lastActivityTime": "2026-01-07T12:50:43.618Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790243900",
+    "userId": "USER-1767790243650",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:50:43.900Z",
+    "lastActivityTime": "2026-01-07T12:50:43.900Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790244161",
+    "userId": "USER-1767790243914",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:50:44.161Z",
+    "lastActivityTime": "2026-01-07T12:50:44.161Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790244426",
+    "userId": "USER-1767789006575",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:50:44.426Z",
+    "lastActivityTime": "2026-01-07T12:50:44.426Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790244446",
+    "userId": "USER-1767790244440",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:50:44.446Z",
+    "lastActivityTime": "2026-01-07T12:50:44.447Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790244711",
+    "userId": "USER-1767790244458",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:50:44.711Z",
+    "lastActivityTime": "2026-01-07T12:50:44.711Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790244978",
+    "userId": "USER-1767790244725",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:50:44.978Z",
+    "lastActivityTime": "2026-01-07T12:50:44.978Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790245233",
+    "userId": "USER-1767790244988",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:50:45.233Z",
+    "lastActivityTime": "2026-01-07T12:50:45.233Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790256672",
+    "userId": "USER-1767790256413",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:50:56.672Z",
+    "lastActivityTime": "2026-01-07T12:50:56.672Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790256941",
+    "userId": "USER-1767790256693",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:50:56.941Z",
+    "lastActivityTime": "2026-01-07T12:50:56.941Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790257204",
+    "userId": "USER-1767789001510",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:50:57.204Z",
+    "lastActivityTime": "2026-01-07T12:50:57.204Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790257719",
+    "userId": "USER-1767790257471",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:50:57.719Z",
+    "lastActivityTime": "2026-01-07T12:50:57.719Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790258017",
+    "userId": "USER-1767790257763",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:50:58.017Z",
+    "lastActivityTime": "2026-01-07T12:50:58.017Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:50:58.029Z"
+  },
+  {
+    "id": "SESSION-1767790258293",
+    "userId": "USER-1767790258043",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:50:58.293Z",
+    "lastActivityTime": "2026-01-07T12:50:58.293Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790258554",
+    "userId": "USER-1767790258307",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:50:58.554Z",
+    "lastActivityTime": "2026-01-07T12:50:58.554Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790259065",
+    "userId": "USER-1767790258816",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:50:59.065Z",
+    "lastActivityTime": "2026-01-07T12:50:59.065Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790259334",
+    "userId": "USER-1767790259081",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:50:59.334Z",
+    "lastActivityTime": "2026-01-07T12:50:59.334Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790259600",
+    "userId": "USER-1767790259349",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:50:59.600Z",
+    "lastActivityTime": "2026-01-07T12:50:59.600Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790260070",
+    "userId": "USER-1767790259820",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:51:00.070Z",
+    "lastActivityTime": "2026-01-07T12:51:00.070Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790260519",
+    "userId": "USER-1767790260269",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:51:00.519Z",
+    "lastActivityTime": "2026-01-07T12:51:00.519Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790260977",
+    "userId": "USER-1767790260728",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:51:00.977Z",
+    "lastActivityTime": "2026-01-07T12:51:00.977Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790261240",
+    "userId": "USER-1767790260992",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:51:01.240Z",
+    "lastActivityTime": "2026-01-07T12:51:01.240Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790261506",
+    "userId": "USER-1767790261261",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:51:01.506Z",
+    "lastActivityTime": "2026-01-07T12:51:01.506Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790261783",
+    "userId": "USER-1767790261527",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:51:01.783Z",
+    "lastActivityTime": "2026-01-07T12:51:01.783Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790262050",
+    "userId": "USER-1767790261800",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:51:02.050Z",
+    "lastActivityTime": "2026-01-07T12:51:02.050Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790262317",
+    "userId": "USER-1767790262070",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:51:02.317Z",
+    "lastActivityTime": "2026-01-07T12:51:02.317Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790262604",
+    "userId": "USER-1767790262350",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:51:02.604Z",
+    "lastActivityTime": "2026-01-07T12:51:02.604Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790262870",
+    "userId": "USER-1767790262619",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:51:02.870Z",
+    "lastActivityTime": "2026-01-07T12:51:02.870Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790263132",
+    "userId": "USER-1767789006575",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:51:03.132Z",
+    "lastActivityTime": "2026-01-07T12:51:03.132Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790263156",
+    "userId": "USER-1767790263148",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:51:03.156Z",
+    "lastActivityTime": "2026-01-07T12:51:03.156Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790263415",
+    "userId": "USER-1767790263167",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:51:03.415Z",
+    "lastActivityTime": "2026-01-07T12:51:03.415Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790263677",
+    "userId": "USER-1767790263427",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:51:03.677Z",
+    "lastActivityTime": "2026-01-07T12:51:03.677Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790263941",
+    "userId": "USER-1767790263691",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:51:03.941Z",
+    "lastActivityTime": "2026-01-07T12:51:03.941Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790480752",
+    "userId": "USER-1767790480463",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:54:40.752Z",
+    "lastActivityTime": "2026-01-07T12:54:40.752Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790481028",
+    "userId": "USER-1767790480776",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:54:41.028Z",
+    "lastActivityTime": "2026-01-07T12:54:41.028Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790481291",
+    "userId": "USER-1767789001510",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:54:41.291Z",
+    "lastActivityTime": "2026-01-07T12:54:41.291Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790481809",
+    "userId": "USER-1767790481557",
+    "email": "locktest@example.com",
+    "loginTime": "2026-01-07T12:54:41.809Z",
+    "lastActivityTime": "2026-01-07T12:54:41.809Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790482105",
+    "userId": "USER-1767790481852",
+    "email": "logout@example.com",
+    "loginTime": "2026-01-07T12:54:42.105Z",
+    "lastActivityTime": "2026-01-07T12:54:42.105Z",
+    "active": false,
+    "logoutTime": "2026-01-07T12:54:42.117Z"
+  },
+  {
+    "id": "SESSION-1767790482382",
+    "userId": "USER-1767790482130",
+    "email": "refresh@example.com",
+    "loginTime": "2026-01-07T12:54:42.382Z",
+    "lastActivityTime": "2026-01-07T12:54:42.382Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790482650",
+    "userId": "USER-1767790482396",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:54:42.650Z",
+    "lastActivityTime": "2026-01-07T12:54:42.650Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790483143",
+    "userId": "USER-1767790482898",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:54:43.143Z",
+    "lastActivityTime": "2026-01-07T12:54:43.143Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790483406",
+    "userId": "USER-1767790483157",
+    "email": "pwdmgmt@example.com",
+    "loginTime": "2026-01-07T12:54:43.406Z",
+    "lastActivityTime": "2026-01-07T12:54:43.406Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790483665",
+    "userId": "USER-1767790483420",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:54:43.665Z",
+    "lastActivityTime": "2026-01-07T12:54:43.665Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790484118",
+    "userId": "USER-1767790483873",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:54:44.118Z",
+    "lastActivityTime": "2026-01-07T12:54:44.118Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790484557",
+    "userId": "USER-1767790484310",
+    "email": "mfa@example.com",
+    "loginTime": "2026-01-07T12:54:44.557Z",
+    "lastActivityTime": "2026-01-07T12:54:44.557Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790485006",
+    "userId": "USER-1767790484759",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:54:45.006Z",
+    "lastActivityTime": "2026-01-07T12:54:45.006Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790485269",
+    "userId": "USER-1767790485019",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:54:45.269Z",
+    "lastActivityTime": "2026-01-07T12:54:45.269Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790485535",
+    "userId": "USER-1767790485285",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:54:45.535Z",
+    "lastActivityTime": "2026-01-07T12:54:45.535Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790485795",
+    "userId": "USER-1767790485553",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:54:45.795Z",
+    "lastActivityTime": "2026-01-07T12:54:45.795Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790486061",
+    "userId": "USER-1767790485811",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:54:46.061Z",
+    "lastActivityTime": "2026-01-07T12:54:46.061Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790486369",
+    "userId": "USER-1767790486078",
+    "email": "apikey@example.com",
+    "loginTime": "2026-01-07T12:54:46.369Z",
+    "lastActivityTime": "2026-01-07T12:54:46.369Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790486664",
+    "userId": "USER-1767790486419",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:54:46.664Z",
+    "lastActivityTime": "2026-01-07T12:54:46.664Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790486919",
+    "userId": "USER-1767790486678",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:54:46.919Z",
+    "lastActivityTime": "2026-01-07T12:54:46.919Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790487176",
+    "userId": "USER-1767789006575",
+    "email": "session@example.com",
+    "loginTime": "2026-01-07T12:54:47.176Z",
+    "lastActivityTime": "2026-01-07T12:54:47.176Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790487196",
+    "userId": "USER-1767790487189",
+    "email": "test@example.com",
+    "loginTime": "2026-01-07T12:54:47.196Z",
+    "lastActivityTime": "2026-01-07T12:54:47.196Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790487451",
+    "userId": "USER-1767790487207",
+    "email": "not-an-email",
+    "loginTime": "2026-01-07T12:54:47.451Z",
+    "lastActivityTime": "2026-01-07T12:54:47.451Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790487708",
+    "userId": "USER-1767790487462",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:54:47.708Z",
+    "lastActivityTime": "2026-01-07T12:54:47.708Z",
+    "active": true
+  },
+  {
+    "id": "SESSION-1767790487963",
+    "userId": "USER-1767790487719",
+    "email": "duplicate@example.com",
+    "loginTime": "2026-01-07T12:54:47.963Z",
+    "lastActivityTime": "2026-01-07T12:54:47.963Z",
+    "active": true
+  }
+]

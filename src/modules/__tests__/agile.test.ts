@@ -904,35 +904,4 @@ describe('AgileModule', () => {
       });
     });
   });
-});      await AgileModule.createStory(boardId, 'Story 2', {
-        priority: 'medium',
-        projectPath: testProjectPath,
-      });
-
-      const metrics = await AgileModule.getBoardMetrics(boardId, testProjectPath);
-
-      expect(metrics.totalStories).toBe(2);
-      expect(metrics.storiesByPriority.high).toBe(1);
-      expect(metrics.storiesByPriority.medium).toBe(1);
-      expect(metrics.storiesByStatus.backlog).toBe(2);
-    });
-
-    it('should calculate test coverage percentage', async () => {
-      const story = await AgileModule.createStory(boardId, 'Test Story', {
-        projectPath: testProjectPath,
-      });
-
-      await AgileModule.linkTest(story.id, '/tests/test1.ts', {
-        projectPath: testProjectPath,
-      });
-
-      await AgileModule.linkTest(story.id, '/tests/test2.ts', {
-        projectPath: testProjectPath,
-      });
-
-      const metrics = await AgileModule.getBoardMetrics(boardId, testProjectPath);
-
-      expect(metrics.testCoveragePercentage).toBe(100); // All tests passing by default
-    });
-  });
 });
